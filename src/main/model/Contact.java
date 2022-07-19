@@ -3,6 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import static model.ContactList.mainContactList;
+
 /**
  Represents a contact in the phonebook which has a name, phone number,
  and email associated with it.
@@ -10,53 +12,64 @@ import java.util.List;
 
 public class Contact {
 
-    //representing mainContactList using an arraylist
-    List<Contact> mainContactList = new ArrayList<Contact>();
-
-    //TODO: NOT LETTING ME TYPE IN 10 DIGITS despite making it long
-    Contact firstContact = new Contact("Divjot", 778703444,
-            "virdidivjot@gmail.com");
+    private String name;
+    private String phoneNumber;
+    private String email;
 
 
-    //TODO: dont know how enumerations work + show example in edx
-    public enum TypeOfContact {
-        FAMILY, FRIENDS, WORK;
-    }
+    Contact firstContact = new Contact("Divjot", "1234567890",
+            "virdidivjot@gmail.com", "FRIEND");
+
 
     //REQUIRES: Contact doesn't already exist
     //EFFECTS: creates a new contact entry
-    public Contact(String name, long phoneNumber, String email) {
-        addContact();
+    public Contact(String name, String phoneNumber, String email, String type) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        addContact(); //TODO: should i just not call this here
     }
 
 
-    //MODIFIES: this
+
     //EFFECTS: adds a new contact into contactlist
-    public void addContact() {
-        mainContactList.add(firstContact);
+    private void addContact() {
+        // mainContactList.add(this);
+        // this
     }
 
-    //REQUIRES: Contact exists in the Phonebook
-    //EFFECTS: displays the contact information searched by name
-    public Contact viewContact(String name) {
-        return firstContact;
-    }
 
     //REQUIRES: contact that needs to be modified exists in the Phonebook
     //MODIFIES: this
     //EFFECTS: modifies details of the contact
     //TODO; would having separate setters for each of these fields be better?
-    public void modifyContact(Contact c, String newName, long newNumber, String newEmail,
+    public void modifyContact(String newName, String newNumber, String newEmail,
                               String newType) {
         //stub
     }
 
-    //REQUIRES: Contact exists in the first place
-    //MODIFIES: this
-    //EFFECTS: deletes the contact
-    public void deleteContact(String name) {
-        //stub
+
+    ////-----------SETTERS------------
+
+    public void setName(String name) {
+        ;
     }
+
+    public void setPhoneNumber(String phoneNumber) {
+        ;
+    }
+
+    public void setEmail(String email) {
+        ;
+    }
+
+    public void setType(String type) {
+        ;
+    }
+
+
+   //-----------GETTERS------------
+
 
     //EFFECTS: returns name of the contact
     public String getName() {
@@ -72,6 +85,11 @@ public class Contact {
 
     //EFFECTS: returns the contact's email
     public String getEmail() {
+        return null;
+    }
+
+    //EFFECTS: returns the contact type
+    public String getType() {
         return null;
     }
 

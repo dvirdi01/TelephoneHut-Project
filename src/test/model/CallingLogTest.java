@@ -15,13 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CallingLogTest {
 
     int testNumOfCallsMade;
-    List<String> testCallLogDirectory = new ArrayList<>();
-    CallingLog testCallingLog = new CallingLog();
+    List<String> testCallLogDirectory;
+    CallingLog testCallingLog;
 
     @BeforeEach
     public void setUp() {
         //TODO: WHY IS MY THING NOT INSTANTIATING?
-        CallingLog testCallingLog = new CallingLog();
+        this.testCallLogDirectory = new ArrayList<>();
+        testCallingLog = new CallingLog();
+        testNumOfCallsMade = 0;
 
     }
 

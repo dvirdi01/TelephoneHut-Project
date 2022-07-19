@@ -25,7 +25,9 @@ public class Phonebook {
 
         System.out.println("-------Welcome to your PhoneBook-------");
         System.out.println("Please enter your name: ");
-        this.userName = myScanner.nextLine();
+        String userName = myScanner.nextLine();
+
+
 
         System.out.println("Welcome " + userName + ", what would you like to do? ");
         displayMenuOptions();
