@@ -15,6 +15,7 @@ public class Contact {
     private String name;
     private String phoneNumber;
     private String email;
+    private String type;
 
 
     Contact firstContact = new Contact("Divjot", "1234567890",
@@ -27,16 +28,17 @@ public class Contact {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        addContact(); //TODO: should i just not call this here
+        this.type = type;
+        //addContact(); //TODO: should i just not call this here
     }
 
 
 
     //EFFECTS: adds a new contact into contactlist
-    private void addContact() {
-        // mainContactList.add(this);
-        // this
-    }
+//    private void addContact() {
+//        // mainContactList.add(this);
+//        // this
+//    }
 
 
     //REQUIRES: contact that needs to be modified exists in the Phonebook

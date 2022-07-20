@@ -20,12 +20,10 @@ public class CallingLog {
     //MODIFIES: this
     //EFFECTS: adds Contact name in the calling log and increments the
     //number of calls made by 1
-    //TODO: problem with incrementing?
     public void makeCall(String name) {
         callLogDirectory.add(name);
-        numberOfCallsMade++;
+        numberOfCallsMade++; //TODO: want to print something like: Calling x....
     }
-
 
     //EFFECTS: returns the number of calls made so far
     public int getNumberOfCallsMade() {
@@ -38,6 +36,7 @@ public class CallingLog {
         return callLogDirectory.get(size);
     }
 
+
     //EFFECTS: displays the callingLog
     public List<String> viewCallLog() {
         return callLogDirectory;
@@ -45,16 +44,9 @@ public class CallingLog {
 
     //MODIFIES: this
     //EFFECTS: clears the call log by removing all calls made.
-    //TODO: CONCURRENT MODIFICATION EXCEPTION WHAT WAS WRONG WITH MY FOR LOOP
     //source: https://www.java67.com/2016/07/how-to-remove-all-elements-of-arraylist.html
     public void clearCallLog() {
-
         callLogDirectory.clear();
-
-        //for (String s: callLogDirectory) {
-            //callLogDirectory.remove(s);
-        //}
-        //numberOfCallsMade = 0;
     }
 
 }

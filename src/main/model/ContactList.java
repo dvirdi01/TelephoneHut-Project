@@ -7,14 +7,23 @@ import java.util.List;
 /**
  Represents a list of all contacts in the phonebook according to their type
  */
-public class ContactList {
+public class ContactList implements List<> { //TODO: HELP
 
-    public static List<Contact> mainContactList = new ArrayList<>();
+    public static List<Contact> mainContactList = new ArrayList<>(); //make it a subclass of list
 
     Contact anotherContact = new Contact("Jasleen", "3612874914", "kajnkajkd", "FRIEND");
 
     //Constructs a new ContactList with 0 contacts added
     public ContactList() {
+
+    }
+
+    //MODIFIES: this
+    //EFFECTS: checks if the contact already exists in the contactlist or not.
+    public boolean checkContactAlreadyThere(Contact c) {
+        return false;
+        // if contactlist.contains(c) == true,then return false and print an error message
+        // if it doesnt contain; add it to contactlist. // can just execute in the add contact tho //TODO: guidance
 
     }
 
@@ -25,7 +34,6 @@ public class ContactList {
     }
 
 
-    //TODO: is it better to add addcontact, viewcontact, deletecontact to contactlist instead?
     //REQUIRES: Contact exists in the Phonebook
     //EFFECTS: displays the contact information searched by name
     public Contact viewContact(Contact c) {
@@ -39,7 +47,7 @@ public class ContactList {
         mainContactList.remove(c);
     }
 
-    //EFFECTS: displays all contacts in the book
+    //EFFECTS: displays all contacts in the book -TODO: SHOULD THIS BE IN PHONEBOOK INSTEAD
     public List<Contact> viewAllContacts() {
         return mainContactList;
     }

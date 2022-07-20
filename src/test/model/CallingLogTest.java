@@ -20,7 +20,7 @@ public class CallingLogTest {
 
     @BeforeEach
     public void setUp() {
-        //TODO: WHY IS MY THING NOT INSTANTIATING?
+
         this.testCallLogDirectory = new ArrayList<>();
         testCallingLog = new CallingLog();
         testNumOfCallsMade = 0;

@@ -32,16 +32,16 @@ class ContactTest {
 
     }
 
-    //TODO: how to do without the contactlist class imported
-    @Test
-    public void addContactTest() {
 
-    }
-
-
-    //TODO:
     @Test
     public void modifyContactTest() {
+        testContact.modifyContact("Jasleen", "832172324",
+                "jasleen@mail", "FAMILY");
+
+        assertEquals("Jasleen", testContact.getName());
+        assertEquals("832172324", testContact.getPhoneNumber());
+        assertEquals("jasleen@mail", testContact.getEmail());
+        assertEquals("FAMILY", testContact.getType());
 
     }
 
