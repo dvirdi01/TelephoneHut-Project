@@ -10,41 +10,54 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ContactTest {
 
-    String name;
-    String phoneNumber;
-    String email;
-
     Contact testContact;
 
 
     @BeforeEach
     public void setUp() {
-        testContact = new Contact("Jaskeerat",
-                "778762345", "jaskeerat@gmail.com", "FRIEND");
+        testContact = new Contact("Jaskeerat", "7787623450",
+                "jaskeerat@gmail.com", "FRIEND");
 
     }
 
     @Test
     public void ContactTest() {
         assertEquals("Jaskeerat", testContact.getName());
-        assertEquals("778762345", testContact.getPhoneNumber());
+        assertEquals("7787623450", testContact.getPhoneNumber());
         assertEquals("jaskeerat@gmail.com", testContact.getEmail());
-
+        assertEquals("FRIEND", testContact.getType());
     }
 
 
     @Test
-    public void modifyContactTest() {
-        testContact.modifyContact("Jasleen", "832172324",
-                "jasleen@mail", "FAMILY");
+    public void setNameTest() {
+        assertEquals("Jaskeerat", testContact.getName());
+        testContact.setName("Divjot");
+        assertEquals("Divjot", testContact.getName());
+    }
 
-        assertEquals("Jasleen", testContact.getName());
-        assertEquals("832172324", testContact.getPhoneNumber());
-        assertEquals("jasleen@mail", testContact.getEmail());
-        assertEquals("FAMILY", testContact.getType());
+    @Test
+    public void setPhoneNumberTest() {
+        assertEquals("7787623450", testContact.getPhoneNumber());
+        testContact.setPhoneNumber("1234567890");
+        assertEquals("1234567890", testContact.getPhoneNumber());
+
+    }
+    @Test
+    public void setEmailTest() {
+        assertEquals("jaskeerat@gmail.com", testContact.getEmail());
+        testContact.setEmail("divjot@gmail.com");
+        assertEquals("divjot@gmail.com", testContact.getEmail());
 
     }
 
+    @Test
+    public void setTypeTest() {
+        assertEquals("FRIEND", testContact.getType());
+        testContact.setType("FAMILY");
+        assertEquals("FAMILY", testContact.getType());
+
+    }
 
 
 }

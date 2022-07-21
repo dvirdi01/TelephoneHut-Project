@@ -7,49 +7,48 @@ import java.util.List;
 /**
  Represents a list of all contacts in the phonebook according to their type
  */
-public class ContactList implements List<> { //TODO: HELP
+public class ContactList {
 
-    public static List<Contact> mainContactList = new ArrayList<>(); //make it a subclass of list
+    List<Contact> contactList;
+    Contact anotherContact = new Contact("Jasleen", "3612874914",
+            "jasleen@mail.com", "FRIEND");
 
-    Contact anotherContact = new Contact("Jasleen", "3612874914", "kajnkajkd", "FRIEND");
+
 
     //Constructs a new ContactList with 0 contacts added
     public ContactList() {
-
+        contactList  = new ArrayList<>();
     }
 
+
+    //REQUIRES: Contact not already present in the contact list
     //MODIFIES: this
-    //EFFECTS: checks if the contact already exists in the contactlist or not.
-    public boolean checkContactAlreadyThere(Contact c) {
-        return false;
-        // if contactlist.contains(c) == true,then return false and print an error message
-        // if it doesnt contain; add it to contactlist. // can just execute in the add contact tho //TODO: guidance
-
-    }
-
-    //MODIFIES: this
-    //EFFECTS: adds a new contact into contactlist
-    public void addContact(Contact c) {
-        mainContactList.add(c);
-    }
-
-
-    //REQUIRES: Contact exists in the Phonebook
-    //EFFECTS: displays the contact information searched by name
-    public Contact viewContact(Contact c) {
-        return anotherContact;
+    //EFFECTS: adds a new contact into contactList if not already present and returns true.
+    // else returns false and doesn't add contact to the list.
+    public boolean addContact(Contact c) {
+        if (!contactList.contains(c)) {
+            contactList.add(c);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
     //MODIFIES: this
-    //EFFECTS: deletes the contact
+    //EFFECTS: deletes a contact from the contact list
     public void deleteContact(Contact c) {
-        mainContactList.remove(c);
+        if (contactList.contains(c)) {
+            contactList.remove(c);
+        } else {
+            // do nothing
+        }
     }
 
-    //EFFECTS: displays all contacts in the book -TODO: SHOULD THIS BE IN PHONEBOOK INSTEAD
-    public List<Contact> viewAllContacts() {
-        return mainContactList;
+
+    //EFFECTS: returns all contacts in the book
+    public List<Contact> getAllContacts() {
+        return contactList;
     }
 
 }

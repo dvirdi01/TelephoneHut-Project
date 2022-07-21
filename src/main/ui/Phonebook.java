@@ -80,6 +80,7 @@ public class Phonebook {
         String type = myScanner.nextLine();
 
         Contact contact = new Contact(name, phoneNumber, email, type);
+
         //checkContactAlreadyExists(contact); //check if contact already exists. if no, call addcontact otherwise say
         // sorry this contact already exists.
 
