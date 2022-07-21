@@ -24,7 +24,7 @@ public class CallingLog {
     //number of calls made by 1
     public void makeCall(Contact c) {
         callingLog.add(c.getName());
-        numberOfCallsMade++; //TODO
+        this.numberOfCallsMade++; //TODO
     }
 
 
