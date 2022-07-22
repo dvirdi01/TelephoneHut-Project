@@ -10,9 +10,9 @@ import java.util.List;
 public class ContactList {
 
     List<Contact> contactList;
+
     Contact anotherContact = new Contact("Jasleen", "3612874914",
             "jasleen@mail.com", "FRIEND");
-
 
 
     //Constructs a new ContactList with 0 contacts added
