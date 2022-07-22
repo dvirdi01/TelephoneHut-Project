@@ -60,4 +60,32 @@ public class ContactList {
         return contactList;
     }
 
+
+    //NEW FUNCTION ADDED TO RETRIEVE A CONTACT BY NAME:
+
+    //EFFECTS: returns contact if found by name, otherwise returns false;
+    public Contact getContactByName(String name) {
+        for (Contact c: contactList) {
+            if (c.getName() == name) {
+                return c;
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    //EFFECTS: returns true if there is a contact with the name you are searching for,
+    //false otherwise
+    public boolean doesNameMatch(String name) {
+        boolean x = false;
+        for (Contact c: contactList) {
+            if (c.getName() == name) {
+                x = true;
+            } else {
+                //do nothing;
+            }
+        }
+        return x;
+    }
 }
