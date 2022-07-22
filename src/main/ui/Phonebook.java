@@ -42,7 +42,8 @@ public class Phonebook {
         System.out.println("2. View Existing Contacts");
         System.out.println("3. Modify a Contact");
         System.out.println("4. Delete a Contact");
-        System.out.println("5. View your Call Log");
+        System.out.println("5. Make a Call");
+        System.out.println("6. View your Call Log");
 
     }
 
@@ -56,8 +57,10 @@ public class Phonebook {
             menuOption3Pressed();
         } else if (menuChoice == 4) {
             menuOption4Pressed();
-        } else {
+        } else if (menuChoice == 5) {
             menuOption5Pressed();
+        } else {
+            menuOption6Pressed();
         }
     }
 
@@ -106,60 +109,45 @@ public class Phonebook {
         String nameToModify = myScanner.nextLine();
         viewOnlyOneContact(nameToModify);
 
-        informationModifyingOperations();
+        modifyingOperations();
+    }
 
-        }
-
-//        System.out.println("Would you like to change this contact's name (yes/no): ");
-//        String answer1 = myScanner.nextLine();
-//
-//        if (answer1 == "yes") {
-//            System.out.println("Enter new name of Contact: ");
-//            String newName = myScanner.nextLine();
-//
-//            //c.setName(newName);
-//        } else {
-//            // do nothing
-//        }
-//
-//
-//        System.out.println("Would you like to change this contact's phoneNumber (yes/no): ");
-//        String answer2 = myScanner.nextLine();
-//
-//
-////        System.out.println("Enter new name of Contact: ");
-////        String newName = myScanner.nextLine();
-////        System.out.println("Enter new number of Contact: ");
-////        String newNumber = myScanner.nextLine();
-////        System.out.println("Enter new email of Contact: ");
-////        String newEmail = myScanner.nextLine();
-////        System.out.println("Enter new type of Contact: ");
-////        String newType = myScanner.nextLine();
-//
-//        //modifyContact(newName, newNumber, newEmail,newType);
-//        System.out.println("All changes have been made!");
-//    }
 
 
     //EFFECTS: allows user to delete a contact
     public void menuOption4Pressed() {
+        viewAllContacts();
         System.out.println("Enter name of contact you want to delete: ");
         String name = myScanner.nextLine();
 
-        // checkContactAlreadyThere();
-        //deleteContact();
-        System.out.println("Contact has been deleted.");
-
-        // otherwise:
-        System.out.println("Sorry that contact doesn't exist.");
+        for (Contact c: contactList.getAllContacts()) {
+            if (c.getName() == name) {
+                contactList.deleteContact(c);
+                System.out.println("Contact has been deleted");
+            } else {
+                System.out.println("This contact does not exist:(");
+            }
+        }
 
     }
 
-    //EFFECTS: allows user to view their call log.
+    //EFFECTS: allows user to make a call.
     public void menuOption5Pressed() {
+        System.out.println("Please enter the name of contact who you would like to call: ");
+        String nameToCall = myScanner.nextLine();
+
+        //TODO: NEED RETRIEVE FUNCTION HERE
+        //retrieve name;
+        callingLog.makeCall();
+        System.out.println("Making a call to " + nameToCall);
+
+    }
+
+    //EFFECTS: allows user to view their calling call
+    public void menuOption6Pressed() {
         System.out.println("Loading your call log...");
 
-        for (String s: callingLog) {
+        for (String s: callingLog.getCallingLog()) {
             System.out.println("You called " + s);
         }
         System.out.println("Total Number of calls made so far: " + callingLog.getNumberOfCallsMade());
@@ -167,14 +155,11 @@ public class Phonebook {
     }
 
 
-
     //------Helper Functions------
 
 
     //EFFECTS: displays the contact information for the chosen contact
     public void viewOnlyOneContact(String nameToFind) {
-//        System.out.println("Enter the name of contact you would like to view: ");
-//        String nameToFind = myScanner.nextLine();
 
         for (Contact c: contactList.getAllContacts()) {
             if (c.getName() == nameToFind) {
@@ -208,18 +193,15 @@ public class Phonebook {
     }
 
 
-
-
-    public void informationModifyingOperations() {
+    public void modifyingOperations() {
         System.out.println("Would you like to change this contact's name (yes/no): ");
         String answer1 = myScanner.nextLine();
 
         if (answer1 == "yes") {
             System.out.println("Enter new name of Contact: ");
             String newName = myScanner.nextLine();
-
+            //TODO: need help with the helper methods.
             //c.setName(newName);
-
 
         } else {
             // do nothing
@@ -227,17 +209,30 @@ public class Phonebook {
 
     }
 
-    //EFFECTS: returns true if there is a contact whose name matches the one
-    // you are searching for else returns false
-    public boolean doesNameMatch(String nameToFind) {
-        boolean isMatching = false;
-        for (Contact c: contactList.getAllContacts()) {
-            if (c.getName() == nameToFind) {
-                isMatching = true;
-            }
-        }
-        return isMatching;
-    }
+//    public Contact retrieveContact(String nameToFind) {
+//
+//        for (Contact c: contactList.getAllContacts()) {
+//            if (c.getName() == nameToFind) {
+//               return c;
+//            } else {
+//                System.out.println("This contact does not exist:(");
+//            }
+//        }
+//
+//    }
+
+
+//    //EFFECTS: displays all contacts in the calling log
+//    public boolean doesNameMatch(String nameToFind) {
+//        boolean x =
+//        for (Contact c: contactList.getAllContacts()) {
+//            if (c.getName() == nameToFind) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//    }
 
 
 
