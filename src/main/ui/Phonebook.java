@@ -27,11 +27,16 @@ public class Phonebook {
         String userName = myScanner.nextLine();
 
         System.out.println("Welcome " + userName + ", what would you like to do? ");
+        goToMenu();
+
+    }
+
+    //EFFECTS: takes user to menu
+    public void goToMenu() {
         displayMenuOptions();
         System.out.println();
         System.out.println("Please pick a number: ");
         this.menuChoice = myScanner.nextInt();
-
         choosePhonebookOperation();
 
     }
@@ -46,6 +51,7 @@ public class Phonebook {
         System.out.println("4. Delete a Contact");
         System.out.println("5. Make a Call");
         System.out.println("6. View your Call Log");
+
 
     }
 
@@ -81,14 +87,7 @@ public class Phonebook {
         contactList.addContact(contact);
         System.out.println("This contact has been saved in your Contacts List!");
 
-        System.out.println("Press 1 to add another contact and 2 to exit: ");
-        int decision = myScanner.nextInt();
-
-        if (decision == 1) {
-            addContactOptionPressed();
-        } else {
-            return;
-        }
+        continueOrExit();
 
     }
 
@@ -100,11 +99,13 @@ public class Phonebook {
 
         if (viewingChoice == 1) {
             System.out.println("Enter the name of contact you would like to view: ");
-            String nameToFind = myScanner.nextLine();
+            String nameToFind = myScanner.next();
             viewOnlyOneContact(nameToFind);
+
 
         } else {
             viewAllContacts();
+            goToMenu();
         }
 
     }
@@ -114,45 +115,42 @@ public class Phonebook {
     public void modifyContactOptionPressed() {
         viewAllContacts();
         System.out.println("Enter name of contact you want to modify: ");
-        String nameToModify = myScanner.nextLine();
+        String nameToModify = myScanner.next();
 
         //return that contact
         Contact contactToModify = contactList.getContactByName(nameToModify);
-        viewOnlyOneContact(nameToModify);
+        //viewOnlyOneContact(nameToModify);
 
         //display modifying options
         modifyingOperations(contactToModify);
+        continueOrExit();
+        //goToMenu();
     }
 
 
 
+    //TODO: why not working
     //EFFECTS: allows user to delete a contact
     public void deleteContactOptionPressed() {
         viewAllContacts();
         System.out.println("Enter name of contact you want to delete: ");
-        String name = myScanner.nextLine();
+        String name = myScanner.next();
 
         contactList.deleteContact(contactList.getContactByName(name));
         System.out.println("Contact has been deleted");
 
-//        for (Contact c: contactList.getAllContacts()) {
-//            if (c.getName() == name) {
-//                contactList.deleteContact(c);
-//                System.out.println("Contact has been deleted");
-//            } else {
-//                System.out.println("This contact does not exist:(");
-//            }
-//        }
+        continueOrExit();
 
     }
 
     //EFFECTS: allows user to make a call.
     public void makeCallOptionPressed() {
         System.out.println("Please enter the name of contact who you would like to call: ");
-        String nameToCall = myScanner.nextLine();
+        String nameToCall = myScanner.next();
 
         callingLog.makeCall(contactList.getContactByName(nameToCall));
         System.out.println("Making a call to..." + contactList.getContactByName(nameToCall).getName());
+        continueOrExit();
 
     }
 
@@ -164,6 +162,7 @@ public class Phonebook {
             System.out.println("You called " + s);
         }
         System.out.println("Total Number of calls made so far: " + callingLog.getNumberOfCallsMade());
+        continueOrExit();
 
     }
 
@@ -175,12 +174,13 @@ public class Phonebook {
     public void viewOnlyOneContact(String nameToFind) {
 
         for (Contact c: contactList.getAllContacts()) {
-            if (c.getName() == nameToFind) {
+            if (c.getName().equals(nameToFind)) {
                 displayContactInformation(c);
-            } else {
-                System.out.println("This contact does not exist:(");
+                //return;
             }
         }
+        //System.out.println("This contact does not exist:(");
+        continueOrExit();
 
     }
 
@@ -213,6 +213,7 @@ public class Phonebook {
         changePhoneNumberRequest(c);
         changeEmailRequest(c);
         changeTypeRequest(c);
+        //continueOrExit();
 
     }
 
@@ -220,11 +221,11 @@ public class Phonebook {
     //EFFECTS: allows user to change contact's name
     public void changeNameRequest(Contact c) {
         System.out.println("Would you like to change this contact's name (yes/no): ");
-        String answer1 = myScanner.nextLine();
+        String answer = myScanner.next();
 
-        if (answer1 == "yes") {
+        if (answer.equals("yes")) {
             System.out.println("Enter new name of Contact: ");
-            String newName = myScanner.nextLine();
+            String newName = myScanner.next();
             c.setName(newName);
             System.out.println("Contact's name has been changed!");
         }
@@ -234,11 +235,11 @@ public class Phonebook {
     //EFFECTS: allows user to change contact's number
     public void changePhoneNumberRequest(Contact c) {
         System.out.println("Would you like to change this contact's phone number (yes/no): ");
-        String answer = myScanner.nextLine();
+        String answer = myScanner.next();
 
-        if (answer == "yes") {
+        if (answer.equals("yes")) {
             System.out.println("Enter new phone number of Contact: ");
-            String newPhoneNumber = myScanner.nextLine();
+            String newPhoneNumber = myScanner.next();
             c.setPhoneNumber(newPhoneNumber);
             System.out.println("Contact's phone number has been changed!");
         }
@@ -249,11 +250,11 @@ public class Phonebook {
     //EFFECTS: allows user to change contact's email
     public void changeEmailRequest(Contact c) {
         System.out.println("Would you like to change this contact's email (yes/no): ");
-        String answer = myScanner.nextLine();
+        String answer = myScanner.next();
 
-        if (answer == "yes") {
+        if (answer.equals("yes")) {
             System.out.println("Enter new email of Contact: ");
-            String newEmail = myScanner.nextLine();
+            String newEmail = myScanner.next();
             c.setEmail(newEmail);
             System.out.println("Contact's email has been changed!");
         }
@@ -263,13 +264,24 @@ public class Phonebook {
     //EFFECTS: allows user to change contact's type
     public void changeTypeRequest(Contact c) {
         System.out.println("Would you like to change this contact's type (yes/no): ");
-        String answer = myScanner.nextLine();
+        String answer = myScanner.next();
 
-        if (answer == "yes") {
+        if (answer.equals("yes")) {
             System.out.println("Enter the new type of this Contact: ");
-            String newType = myScanner.nextLine();
+            String newType = myScanner.next();
             c.setEmail(newType);
             System.out.println("Contact's type has been changed!");
+        }
+    }
+
+    public void continueOrExit() {
+        System.out.println("Would you like to continue or exit the phonebook (continue/exit): ");
+        String decision = myScanner.next();
+
+        if (decision.equals("continue")) {
+            goToMenu();
+        } else {
+            return;
         }
     }
 
