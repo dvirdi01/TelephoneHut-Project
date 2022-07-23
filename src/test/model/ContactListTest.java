@@ -40,12 +40,6 @@ public class ContactListTest {
         assertEquals(1, testContactList.getAllContacts().size());
         assertTrue(testContactList.getAllContacts().contains(testContact1));
 
-        //adding 2 contacts
-        assertEquals(1, testContactList.getAllContacts().size());
-        assertTrue(testContactList.addContact(testContact2));
-        assertEquals(2, testContactList.getAllContacts().size());
-        assertTrue(testContactList.getAllContacts().contains(testContact2));
-
     }
 
     @Test
@@ -141,6 +135,23 @@ public class ContactListTest {
         assertFalse(testContactList.getAllContacts().contains(testContact1));
         assertFalse(testContactList.getAllContacts().contains(testContact2));
 
+    }
+
+    @Test
+    public void deleteContactThatDoesntExistTest() {
+        assertEquals(0, testContactList.getAllContacts().size());
+        testContactList.deleteContact(testContact1);
+        assertEquals(0, testContactList.getAllContacts().size());
+
+        //add one contact but try to delete another one that doesnt exist
+        assertTrue(testContactList.addContact(testContact1));
+        assertEquals(1, testContactList.getAllContacts().size());
+        assertTrue(testContactList.getAllContacts().contains(testContact1));
+
+        //deleting a contact that doesnt exist
+        testContactList.deleteContact(testContact2);
+        assertEquals(1, testContactList.getAllContacts().size());
+        assertTrue(testContactList.getAllContacts().contains(testContact1));
     }
 
     @Test
