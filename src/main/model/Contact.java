@@ -15,7 +15,7 @@ public class Contact {
     private String phoneNumber;
     private String email;
     private String type;
-    Contact firstContact;
+
 
 
     //REQUIRES: phoneNumber is 10 digits long, and it is not 0000000000 or beginning with one or more 0s,

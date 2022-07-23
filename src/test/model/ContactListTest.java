@@ -143,4 +143,16 @@ public class ContactListTest {
 
     }
 
+    @Test
+    public void getContactByNameTest() {
+        //adding 1 contact
+        assertEquals(0, testContactList.getAllContacts().size());
+        assertTrue(testContactList.addContact(testContact1));
+        assertEquals(1, testContactList.getAllContacts().size());
+        assertTrue(testContactList.getAllContacts().contains(testContact1));
+
+        assertEquals(testContact1, testContactList.getContactByName("Jaskeerat"));
+        assertEquals(null, testContactList.getContactByName("Emma"));
+    }
+
 }

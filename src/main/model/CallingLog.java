@@ -24,7 +24,7 @@ public class CallingLog {
     //number of calls made by 1
     public void makeCall(Contact c) {
         callingLog.add(c.getName());
-        this.numberOfCallsMade++; //TODO
+        this.numberOfCallsMade++;
     }
 
 
@@ -44,13 +44,11 @@ public class CallingLog {
     //source: https://www.java67.com/2016/07/how-to-remove-all-elements-of-arraylist.html
     public void clearCallLog() {
         callingLog.clear();
-        // could have also done callingLog = new ArrayList;
     }
 
     //EFFECTS: returns the number of calls made so far
     public int getNumberOfCallsMade() {
         return numberOfCallsMade;
     }
-
 
 }

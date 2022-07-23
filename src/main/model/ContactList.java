@@ -21,16 +21,6 @@ public class ContactList {
     }
 
 
-    //TODO: should I include a helper method or no?
-//    //EFFECTS: returns true if contact is already in the contact list, false otherwise.
-//    public boolean checkContactAlreadyThere(Contact c) {
-//        if (contactList.contains(c)) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
     //MODIFIES: this
     //EFFECTS: adds a new contact into contactList if not already present and returns true.
     // else returns false and doesn't add contact to the list.
@@ -59,31 +49,14 @@ public class ContactList {
     }
 
 
-    //NEW FUNCTION ADDED TO RETRIEVE A CONTACT BY NAME:
-
-    //EFFECTS: returns contact if found by name, otherwise returns false;
+    //EFFECTS: returns contact if found by name, otherwise returns null;
     public Contact getContactByName(String name) {
         for (Contact c: contactList) {
             if (c.getName().equals(name)) {
                 return c;
-            } else {
-                return null;
             }
         }
         return null;
     }
 
-//    //EFFECTS: returns true if there is a contact with the name you are searching for,
-//    //false otherwise
-//    public boolean doesNameMatch(String name) {
-//        boolean x = false;
-//        for (Contact c: contactList) {
-//            if (c.getName() == name) {
-//                x = true;
-//            } else {
-//                //do nothing;
-//            }
-//        }
-//        return x;
-//    }
 }

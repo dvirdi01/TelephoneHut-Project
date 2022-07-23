@@ -5,6 +5,7 @@ import model.Contact;
 import model.ContactList;
 
 import java.util.Scanner;
+import java.util.jar.JarOutputStream;
 
 /**
  This class represents a phonebook which contains all information
@@ -22,11 +23,13 @@ public class Phonebook {
     //EFFECTS: Instantiates a Phonebook
     public Phonebook() {
 
-        System.out.println("-------Welcome to your PhoneBook-------");
+        System.out.println("-----------------------------Welcome to your PhoneBook-------------------------------");
         System.out.println("Please enter your name: ");
         String userName = myScanner.nextLine();
 
+        System.out.println();
         System.out.println("Welcome " + userName + ", what would you like to do? ");
+        System.out.println();
         goToMenu();
 
     }
@@ -43,7 +46,6 @@ public class Phonebook {
 
     //EFFECTS: displays the operations present in the phonebook
     public void displayMenuOptions() {
-        System.out.println("Here are your options");
         System.out.println();
         System.out.println("1. Add a Contact");
         System.out.println("2. View Existing Contacts");
@@ -51,8 +53,6 @@ public class Phonebook {
         System.out.println("4. Delete a Contact");
         System.out.println("5. Make a Call");
         System.out.println("6. View your Call Log");
-
-
     }
 
     //EFFECTS: chooses which method to call based on user's menu choice
@@ -74,6 +74,7 @@ public class Phonebook {
 
     //EFFECTS: allows user to create a new contact and add it to contact list
     public void addContactOptionPressed() {
+        System.out.println();
         System.out.println("Enter Contact Name: ");
         String name = myScanner.next();
         System.out.println("Enter Contact's phone number in quotations: ");
@@ -86,6 +87,7 @@ public class Phonebook {
         Contact contact = new Contact(name, phoneNumber, email, type);
         contactList.addContact(contact);
         System.out.println("This contact has been saved in your Contacts List!");
+        System.out.println();
 
         continueOrExit();
 
@@ -94,14 +96,15 @@ public class Phonebook {
 
     //EFFECTS: allows user to either view one contact or all contacts
     public void viewContactOptionPressed() {
+        System.out.println();
         System.out.println("Press 1 to view one contact, 2 to view all contacts: ");
         int viewingChoice = myScanner.nextInt();
 
         if (viewingChoice == 1) {
+            System.out.println();
             System.out.println("Enter the name of contact you would like to view: ");
             String nameToFind = myScanner.next();
             viewOnlyOneContact(nameToFind);
-
 
         } else {
             viewAllContacts();
@@ -117,14 +120,10 @@ public class Phonebook {
         System.out.println("Enter name of contact you want to modify: ");
         String nameToModify = myScanner.next();
 
-        //return that contact
         Contact contactToModify = contactList.getContactByName(nameToModify);
-        //viewOnlyOneContact(nameToModify);
 
-        //display modifying options
         modifyingOperations(contactToModify);
         continueOrExit();
-        //goToMenu();
     }
 
 
@@ -176,10 +175,8 @@ public class Phonebook {
         for (Contact c: contactList.getAllContacts()) {
             if (c.getName().equals(nameToFind)) {
                 displayContactInformation(c);
-                //return;
             }
         }
-        //System.out.println("This contact does not exist:(");
         continueOrExit();
 
     }
@@ -208,13 +205,13 @@ public class Phonebook {
 
     //EFFECTS: allows the user to choose which information they want to modify
     public void modifyingOperations(Contact c) {
-
         changeNameRequest(c);
         changePhoneNumberRequest(c);
         changeEmailRequest(c);
         changeTypeRequest(c);
-        //continueOrExit();
 
+        System.out.println();
+        continueOrExit();
     }
 
     //MODIFIES: this
@@ -234,6 +231,7 @@ public class Phonebook {
     //MODIFIES: this
     //EFFECTS: allows user to change contact's number
     public void changePhoneNumberRequest(Contact c) {
+        System.out.println();
         System.out.println("Would you like to change this contact's phone number (yes/no): ");
         String answer = myScanner.next();
 
