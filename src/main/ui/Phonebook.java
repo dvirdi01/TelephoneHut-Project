@@ -19,7 +19,7 @@ public class Phonebook {
     CallingLog callingLog = new CallingLog();
 
 
-    //EFFECTS: Instantiates a Phonebook
+    //EFFECTS: Instantiates a Phonebook with no contacts added yet
     public Phonebook() {
 
         System.out.println("-----------------------------Welcome to your PhoneBook-------------------------------");
@@ -77,7 +77,7 @@ public class Phonebook {
         System.out.println();
         System.out.println("Enter Contact Name: ");
         String name = myScanner.next();
-        System.out.println("Enter Contact's phone number in quotations: ");
+        System.out.println("Enter Contact's phone number: ");
         String phoneNumber = myScanner.next();
         System.out.println("Enter Contact's email: ");
         String email = myScanner.next();
