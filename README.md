@@ -7,7 +7,7 @@ For my Personal Project, I aim to design a Phonebook application where users can
 I am interested in making a Phonebook because I want to make an application that will be useful for everyone in the future as it can provide users with an alternative way for them to store their contacts. If someone happens to lose or damage their phone, they would not run the risk of losing all their contacts. Moreover, I want to hone my creativity by designing a project that looks like a real app would. Therefore, this project will give me a chance to build a sophisticated Phonebook application, which will help me build more projects in the future as well.
 
 
-**USER STORIES**
+##USER STORIES
 - As a user, I want to be able to add contacts into one of the three categories: *WORK, FAMILY, FRIENDS*.
 
 - As a user, I want to be able to view any contact of my choice.
