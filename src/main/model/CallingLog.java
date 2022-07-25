@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- Represents a callLog that contains the names of the people the user called.
+ Represents a Calling Log that contains the names of the people the user called
+ and the number of calls made so far.
  */
 
 public class CallingLog {
@@ -13,7 +14,7 @@ public class CallingLog {
     List<String> callingLog;
 
 
-    //EFFECTS: creates an empty call log.
+    //EFFECTS: creates an empty call log where total number of calls made is 0
     public CallingLog() {
         callingLog = new ArrayList<>();
         numberOfCallsMade = 0;

@@ -2,22 +2,20 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  Represents the tests for the Contact class
  */
+
 class ContactTest {
 
     Contact testContact;
-
 
     @BeforeEach
     public void setUp() {
         testContact = new Contact("Jaskeerat", "7787623450",
                 "jaskeerat@gmail.com", "FRIEND");
-
     }
 
     @Test
@@ -58,6 +56,5 @@ class ContactTest {
         assertEquals("FAMILY", testContact.getType());
 
     }
-
 
 }

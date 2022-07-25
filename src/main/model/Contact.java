@@ -1,8 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  Represents a contact in the phonebook which has a name, phone number,email, and type

@@ -2,16 +2,13 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  Represents the tests for the CallingLog class
  */
+
 public class CallingLogTest {
 
     private Contact testContact1;
@@ -37,16 +34,13 @@ public class CallingLogTest {
     @Test
     public void makeCallTest() {
 
-        //test empty callingLog
         assertEquals(0, testCallingLog.getCallingLog().size());
         assertEquals(0, testCallingLog.getNumberOfCallsMade());
 
-        //making one call
         testCallingLog.makeCall(testContact1);
         assertTrue(testCallingLog.getCallingLog().contains("Jaskeerat"));
         assertEquals(1, testCallingLog.getNumberOfCallsMade());
 
-        //making another call to a different person
         testCallingLog.makeCall(testContact2);
         assertTrue(testCallingLog.getCallingLog().contains("Divesh"));
         assertEquals(2, testCallingLog.getNumberOfCallsMade());
@@ -59,14 +53,12 @@ public class CallingLogTest {
 
         assertEquals(0, testCallingLog.getCallingLog().size());
 
-        //making one call
         testCallingLog.makeCall(testContact1);
         assertTrue(testCallingLog.getCallingLog().contains("Jaskeerat"));
         assertEquals(1, testCallingLog.getNumberOfCallsMade());
 
         assertEquals("Jaskeerat", testCallingLog.getLastCallMade());
 
-        //making another call to a different person
         testCallingLog.makeCall(testContact2);
         assertTrue(testCallingLog.getCallingLog().contains("Divesh"));
         assertEquals(2, testCallingLog.getNumberOfCallsMade());
@@ -77,14 +69,13 @@ public class CallingLogTest {
 
     @Test
     public void clearCallingLogTest() {
+
         assertEquals(0, testCallingLog.getCallingLog().size());
 
-        //making one call
         testCallingLog.makeCall(testContact1);
         assertTrue(testCallingLog.getCallingLog().contains("Jaskeerat"));
         assertEquals(1, testCallingLog.getNumberOfCallsMade());
 
-        //making another call to a different person
         testCallingLog.makeCall(testContact2);
         assertTrue(testCallingLog.getCallingLog().contains("Divesh"));
         assertEquals(2, testCallingLog.getNumberOfCallsMade());
@@ -98,12 +89,10 @@ public class CallingLogTest {
     public void getNumberOfCallsMadeTest() {
         assertEquals(0, testCallingLog.getNumberOfCallsMade());
 
-        //make a call
         testCallingLog.makeCall(testContact1);
         assertTrue(testCallingLog.getCallingLog().contains("Jaskeerat"));
         assertEquals(1, testCallingLog.getNumberOfCallsMade());
 
-        //making another call to a different person
         testCallingLog.makeCall(testContact2);
         assertTrue(testCallingLog.getCallingLog().contains("Divesh"));
         assertEquals(2, testCallingLog.getNumberOfCallsMade());

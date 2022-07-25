@@ -3,9 +3,8 @@ package ui;
 import model.CallingLog;
 import model.Contact;
 import model.ContactList;
-
 import java.util.Scanner;
-import java.util.jar.JarOutputStream;
+
 
 /**
  This class represents a phonebook which contains all information
@@ -34,7 +33,7 @@ public class Phonebook {
 
     }
 
-    //EFFECTS: takes user to menu
+    //EFFECTS: displays menu options and takes user to menu
     public void goToMenu() {
         displayMenuOptions();
         System.out.println();
@@ -72,8 +71,9 @@ public class Phonebook {
         }
     }
 
-    //EFFECTS: allows user to create a new contact and add it to contact list
+    //EFFECTS: allows user to create a new contact and adds it to contact list.
     public void addContactOptionPressed() {
+
         System.out.println();
         System.out.println("Enter Contact Name: ");
         String name = myScanner.next();
@@ -94,7 +94,7 @@ public class Phonebook {
     }
 
 
-    //EFFECTS: allows user to either view one contact or all contacts
+    //EFFECTS: allows user to either view one contact or all contacts.
     public void viewContactOptionPressed() {
         System.out.println();
         System.out.println("Press 1 to view one contact, 2 to view all contacts: ");
@@ -113,8 +113,7 @@ public class Phonebook {
 
     }
 
-
-    //EFFECTS: allows user to modify a contact
+    //EFFECTS: allows user to modify a contact.
     public void modifyContactOptionPressed() {
         viewAllContacts();
         System.out.println("Enter name of contact you want to modify: ");
@@ -126,9 +125,6 @@ public class Phonebook {
         continueOrExit();
     }
 
-
-
-    //TODO: why not working
     //EFFECTS: allows user to delete a contact
     public void deleteContactOptionPressed() {
         viewAllContacts();
@@ -193,7 +189,7 @@ public class Phonebook {
     }
 
 
-    //EFFECTS: displays the contact information
+    //EFFECTS: displays the contact information for a particular contact
     public void displayContactInformation(Contact c) {
         System.out.println("Name: " + c.getName());
         System.out.println("PhoneNumber: " + c.getPhoneNumber());
@@ -203,7 +199,7 @@ public class Phonebook {
     }
 
 
-    //EFFECTS: allows the user to choose which information they want to modify
+    //EFFECTS: allows the user to choose which information of a contact they want to modify
     public void modifyingOperations(Contact c) {
         changeNameRequest(c);
         changePhoneNumberRequest(c);
@@ -229,7 +225,7 @@ public class Phonebook {
     }
 
     //MODIFIES: this
-    //EFFECTS: allows user to change contact's number
+    //EFFECTS: allows user to change contact's phone number
     public void changePhoneNumberRequest(Contact c) {
         System.out.println();
         System.out.println("Would you like to change this contact's phone number (yes/no): ");
@@ -272,6 +268,8 @@ public class Phonebook {
         }
     }
 
+    //EFFECTS: if user wants to continue doing more operations, takes them to menu again,
+    //otherwise exits the phonebook.
     public void continueOrExit() {
         System.out.println("Would you like to continue or exit the phonebook (continue/exit): ");
         String decision = myScanner.next();
