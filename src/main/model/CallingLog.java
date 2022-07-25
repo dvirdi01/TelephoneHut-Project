@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- Represents a Calling Log that contains the names of the people the user called
+ This class represents a Calling Log that contains the names of the people the user has called
  and the number of calls made so far.
  */
 

@@ -19,7 +19,7 @@ class ContactTest {
     }
 
     @Test
-    public void ContactTest() {
+    public void ContactConstructorTest() {
         assertEquals("Jaskeerat", testContact.getName());
         assertEquals("7787623450", testContact.getPhoneNumber());
         assertEquals("jaskeerat@gmail.com", testContact.getEmail());

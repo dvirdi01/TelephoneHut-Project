@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- Represents a list of all contacts in the phonebook
+ This class represents a list of all contacts stored in the phonebook
  */
+
 public class ContactList {
 
     List<Contact> contactList;
-
-    //Contact anotherContact = new Contact("Jasleen", "3612874914",
-            //"jasleen@mail.com", "FRIEND");
 
 
     //EFFECTS: Constructs a new ContactList with 0 contacts added
@@ -35,7 +33,7 @@ public class ContactList {
 
 
     //MODIFIES: this
-    //EFFECTS: if Contact is in contact list then deletes it otherwise does nothing
+    //EFFECTS: if Contact is found in contact list then deletes it, otherwise does nothing
     public void deleteContact(Contact c) {
         if (contactList.contains(c)) {
             contactList.remove(c);
@@ -49,7 +47,7 @@ public class ContactList {
     }
 
 
-    //EFFECTS: returns contact if it is found by its name, otherwise returns null
+    //EFFECTS: If a Contact is found by its name, then returns that contact otherwise returns null
     public Contact getContactByName(String name) {
         for (Contact c: contactList) {
             if (c.getName().equals(name)) {

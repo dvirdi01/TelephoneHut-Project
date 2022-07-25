@@ -8,7 +8,8 @@ import java.util.Scanner;
 
 /**
  This class represents a phonebook which contains all information
- about the contacts stored in the book.
+ about the contacts stored in the book. It allows user to add contacts,
+ view contacts, make calls, and view their calling history
 
  Source and inspiration taken from: https://github.students.cs.ubc.ca/CPSC210/TellerApp
  */
@@ -21,7 +22,7 @@ public class Phonebook {
     CallingLog callingLog = new CallingLog();
 
 
-    //EFFECTS: Instantiates a Phonebook with no contacts added yet
+    //EFFECTS: Instantiates a Phonebook with no contacts added
     public Phonebook() {
 
         System.out.println("-----------------------------Welcome to your PhoneBook-------------------------------");
@@ -35,7 +36,7 @@ public class Phonebook {
 
     }
 
-    //EFFECTS: displays menu options and takes user to menu
+    //EFFECTS: takes user to phonebook menu and asks them for their choice of operation
     public void goToMenu() {
         displayMenuOptions();
         System.out.println();
@@ -45,7 +46,7 @@ public class Phonebook {
 
     }
 
-    //EFFECTS: displays the operations present in the phonebook
+    //EFFECTS: displays the operations offered in the phonebook
     public void displayMenuOptions() {
         System.out.println();
         System.out.println("1. Add a Contact");
@@ -73,7 +74,8 @@ public class Phonebook {
         }
     }
 
-    //EFFECTS: allows user to create a new contact and adds it to contact list.
+    //MODIFIES: this
+    //EFFECTS: allows user to create a new contact
     public void addContactOptionPressed() {
 
         System.out.println();
@@ -115,7 +117,7 @@ public class Phonebook {
 
     }
 
-    //EFFECTS: allows user to modify a contact.
+    //EFFECTS: Asks user for which contact they want to modify and displays modifying operations
     public void modifyContactOptionPressed() {
         viewAllContacts();
         System.out.println("Enter name of contact you want to modify: ");
@@ -127,6 +129,7 @@ public class Phonebook {
         continueOrExit();
     }
 
+    //MODIFIES: this
     //EFFECTS: allows user to delete a contact
     public void deleteContactOptionPressed() {
         viewAllContacts();
@@ -140,7 +143,7 @@ public class Phonebook {
 
     }
 
-    //EFFECTS: allows user to make a call.
+    //EFFECTS: allows user to make a call
     public void makeCallOptionPressed() {
         System.out.println("Please enter the name of contact who you would like to call: ");
         String nameToCall = myScanner.next();
@@ -167,7 +170,7 @@ public class Phonebook {
     //------Helper Functions------
 
 
-    //EFFECTS: displays the contact information for the chosen contact
+    //EFFECTS: displays the contact information for the chosen contact in menu option 2
     public void viewOnlyOneContact(String nameToFind) {
 
         for (Contact c: contactList.getAllContacts()) {
@@ -191,7 +194,7 @@ public class Phonebook {
     }
 
 
-    //EFFECTS: displays the contact information for a particular contact
+    //EFFECTS: displays the contact information for a contact
     public void displayContactInformation(Contact c) {
         System.out.println("Name: " + c.getName());
         System.out.println("PhoneNumber: " + c.getPhoneNumber());
