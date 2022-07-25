@@ -9,6 +9,8 @@ import java.util.Scanner;
 /**
  This class represents a phonebook which contains all information
  about the contacts stored in the book.
+
+ Source and inspiration taken from: https://github.students.cs.ubc.ca/CPSC210/TellerApp
  */
 
 public class Phonebook {

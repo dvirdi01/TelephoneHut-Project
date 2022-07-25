@@ -4,6 +4,7 @@ package model;
 /**
  Represents a contact in the phonebook which has a name, phone number,email, and type
  associated with it.
+ Source: https://github.com/UBCx-Software-Construction/data-abstraction-practice-projects/tree/master/Contact
  */
 
 public class Contact {
