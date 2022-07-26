@@ -8,7 +8,7 @@ inside our phones, TelephoneHut is a smart phonebook application that provides p
 store their contacts’ personal information all in one place. Although this application is easy to use, its sophisticated 
 design features allow users to add ample amounts of details regarding their contacts. Rather than just saving people’s 
 names, the user can also add additional details about their contacts, such as their email IDs, and what type of category 
-they belong in (FAMILY, FRIEND, or WORK). Along with that, this application allows users to track the number of calls 
+they belong in (*FAMILY, FRIEND, or WORK*). Along with that, this application allows users to track the number of calls 
 they have made and view their calling history so that they can reflect on their daily usage of this app as well. 
 TelephoneHut is designed for people of all ages, and it can be easily accessed through one’s desktop. With the 
 continuous innovations in technology, many people keep updating their phones to keep up with the latest trends. With the 
@@ -25,7 +25,7 @@ functions like a real app. Choosing to design a phonebook application will allow
 and how I can build a sophisticated application, which will help me build more projects in the future as well.
 
 
-##*USER STORIES*
+## User Stories
 - As a user, I want to be able to add any number of contacts into my contact list.
 - As a user, I want to be able to view any contact of my choice.
 - As a user, I want to be able to view all my contacts displayed together.
