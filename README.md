@@ -33,3 +33,7 @@ and how I can build a sophisticated application, which will help me build more p
 - As a user, I want to be able to delete a contact from my phonebook.
 - As a user, I want to be able to make calls and access my calling log at any given time.
 - As a user, I want to be able to either continue doing operations in my phonebook, or exit it altogether. 
+- As a user, I want to have the option of saving my phonebook to file or quit the application if I don’t want to save 
+it. 
+- As a user, when I start the application, I want to be given the option to load my saved phonebook from the file.
+

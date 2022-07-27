@@ -1,5 +1,5 @@
 package exceptions;
 
-public class TypeException extends Exception{
+public class TypeException extends Exception {
 
 }
