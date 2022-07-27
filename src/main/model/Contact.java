@@ -15,8 +15,8 @@ public class Contact {
     private String type;
 
 
-    //REQUIRES: phoneNumber is 10 digits long and it is not 0000000000 or beginning with one or more 0s,
-    //type is entered in upper case
+    //REQUIRES: phoneNumber is 10 digits long, and it is not 0000000000 or beginning with one or more 0s,
+    //type is entered in upper case, contact name is non-empty
     //EFFECTS: creates a new contact entry
     public Contact(String name, String phoneNumber, String email, String type) {
         this.name = name;

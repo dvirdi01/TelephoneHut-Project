@@ -30,7 +30,6 @@ public class ContactList {
         }
     }
 
-    //TODO: can use contactnotfound exception
     //MODIFIES: this
     //EFFECTS: if Contact is found in contact list then deletes it, otherwise does nothing
     public void deleteContact(Contact c) {
@@ -46,7 +45,6 @@ public class ContactList {
     }
 
 
-    //TODO: should I change this so it has an exception called ContactNotFound exception instead of returning null?
     //EFFECTS: If a Contact is found by its name, then returns that contact otherwise returns null
     public Contact getContactByName(String name) {
         for (Contact c: contactList) {

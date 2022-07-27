@@ -69,8 +69,11 @@ public class Phonebook {
             deleteContactOptionPressed();
         } else if (menuChoice == 5) {
             makeCallOptionPressed();
-        } else {
+        } else if (menuChoice == 6) {
             viewCallLogOptionPressed();
+        } else {                           //out of bounds menu option chosen
+            System.out.println("Please pick a menu option from 1-6");
+            goToMenu();
         }
     }
 
@@ -89,8 +92,16 @@ public class Phonebook {
         String type = myScanner.next();
 
         Contact contact = new Contact(name, phoneNumber, email, type);
-        contactList.addContact(contact);
-        System.out.println("This contact has been saved in your Contacts List!");
+
+        //TODO: ask why this not working
+        if (contactList.addContact(contact)) {
+            System.out.println("This contact has been saved in your Contacts List!");
+            System.out.println();
+        } else {
+            System.out.println("This contact already exists!");
+        }
+        //contactList.addContact(contact);
+        //System.out.println("This contact has been saved in your Contacts List!");
         System.out.println();
 
         continueOrExit();
@@ -110,9 +121,12 @@ public class Phonebook {
             String nameToFind = myScanner.next();
             viewOnlyOneContact(nameToFind);
 
-        } else {
+        } else if (viewingChoice == 2) {
             viewAllContacts();
             goToMenu();
+        } else {
+            System.out.println("Please choose from one of the options above.");
+            viewContactOptionPressed(); //TODO: should I do this or make an exception cause this occurs 3 times
         }
 
     }

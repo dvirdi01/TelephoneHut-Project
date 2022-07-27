@@ -1,5 +1,5 @@
 package exceptions;
 
-public class NameNotEnteredException extends Exception{
+public class InvalidNameEnteredException extends Exception{
     //used when name is not entered for a contact
 }
