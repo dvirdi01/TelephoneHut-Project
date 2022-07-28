@@ -3,6 +3,8 @@ package ui;
 import model.CallingLog;
 import model.Contact;
 import model.ContactList;
+import org.json.JSONArray;
+
 import java.util.Scanner;
 
 
@@ -48,6 +50,7 @@ public class Phonebook {
 
     //EFFECTS: displays the operations offered in the phonebook
     public void displayMenuOptions() {
+
         System.out.println();
         System.out.println("1. Add a Contact");
         System.out.println("2. View Existing Contacts");
@@ -72,7 +75,7 @@ public class Phonebook {
         } else if (menuChoice == 6) {
             viewCallLogOptionPressed();
         } else {                           //out of bounds menu option chosen
-            System.out.println("Please pick a menu option from 1-6");
+            System.out.println("You entered an invalid number \n Please pick a menu option from 1-6");
             goToMenu();
         }
     }
@@ -83,27 +86,33 @@ public class Phonebook {
 
         System.out.println();
         System.out.println("Enter Contact Name: ");
+        //myScanner.hasNext();
         String name = myScanner.next();
+        checkNameNotEntered(name); //check if name is entered or not
+
         System.out.println("Enter Contact's phone number: ");
         String phoneNumber = myScanner.next();
+        checkPhoneNumber(phoneNumber);
+
         System.out.println("Enter Contact's email: ");
         String email = myScanner.next();
+        checkEmail(email);
+
         System.out.println("Enter Contact type (FAMILY/FRIEND/WORK): ");
         String type = myScanner.next();
+        checkType(type);
 
         Contact contact = new Contact(name, phoneNumber, email, type);
+        Boolean isAdded = contactList.addContact(contact);
 
-        //TODO: ask why this not working
-        if (contactList.addContact(contact)) {
+        //TODO: ask whats wrong
+        if (isAdded) {
             System.out.println("This contact has been saved in your Contacts List!");
             System.out.println();
         } else {
             System.out.println("This contact already exists!");
+            System.out.println();
         }
-        //contactList.addContact(contact);
-        //System.out.println("This contact has been saved in your Contacts List!");
-        System.out.println();
-
         continueOrExit();
 
     }
@@ -126,10 +135,11 @@ public class Phonebook {
             goToMenu();
         } else {
             System.out.println("Please choose from one of the options above.");
-            viewContactOptionPressed(); //TODO: should I do this or make an exception cause this occurs 3 times
+            viewContactOptionPressed();
         }
 
     }
+
 
     //EFFECTS: Asks user for which contact they want to modify and displays modifying operations
     public void modifyContactOptionPressed() {
@@ -137,11 +147,25 @@ public class Phonebook {
         System.out.println("Enter name of contact you want to modify: ");
         String nameToModify = myScanner.next();
 
-        Contact contactToModify = contactList.getContactByName(nameToModify);
+        if (nameNotFound(nameToModify)) {
+            System.out.println("This contact does not exist in your Contact List");
+            System.out.println("Would you like to modify another contact instead? (yes/no) ");
+            String modifyAnother = myScanner.next();
 
-        modifyingOperations(contactToModify);
+            if (modifyAnother.equals("yes")) {
+                modifyContactOptionPressed();
+            } else {
+                continueOrExit();
+            }
+
+        } else {
+            Contact contactToModify = contactList.getContactByName(nameToModify);
+            modifyingOperations(contactToModify);
+        }
+
         continueOrExit();
     }
+
 
     //MODIFIES: this
     //EFFECTS: allows user to delete a contact
@@ -150,8 +174,21 @@ public class Phonebook {
         System.out.println("Enter name of contact you want to delete: ");
         String name = myScanner.next();
 
-        contactList.deleteContact(contactList.getContactByName(name));
-        System.out.println("Contact has been deleted");
+        if (nameNotFound(name)) {
+            System.out.println("This contact does not exist in your Contact List");
+            System.out.println("Would you like to delete another contact instead? (yes/no) ");
+            String deleteAnother = myScanner.next();
+
+            if (deleteAnother.equals("yes")) {
+                deleteContactOptionPressed();
+            } else {
+                continueOrExit();
+            }
+
+        } else {
+            contactList.deleteContact(contactList.getContactByName(name));
+            System.out.println("Contact has been deleted");
+        }
 
         continueOrExit();
 
@@ -162,9 +199,22 @@ public class Phonebook {
         System.out.println("Please enter the name of contact who you would like to call: ");
         String nameToCall = myScanner.next();
 
-        callingLog.makeCall(contactList.getContactByName(nameToCall));
-        System.out.println("Making a call to..." + contactList.getContactByName(nameToCall).getName());
-        continueOrExit();
+        if (nameNotFound(nameToCall)) {
+            System.out.println("This contact does not exist in your Contact List");
+            System.out.println("Would you like to call another contact? (yes/no): ");
+            String callAnother = myScanner.next();
+
+            if (callAnother.equals("yes")) {
+                makeCallOptionPressed();
+            } else {
+                continueOrExit();
+            }
+
+        } else {
+            callingLog.makeCall(contactList.getContactByName(nameToCall));
+            System.out.println("Making a call to..." + contactList.getContactByName(nameToCall).getName());
+            continueOrExit();
+        }
 
     }
 
@@ -299,5 +349,57 @@ public class Phonebook {
             return;
         }
     }
+
+    private void checkNameNotEntered(String name) {
+        if (name.isEmpty() || name.length() < 1) {
+            System.out.println("You can't leave the name field blank");
+            addContactOptionPressed();
+        }
+    }
+
+    //source: https://stackoverflow.com/questions/24592808/regular-expression-in-java-validating-user-input
+    private void checkPhoneNumber(String phoneNumber) {
+        if (!phoneNumber.matches("[1-9][0-9]{9}")) {
+            System.out.println("Invalid Phone number entered. ");
+            System.out.println("Phone number must be 10 digits long and it must not start with a 0");
+            addContactOptionPressed();
+        }
+    }
+
+
+    private void checkEmail(String email) {
+        if (!email.matches("[A-z]+([0-9]*[A-z]*)*\\@[a-z]+\\.com")) {
+            System.out.println("Invalid email entered .");
+            addContactOptionPressed();
+        }
+    }
+
+    private void checkType(String type) {
+        if (!type.matches("FAMILY|FRIEND|WORK")) {
+            System.out.println("Incorrect Type entered \n Please enter one of FAMILY/FRIEND/WORK.");
+            addContactOptionPressed();
+        }
+    }
+
+    private void checkContactAlreadyThere(Contact c) {
+        if (contactList.addContact(c)) {
+            System.out.println("This contact already exists!");
+            System.out.println();
+            goToMenu();
+        }
+    }
+
+    public boolean nameNotFound(String name) {
+        if (contactList.getContactByName(name) == null) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+
+
 
 }
