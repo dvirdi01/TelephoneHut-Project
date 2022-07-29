@@ -1,0 +1,16 @@
+{
+  "Contact List": [
+    {
+      "Name": "Jasleen",
+      "Phone Number": "1234567890",
+      "Email": "jasleen@gmail.com",
+      "Type": "FRIEND"
+    },
+    {
+      "Name": "Jaskeerat",
+      "Phone Number": "8978675423",
+      "Email": "Jaskeerat@hotmail.com",
+      "Type": "FRIEND"
+    }
+  ]
+}

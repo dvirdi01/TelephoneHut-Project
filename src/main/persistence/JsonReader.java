@@ -68,7 +68,7 @@ public class JsonReader {
     // MODIFIES: contactList
     // EFFECTS: parses contacts from JSON object and adds them to contact list
     private void addContacts(ContactList contactList, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("Contacts");
+        JSONArray jsonArray = jsonObject.getJSONArray("Contact List");
         for (Object json : jsonArray) {
             JSONObject nextContact = (JSONObject) json;
             addContact(contactList, nextContact);
@@ -101,7 +101,7 @@ public class JsonReader {
     // MODIFIES: callingLog
     // EFFECTS: parses contact names from JSON object and adds them to calling logs
     private void addCalls(CallingLog callingLog, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("Calls");
+        JSONArray jsonArray = jsonObject.getJSONArray("Calling Log");
         for (Object json : jsonArray) {
             JSONObject nextContactName = (JSONObject) json;
             addCall(callingLog, nextContactName);
@@ -114,6 +114,7 @@ public class JsonReader {
     //EFFECTS: parses a single contact from JSON object and adds it to contactList
     private void addCall(CallingLog callingLog, JSONObject jsonObject) {
         String name = jsonObject.getString("Name");
+
         String phoneNumber = jsonObject.getString("Phone Number");
         String email = jsonObject.getString("Email");
         String type = jsonObject.getString("Type");
