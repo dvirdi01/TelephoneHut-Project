@@ -439,7 +439,7 @@ public class Phonebook {
         saveCallingLog();
     }
 
-    //TODO: HELP
+    //TODO: HELP (how is my variable even working??)
     public void saveContactList() {
         try {
             jsonWriter.open();
@@ -507,6 +507,9 @@ public class Phonebook {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
+
+
+
 
 
 }
