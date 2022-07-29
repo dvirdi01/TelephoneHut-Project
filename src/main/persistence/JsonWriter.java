@@ -31,12 +31,6 @@ public class JsonWriter {
         writer = new PrintWriter(new File(destination));
     }
 
-    // MODIFIES: this
-    // EFFECTS: writes JSON representation of Contact to file
-    public void writeContact(Contact c) {
-        JSONObject json = c.toJson();
-        saveToFile(json.toString(TAB));
-    }
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of ContactList to file

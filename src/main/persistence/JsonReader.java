@@ -35,7 +35,6 @@ public class JsonReader {
         return parseContactList(jsonObject);
     }
 
-    //TODO: added this for calling log
     //EFFECTS: reads calling log from file and returns it;
     //throws IOException if an error occurs reading data from file
     public CallingLog readCallingLog() throws IOException {
