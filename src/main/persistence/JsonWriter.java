@@ -53,7 +53,6 @@ public class JsonWriter {
     }
 
 
-
     // MODIFIES: this
     // EFFECTS: closes writer
     public void closeWriter() {

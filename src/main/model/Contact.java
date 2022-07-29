@@ -18,6 +18,7 @@ public class Contact implements Writable {
     private String type;
 
 
+    //TODO: I actually just made a method in phonebook class that checks for this instead of making an exception...
     //REQUIRES: phoneNumber is 10 digits long, and it is not 0000000000 or beginning with one or more 0s,
     //type is entered in upper case, contact name is non-empty
     //EFFECTS: creates a new contact entry
@@ -80,8 +81,9 @@ public class Contact implements Writable {
     }
 
 
+    //---------------------------------PHASE-2 STUFF --------------------------------------- (looks correct)
+
     @Override
-    //MODIFIES: this?
     //EFFECTS: returns contact as a JSON object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

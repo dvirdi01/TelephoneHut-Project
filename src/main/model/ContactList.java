@@ -60,8 +60,10 @@ public class ContactList implements Writable {
     }
 
 
+
+    //---------------------------------PHASE-2 STUFF --------------------------------------- (looks correct)
     @Override
-    //MODIFIES: this?
+
     //EFFECTS: returns Contact List as a JSON object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

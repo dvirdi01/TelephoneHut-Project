@@ -7,6 +7,7 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 
@@ -27,8 +28,8 @@ public class Phonebook {
     ContactList contactList = new ContactList();
     CallingLog callingLog = new CallingLog();
 
-    private JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
-    private JsonReader jsonReader = new JsonReader(JSON_STORE);
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     private CallingLog myCallingLog;
     private Contact myContact;
@@ -38,6 +39,9 @@ public class Phonebook {
 
     //EFFECTS: Instantiates a Phonebook with no contacts added
     public Phonebook() {
+        //added this
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
 
         System.out.println("-----------------------------Welcome to your PhoneBook-------------------------------");
         System.out.println("Please enter your name: ");
@@ -70,6 +74,8 @@ public class Phonebook {
         System.out.println("4. Delete a Contact");
         System.out.println("5. Make a Call");
         System.out.println("6. View your Call Log");
+        System.out.println("7. Save PhoneBook Progress to file");
+        System.out.println("8. Load PhoneBook from file");
     }
 
     //EFFECTS: chooses which method to call based on user's menu choice
@@ -86,6 +92,10 @@ public class Phonebook {
             makeCallOptionPressed();
         } else if (menuChoice == 6) {
             viewCallLogOptionPressed();
+        } else if (menuChoice == 7) {
+            saveProgress();
+        } else if (menuChoice == 8) {
+            loadFromFile();
         } else {                           //out of bounds menu option chosen
             System.out.println("You entered an invalid number \n Please pick a menu option from 1-6");
             goToMenu();
@@ -174,7 +184,6 @@ public class Phonebook {
             Contact contactToModify = contactList.getContactByName(nameToModify);
             modifyingOperations(contactToModify);
         }
-
         continueOrExit();
     }
 
@@ -201,7 +210,6 @@ public class Phonebook {
             contactList.deleteContact(contactList.getContactByName(name));
             System.out.println("Contact has been deleted");
         }
-
         continueOrExit();
 
     }
@@ -358,11 +366,12 @@ public class Phonebook {
         if (decision.equals("continue")) {
             goToMenu();
         } else if (decision.equals("exit")) {
-            System.out.println("Would you like to save your progress? (yes/no): ");
+            System.out.println("If you exit now your progress won't be saved. "
+                    + "\n Would you like to save your progress? (yes/no): ");
             String savingDecision = myScanner.next();
 
             if (savingDecision.equals("yes")) {
-                saveContactList();
+                saveProgress();
             } else {
                 return;
             }
@@ -370,6 +379,7 @@ public class Phonebook {
             return;
         }
     }
+
 
     private void checkNameNotEntered(String name) {
         if (name.isEmpty() || name.length() < 1) {
@@ -419,8 +429,17 @@ public class Phonebook {
 
 
 
-    // PHASE 2 STUFF ADDED
+    //----------------------------------------PHASE 2 METHODS----------------------------------------------------
 
+    //SAVING METHODS
+
+    //EFFECTS: saves everything into file
+    public void saveProgress() {
+        saveContactList();
+        saveCallingLog();
+    }
+
+    //TODO: HELP
     public void saveContactList() {
         try {
             jsonWriter.open();
@@ -432,16 +451,6 @@ public class Phonebook {
         }
     }
 
-    public void saveContact() {
-        try {
-            jsonWriter.open();
-            jsonWriter.writeContact(myContact);
-            jsonWriter.closeWriter();
-            System.out.println("Saved your Contact to " + JSON_STORE);
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
-        }
-    }
 
     public void saveCallingLog() {
         try {
@@ -454,10 +463,50 @@ public class Phonebook {
         }
     }
 
+    //TODO: do i need this cause they didnt save thingy
+//    public void saveContact() {
+//        try {
+//            jsonWriter.open();
+//            jsonWriter.writeContact(myContact);
+//            jsonWriter.closeWriter();
+//            System.out.println("Saved your Contact to " + JSON_STORE);
+//        } catch (FileNotFoundException e) {
+//            System.out.println("Unable to write to file: " + JSON_STORE);
+//        }
+//    }
 
 
+    //LOADING METHODS
+
+    public void loadFromFile() {
+        loadContactList();
+        loadCallingLog();
+        System.out.println("Loading complete");
+    }
 
 
+    // MODIFIES: this
+    // EFFECTS: loads ContactList from file
+    private void loadContactList() {
+        try {
+            contactList = jsonReader.readContactList();
+            System.out.println("Loaded Contact List from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+
+    // MODIFIES: this
+    // EFFECTS: loads Calling Log from file
+    private void loadCallingLog() {
+        try {
+            callingLog = jsonReader.readCallingLog();
+            System.out.println("Loaded Calling Log from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
 
 
 }

@@ -35,14 +35,14 @@ public class JsonReader {
         return parseContactList(jsonObject);
     }
 
-    //TODO: JUST ADDED
+    //TODO: added this for calling log
     //EFFECTS: reads calling log from file and returns it;
     //throws IOException if an error occurs reading data from file
-//    public CallingLog readCallingLog() throws IOException {
-//        String jsonData = readFile(source);
-//        JSONObject jsonObject = new JSONObject(jsonData);
-//        return parseCallingLog(jsonObject);
-//    }
+    public CallingLog readCallingLog() throws IOException {
+        String jsonData = readFile(source);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        return parseCallingLog(jsonObject);
+    }
 
 
     // EFFECTS: reads source file as string and returns it
@@ -56,6 +56,8 @@ public class JsonReader {
     }
 
 
+
+    //-----------------------------------parsing contactlist-------------------------------------
     // EFFECTS: parses contact list from JSON object and returns it
     private ContactList parseContactList(JSONObject jsonObject) {
         ContactList contactList = new ContactList();
@@ -84,6 +86,11 @@ public class JsonReader {
         contactList.addContact(contact);
     }
 
+
+
+
+    //-----------------------------------parsing calling log ------------------------------------- //TODO: get checked
+
     // EFFECTS: parses calling log from JSON object and returns it
     private CallingLog parseCallingLog(JSONObject jsonObject) {
         CallingLog callingLog = new CallingLog();
@@ -101,8 +108,10 @@ public class JsonReader {
         }
     }
 
-    // MODIFIES: callingLog
-    // EFFECTS: parses a single contact from JSON object and adds it to contactList
+    //TODO: unsure about this one
+
+    //MODIFIES: callingLog
+    //EFFECTS: parses a single contact from JSON object and adds it to contactList
     private void addCall(CallingLog callingLog, JSONObject jsonObject) {
         String name = jsonObject.getString("Name");
         String phoneNumber = jsonObject.getString("Phone Number");

@@ -57,10 +57,10 @@ public class CallingLog implements Writable {
     }
 
 
+    //---------------------------------PHASE-2 STUFF --------------------------------------- (looks correct)
 
     @Override
-    //MODIFIES: this?
-    //EFFECTS: returns Contact List as a JSON object
+    //EFFECTS: returns Calling Log as a JSON object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("Calling Log", callNamesToJson());
@@ -69,7 +69,7 @@ public class CallingLog implements Writable {
     }
 
 
-    //EFFECTS: returns strings in this calling log as a JSON array
+    //EFFECTS: returns names in the calling log as a JSON array
     private JSONArray callNamesToJson() {
         JSONArray jsonArray = new JSONArray();
         for (String s : callingLog) {
