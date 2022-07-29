@@ -1,5 +1,8 @@
 package persistence;
 
+import model.CallingLog;
+import model.Contact;
+import model.ContactList;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -25,15 +28,31 @@ public class JsonWriter {
     // EFFECTS: opens writer and throws FileNotFoundException if destination file cannot
     // be opened for writing
     public void open() throws FileNotFoundException {
-        writer = new PrintWriter(new File(destination)); //TODO: purpose of new file?
+        writer = new PrintWriter(new File(destination));
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of phonebook to file
-    public void write(Writable wr) {
-        JSONObject json = wr.toJson();
-        saveToFile(json.toString(TAB)); //TODO: purpose of tab here?
+    // EFFECTS: writes JSON representation of Contact to file
+    public void writeContact(Contact c) {
+        JSONObject json = c.toJson();
+        saveToFile(json.toString(TAB));
     }
+
+    // MODIFIES: this
+    // EFFECTS: writes JSON representation of ContactList to file
+    public void writeContactList(ContactList contactList) {
+        JSONObject json = contactList.toJson();
+        saveToFile(json.toString(TAB));
+    }
+
+    // MODIFIES: this
+    // EFFECTS: writes JSON representation of CallingLog to file
+    public void writeCallingLog(CallingLog callingLog) {
+        JSONObject json = callingLog.toJson();
+        saveToFile(json.toString(TAB));
+    }
+
+
 
     // MODIFIES: this
     // EFFECTS: closes writer

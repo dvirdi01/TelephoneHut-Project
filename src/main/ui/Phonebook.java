@@ -3,8 +3,10 @@ package ui;
 import model.CallingLog;
 import model.Contact;
 import model.ContactList;
-import org.json.JSONArray;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 
@@ -18,10 +20,20 @@ import java.util.Scanner;
 
 public class Phonebook {
 
+    private static final String JSON_STORE = "./data/phonebook.json";
+
     Scanner myScanner = new Scanner(System.in);
     int menuChoice;
     ContactList contactList = new ContactList();
     CallingLog callingLog = new CallingLog();
+
+    private JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
+    private JsonReader jsonReader = new JsonReader(JSON_STORE);
+
+    private CallingLog myCallingLog;
+    private Contact myContact;
+    private ContactList myContactList;
+
 
 
     //EFFECTS: Instantiates a Phonebook with no contacts added
@@ -345,6 +357,15 @@ public class Phonebook {
 
         if (decision.equals("continue")) {
             goToMenu();
+        } else if (decision.equals("exit")) {
+            System.out.println("Would you like to save your progress? (yes/no): ");
+            String savingDecision = myScanner.next();
+
+            if (savingDecision.equals("yes")) {
+                saveContactList();
+            } else {
+                return;
+            }
         } else {
             return;
         }
@@ -394,6 +415,43 @@ public class Phonebook {
             return true;
         }
         return false;
+    }
+
+
+
+    // PHASE 2 STUFF ADDED
+
+    public void saveContactList() {
+        try {
+            jsonWriter.open();
+            jsonWriter.writeContactList(myContactList);
+            jsonWriter.closeWriter();
+            System.out.println("Saved your Contact List to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    public void saveContact() {
+        try {
+            jsonWriter.open();
+            jsonWriter.writeContact(myContact);
+            jsonWriter.closeWriter();
+            System.out.println("Saved your Contact to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    public void saveCallingLog() {
+        try {
+            jsonWriter.open();
+            jsonWriter.writeCallingLog(myCallingLog);
+            jsonWriter.closeWriter();
+            System.out.println("Saved your Calling Log to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
     }
 
 

@@ -1,6 +1,10 @@
 package model;
 
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +12,7 @@ import java.util.List;
  This class represents a list of all contacts stored in the phonebook
  */
 
-public class ContactList {
+public class ContactList implements Writable {
 
     List<Contact> contactList;
 
@@ -53,6 +57,26 @@ public class ContactList {
             }
         }
         return null;
+    }
+
+
+    @Override
+    //MODIFIES: this?
+    //EFFECTS: returns Contact List as a JSON object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Contact List", contactsToJson());
+        return json;
+    }
+
+
+    //EFFECTS: returns contacts in the contact list as a JSON array
+    private JSONArray contactsToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Contact c : contactList) {
+            jsonArray.put(c.toJson());
+        }
+        return jsonArray;
     }
 
 }

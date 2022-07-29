@@ -1,6 +1,9 @@
 package persistence;
 
 
+import model.CallingLog;
+import model.Contact;
+import model.ContactList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,49 +27,99 @@ public class JsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads workroom from file and returns it;
-    // throws IOException if an error occurs reading data from file
-//    public WorkRoom read() throws IOException {
+     //EFFECTS: reads contactList from file and returns it;
+     //throws IOException if an error occurs reading data from file
+    public ContactList readContactList() throws IOException {
+        String jsonData = readFile(source);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        return parseContactList(jsonObject);
+    }
+
+    //TODO: JUST ADDED
+    //EFFECTS: reads calling log from file and returns it;
+    //throws IOException if an error occurs reading data from file
+//    public CallingLog readCallingLog() throws IOException {
 //        String jsonData = readFile(source);
 //        JSONObject jsonObject = new JSONObject(jsonData);
-//        return parseWorkRoom(jsonObject);
+//        return parseCallingLog(jsonObject);
 //    }
+
 
     // EFFECTS: reads source file as string and returns it
     private String readFile(String source) throws IOException {
 
         StringBuilder contentBuilder = new StringBuilder();
-
         try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
             stream.forEach(s -> contentBuilder.append(s));
         }
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses workroom from JSON object and returns it
-//    private WorkRoom parseWorkRoom(JSONObject jsonObject) {
-//        String name = jsonObject.getString("name");
-//        WorkRoom wr = new WorkRoom(name);
-//        addThingies(wr, jsonObject);
-//        return wr;
-    //}
 
-//    // MODIFIES: wr
-//    // EFFECTS: parses thingies from JSON object and adds them to workroom
-//    private void addThingies(WorkRoom wr, JSONObject jsonObject) {
-//        JSONArray jsonArray = jsonObject.getJSONArray("thingies");
-//        for (Object json : jsonArray) {
-//            JSONObject nextThingy = (JSONObject) json;
-//            addThingy(wr, nextThingy);
-//        }
-//    }
+    // EFFECTS: parses contact list from JSON object and returns it
+    private ContactList parseContactList(JSONObject jsonObject) {
+        ContactList contactList = new ContactList();
+        addContacts(contactList, jsonObject);
+        return contactList;
+    }
 
-//    // MODIFIES: wr
-//    // EFFECTS: parses thingy from JSON object and adds it to workroom
-//    private void addThingy(WorkRoom wr, JSONObject jsonObject) {
-//        String name = jsonObject.getString("name");
-//        Category category = Category.valueOf(jsonObject.getString("category"));
-//        Thingy thingy = new Thingy(name, category);
-//        wr.addThingy(thingy);
-//    }
+    // MODIFIES: contactList
+    // EFFECTS: parses contacts from JSON object and adds them to contact list
+    private void addContacts(ContactList contactList, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("Contacts");
+        for (Object json : jsonArray) {
+            JSONObject nextContact = (JSONObject) json;
+            addContact(contactList, nextContact);
+        }
+    }
+
+    // MODIFIES: contactList
+    // EFFECTS: parses a single contact from JSON object and adds it to contactList
+    private void addContact(ContactList contactList, JSONObject jsonObject) {
+        String name = jsonObject.getString("Name");
+        String phoneNumber = jsonObject.getString("Phone Number");
+        String email = jsonObject.getString("Email");
+        String type = jsonObject.getString("Type");
+        Contact contact = new Contact(name, phoneNumber, email, type);
+        contactList.addContact(contact);
+    }
+
+    // EFFECTS: parses calling log from JSON object and returns it
+    private CallingLog parseCallingLog(JSONObject jsonObject) {
+        CallingLog callingLog = new CallingLog();
+        addCalls(callingLog, jsonObject);
+        return callingLog;
+    }
+
+    // MODIFIES: callingLog
+    // EFFECTS: parses contact names from JSON object and adds them to calling logs
+    private void addCalls(CallingLog callingLog, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("Calls");
+        for (Object json : jsonArray) {
+            JSONObject nextContactName = (JSONObject) json;
+            addCall(callingLog, nextContactName);
+        }
+    }
+
+    // MODIFIES: callingLog
+    // EFFECTS: parses a single contact from JSON object and adds it to contactList
+    private void addCall(CallingLog callingLog, JSONObject jsonObject) {
+        String name = jsonObject.getString("Name");
+        String phoneNumber = jsonObject.getString("Phone Number");
+        String email = jsonObject.getString("Email");
+        String type = jsonObject.getString("Type");
+
+        Contact contact = new Contact(name, phoneNumber, email, type);
+        callingLog.makeCall(contact);
+
+    }
+
+
+
+
+
+
+
+
+
 }

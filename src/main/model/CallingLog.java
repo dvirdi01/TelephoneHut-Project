@@ -1,5 +1,9 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +12,7 @@ import java.util.List;
  and the number of calls made so far.
  */
 
-public class CallingLog {
+public class CallingLog implements Writable {
 
     private int numberOfCallsMade;
     List<String> callingLog;
@@ -50,6 +54,28 @@ public class CallingLog {
     //EFFECTS: returns the number of calls made so far
     public int getNumberOfCallsMade() {
         return numberOfCallsMade;
+    }
+
+
+
+    @Override
+    //MODIFIES: this?
+    //EFFECTS: returns Contact List as a JSON object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Calling Log", callNamesToJson());
+        json.put("Number of calls made", numberOfCallsMade);
+        return json;
+    }
+
+
+    //EFFECTS: returns strings in this calling log as a JSON array
+    private JSONArray callNamesToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (String s : callingLog) {
+            jsonArray.put(s);
+        }
+        return jsonArray;
     }
 
 }

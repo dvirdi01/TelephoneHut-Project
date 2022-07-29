@@ -1,13 +1,16 @@
 package model;
 
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 /**
  This class represents a contact in the phonebook which has a name, phone number,email, and type
  associated with it.
  Source: https://github.com/UBCx-Software-Construction/data-abstraction-practice-projects/tree/master/Contact
  */
 
-public class Contact {
+public class Contact implements Writable {
 
     private String name;
     private String phoneNumber;
@@ -74,6 +77,19 @@ public class Contact {
     //EFFECTS: returns the contact's type
     public String getType() {
         return type;
+    }
+
+
+    @Override
+    //MODIFIES: this?
+    //EFFECTS: returns contact as a JSON object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Name", name);
+        json.put("Phone Number", phoneNumber);
+        json.put("Email", email);
+        json.put("Type", type);
+        return json;
     }
 
 }
