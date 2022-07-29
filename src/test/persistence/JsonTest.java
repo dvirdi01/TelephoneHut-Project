@@ -16,7 +16,7 @@ public class JsonTest {
         assertEquals(type, testContact.getType());
     }
 
-    protected void checkCall(String name, Contact testContact) {
-        assertEquals(name, testContact.getName());
-    }
+//    protected void checkCall(String name, String contactName {
+//        assertEquals(name, testContact.getName());
+//    }
 }

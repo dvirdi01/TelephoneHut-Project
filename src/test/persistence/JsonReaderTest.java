@@ -107,9 +107,8 @@ public class JsonReaderTest extends JsonTest {
             assertEquals(2, calls.size());
             assertEquals(2, testCallingLog.getNumberOfCallsMade());
 
-            //TODO
-            checkCall("Jasleen", calls.get(0));
-            checkCall("Jaskeerat", calls.get(1));
+            assertEquals("Jasleen", calls.get(0));
+            assertEquals("Jaskeerat", calls.get(1));
 
         } catch (IOException e) {
             fail("Couldn't read from file");

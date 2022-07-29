@@ -21,27 +21,30 @@ import java.util.Scanner;
 
 public class Phonebook {
 
-    private static final String JSON_STORE = "./data/phonebook.json";
+    private static final String CONTACTLIST_STORE = "./data/phonebook.json";
+    private static final String CALLING_STORE = "./data/callingLog.json";
 
     Scanner myScanner = new Scanner(System.in);
     int menuChoice;
+
     ContactList contactList = new ContactList();
     CallingLog callingLog = new CallingLog();
 
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
-
-    private CallingLog myCallingLog;
-    private Contact myContact;
-    private ContactList myContactList;
+    private JsonWriter jsonWriterCallingLog;
+    private JsonWriter jsonWriterContactList;
+    private JsonReader jsonReaderCallingLog;
+    private JsonReader jsonReaderContactList;
 
 
 
     //EFFECTS: Instantiates a Phonebook with no contacts added
-    public Phonebook() {
+    public Phonebook() throws FileNotFoundException {
         //added this
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
+        jsonWriterCallingLog = new JsonWriter(CALLING_STORE);
+        jsonWriterContactList = new JsonWriter(CONTACTLIST_STORE);
+        jsonReaderCallingLog = new JsonReader(CALLING_STORE);
+        jsonReaderContactList = new JsonReader(CONTACTLIST_STORE);
+
 
         System.out.println("-----------------------------Welcome to your PhoneBook-------------------------------");
         System.out.println("Please enter your name: ");
@@ -126,6 +129,7 @@ public class Phonebook {
 
         Contact contact = new Contact(name, phoneNumber, email, type);
         Boolean isAdded = contactList.addContact(contact);
+        //Boolean isAdded = myContactList.addContact(contact);
 
         //TODO: ask whats wrong
         if (isAdded) {
@@ -181,6 +185,7 @@ public class Phonebook {
             }
 
         } else {
+           // Contact contactToModify = myContactList.getContactByName(nameToModify);
             Contact contactToModify = contactList.getContactByName(nameToModify);
             modifyingOperations(contactToModify);
         }
@@ -385,6 +390,7 @@ public class Phonebook {
         if (name.isEmpty() || name.length() < 1) {
             System.out.println("You can't leave the name field blank");
             addContactOptionPressed();
+            //askForName();
         }
     }
 
@@ -439,41 +445,29 @@ public class Phonebook {
         saveCallingLog();
     }
 
-    //TODO: HELP (how is my variable even working??)
     public void saveContactList() {
         try {
-            jsonWriter.open();
-            jsonWriter.writeContactList(myContactList);
-            jsonWriter.closeWriter();
-            System.out.println("Saved your Contact List to " + JSON_STORE);
+            jsonWriterContactList.open();
+            jsonWriterContactList.writeContactList(contactList);
+            jsonWriterContactList.closeWriter();
+            System.out.println("Saved your Contact List to " + CONTACTLIST_STORE);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
+            System.out.println("Unable to write to file: " + CONTACTLIST_STORE);
         }
     }
 
 
     public void saveCallingLog() {
         try {
-            jsonWriter.open();
-            jsonWriter.writeCallingLog(myCallingLog);
-            jsonWriter.closeWriter();
-            System.out.println("Saved your Calling Log to " + JSON_STORE);
+            jsonWriterCallingLog.open();
+            jsonWriterCallingLog.writeCallingLog(callingLog);
+            jsonWriterCallingLog.closeWriter();
+            System.out.println("Saved your Calling Log to " + CALLING_STORE);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
+            System.out.println("Unable to write to file: " + CALLING_STORE);
         }
     }
 
-    //TODO: do i need this cause they didnt save thingy
-//    public void saveContact() {
-//        try {
-//            jsonWriter.open();
-//            jsonWriter.writeContact(myContact);
-//            jsonWriter.closeWriter();
-//            System.out.println("Saved your Contact to " + JSON_STORE);
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Unable to write to file: " + JSON_STORE);
-//        }
-//    }
 
 
     //LOADING METHODS
@@ -482,6 +476,7 @@ public class Phonebook {
         loadContactList();
         loadCallingLog();
         System.out.println("Loading complete");
+        goToMenu();
     }
 
 
@@ -489,10 +484,10 @@ public class Phonebook {
     // EFFECTS: loads ContactList from file
     private void loadContactList() {
         try {
-            contactList = jsonReader.readContactList();
-            System.out.println("Loaded Contact List from " + JSON_STORE);
+            contactList = jsonReaderContactList.readContactList();
+            System.out.println("Loaded Contact List from " + CONTACTLIST_STORE);
         } catch (IOException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
+            System.out.println("Unable to read from file: " + CONTACTLIST_STORE);
         }
     }
 
@@ -501,15 +496,19 @@ public class Phonebook {
     // EFFECTS: loads Calling Log from file
     private void loadCallingLog() {
         try {
-            callingLog = jsonReader.readCallingLog();
-            System.out.println("Loaded Calling Log from " + JSON_STORE);
+            callingLog = jsonReaderCallingLog.readCallingLog();
+            System.out.println("Loaded Calling Log from " + CALLING_STORE);
         } catch (IOException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
+            System.out.println("Unable to read from file: " + CALLING_STORE);
         }
     }
 
-
-
+//    private String askForName() {
+//        System.out.println("Enter Contact Name: ");
+//        String name = myScanner.next();
+//        checkNameNotEntered(name);
+//        return name;
+//    }
 
 
 }

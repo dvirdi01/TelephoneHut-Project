@@ -89,7 +89,7 @@ public class JsonReader {
 
 
 
-    //-----------------------------------parsing calling log ------------------------------------- //TODO: get checked
+    //-----------------------------------parsing calling log -------------------------------------
 
     // EFFECTS: parses calling log from JSON object and returns it
     private CallingLog parseCallingLog(JSONObject jsonObject) {
@@ -102,30 +102,13 @@ public class JsonReader {
     // EFFECTS: parses contact names from JSON object and adds them to calling logs
     private void addCalls(CallingLog callingLog, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("Calling Log");
-        for (Object json : jsonArray) {
-            JSONObject nextContactName = (JSONObject) json;
-            addCall(callingLog, nextContactName);
+
+        for (Object name : jsonArray) {
+            Contact contact = new Contact((String) name, "2345322444",
+                    "default@gmail.com", "FAMILY");
+            callingLog.makeCall(contact);
         }
     }
-
-    //TODO: unsure about this one
-
-    //MODIFIES: callingLog
-    //EFFECTS: parses a single contact from JSON object and adds it to contactList
-    private void addCall(CallingLog callingLog, JSONObject jsonObject) {
-        String name = jsonObject.getString("Name");
-
-        String phoneNumber = jsonObject.getString("Phone Number");
-        String email = jsonObject.getString("Email");
-        String type = jsonObject.getString("Type");
-
-        Contact contact = new Contact(name, phoneNumber, email, type);
-        callingLog.makeCall(contact);
-
-    }
-
-
-
 
 
 

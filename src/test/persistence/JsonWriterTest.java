@@ -1,6 +1,7 @@
 package persistence;
 
 
+import model.CallingLog;
 import model.Contact;
 import model.ContactList;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ public class JsonWriterTest extends JsonTest{
     }
 
     @Test
-    void testWriterEmptyWorkroom() {
+    void testWriterEmptyContactList() {
         try {
             ContactList testContactList = new ContactList();
             JsonWriter writer = new JsonWriter("./data/testWriterEmptyContactList.json");
@@ -50,7 +51,7 @@ public class JsonWriterTest extends JsonTest{
     }
 
     @Test
-    void testWriterGeneralWorkroom() {
+    void testWriterGeneralContactList() {
         try {
             ContactList testContactList = new ContactList();
             testContactList.addContact(new Contact("Jasleen", "1234567890",
@@ -80,6 +81,65 @@ public class JsonWriterTest extends JsonTest{
         }
     }
 
+    //------------------------------------FOR CALLING LOG-----------------------------------------------
+
+    @Test
+    void testCallingLogWriterInvalidFile() {
+        try {
+            CallingLog testCallingLog = new CallingLog();
+            JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
+            writer.open();
+            fail("IOException was expected");
+        } catch (IOException e) {
+            // pass
+        }
+    }
+
+    @Test
+    void testWriterEmptyCallingLog() {
+        try {
+            CallingLog testCallingLog = new CallingLog();
+            JsonWriter writer = new JsonWriter("./data/testWriterEmptyCallingLog.json");
+            writer.open();
+            writer.writeCallingLog(testCallingLog);
+            writer.closeWriter();
+
+            JsonReader reader = new JsonReader("./data/testWriterEmptyCallingLog.json");
+            testCallingLog = reader.readCallingLog();
+            assertEquals(0, testCallingLog.getCallingLog().size());
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+    }
+
+    @Test
+    void testWriterGeneralCallingLog() {
+        try {
+            CallingLog testCallingLog = new CallingLog();
+            testCallingLog.makeCall(new Contact("Jasleen", "1234567890",
+                    "jasleen@gmail.com", "FRIEND"));
+
+            testCallingLog.makeCall(new Contact("Jaskeerat", "8978675423",
+                    "Jaskeerat@hotmail.com", "FRIEND"));
+
+            JsonWriter writer = new JsonWriter("./data/testWriterGeneralCallingLog.json");
+            writer.open();
+            writer.writeCallingLog(testCallingLog);
+            writer.closeWriter();
+
+            JsonReader reader = new JsonReader("./data/testWriterGeneralCallingLog.json");
+            testCallingLog = reader.readCallingLog();
+
+            List<String> calls = testCallingLog.getCallingLog();
+            assertEquals(2, calls.size());
+
+            assertEquals("Jasleen", calls.get(0));
+            assertEquals("Jaskeerat", calls.get(1));
+
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+    }
 
 
 }
