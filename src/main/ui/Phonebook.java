@@ -111,9 +111,7 @@ public class Phonebook {
 
         System.out.println();
         System.out.println("Enter Contact Name: ");
-        //myScanner.hasNext();
         String name = myScanner.next();
-        checkNameNotEntered(name); //check if name is entered or not
 
         System.out.println("Enter Contact's phone number: ");
         String phoneNumber = myScanner.next();
@@ -129,7 +127,6 @@ public class Phonebook {
 
         Contact contact = new Contact(name, phoneNumber, email, type);
         Boolean isAdded = contactList.addContact(contact);
-        //Boolean isAdded = myContactList.addContact(contact);
 
         //TODO: ask whats wrong
         if (isAdded) {
@@ -139,6 +136,7 @@ public class Phonebook {
             System.out.println("This contact already exists!");
             System.out.println();
         }
+
         continueOrExit();
 
     }
@@ -185,7 +183,6 @@ public class Phonebook {
             }
 
         } else {
-           // Contact contactToModify = myContactList.getContactByName(nameToModify);
             Contact contactToModify = contactList.getContactByName(nameToModify);
             modifyingOperations(contactToModify);
         }
@@ -386,11 +383,10 @@ public class Phonebook {
     }
 
 
-    private void checkNameNotEntered(String name) {
-        if (name.isEmpty() || name.length() < 1) {
-            System.out.println("You can't leave the name field blank");
+    private void checkInvalidName(String name) {
+        if (!name.matches("([A-z]|[a-z])+")) {
+            System.out.println("Name can only contain alphabets!");
             addContactOptionPressed();
-            //askForName();
         }
     }
 
@@ -418,13 +414,6 @@ public class Phonebook {
         }
     }
 
-    private void checkContactAlreadyThere(Contact c) {
-        if (contactList.addContact(c)) {
-            System.out.println("This contact already exists!");
-            System.out.println();
-            goToMenu();
-        }
-    }
 
     public boolean nameNotFound(String name) {
         if (contactList.getContactByName(name) == null) {
@@ -503,11 +492,44 @@ public class Phonebook {
         }
     }
 
+
+
+
+
 //    private String askForName() {
+//
 //        System.out.println("Enter Contact Name: ");
 //        String name = myScanner.next();
-//        checkNameNotEntered(name);
-//        return name;
+//        checkInvalidName(name);
+//        this.userName = name;
+//        return userName;
+//    }
+//
+//    private String askForPhoneNumber() {
+//        System.out.println("Enter Contact's phone number: ");
+//        String phoneNumber = myScanner.next();
+//        checkPhoneNumber(phoneNumber);
+//        this.userPhoneNumber = phoneNumber;
+//        return userPhoneNumber;
+//
+//    }
+//
+//    private String askForEmail() {
+//        System.out.println("Enter Contact's email: ");
+//        String email = myScanner.next();
+//        checkEmail(email);
+//        this.userEmail = email;
+//        return userEmail;
+//
+//    }
+//
+//    private String askForType() {
+//        System.out.println("Enter Contact's type: ");
+//        String type = myScanner.next();
+//        checkType(type);
+//        this.userType = type;
+//        return userType;
+//
 //    }
 
 
