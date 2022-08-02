@@ -97,26 +97,26 @@ public class JsonReaderTest extends JsonTest {
         }
     }
 
-    @Test
-    void testReaderGeneralCallingLog() {
-        JsonReader reader = new JsonReader("./data/testReaderGeneralCallingLog.json");
-        try {
-            CallingLog testCallingLog = reader.readCallingLog();
-
-            //extract contacts list
-            List<String> calls = testCallingLog.getCallingLog();
-
-            //check if size of it is 2
-            assertEquals(2, calls.size());
-            assertEquals(2, testCallingLog.getNumberOfCallsMade());
-
-            assertEquals("Jasleen", calls.get(0));
-            assertEquals("Jaskeerat", calls.get(1));
-
-        } catch (IOException e) {
-            fail("Couldn't read from file");
-        }
-    }
+//    @Test
+//    void testReaderGeneralCallingLog() {
+//        JsonReader reader = new JsonReader("./data/testReaderGeneralCallingLog.json");
+//        try {
+//            CallingLog testCallingLog = reader.readCallingLog();
+//
+//            //extract contacts list
+//            List<String> calls = testCallingLog.getCallingLog();
+//
+//            //check if size of it is 2
+//            assertEquals(2, calls.size());
+//            assertEquals(2, testCallingLog.getNumberOfCallsMade());
+//
+//            assertEquals("Jasleen", calls.get(0));
+//            assertEquals("Jaskeerat", calls.get(1));
+//
+//        } catch (IOException e) {
+//            fail("Couldn't read from file");
+//        }
+//    }
 
 
 
