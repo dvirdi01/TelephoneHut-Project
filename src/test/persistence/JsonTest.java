@@ -5,6 +5,11 @@ import model.Contact;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+/**
+ Represents a Json Test class that checks a contact's information
+ Source: JsonSerializationDemo Project
+ */
 public class JsonTest {
 
     protected void checkContact(String name, String phoneNumber,
@@ -16,7 +21,4 @@ public class JsonTest {
         assertEquals(type, testContact.getType());
     }
 
-//    protected void checkCall(String name, String contactName {
-//        assertEquals(name, testContact.getName());
-//    }
 }

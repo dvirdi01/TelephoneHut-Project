@@ -10,7 +10,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-
+/**
+ Represents the tests for Json Reader class
+ Source: JsonSerializationDemo Project
+ */
 
 public class JsonReaderTest extends JsonTest {
 

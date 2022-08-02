@@ -3,7 +3,8 @@ package persistence;
 import org.json.JSONObject;
 
 /**
- Represents a ...?
+ Represents an interface which returns objects as JSON objects
+ Source: JsonSerializationDemo Project
  */
 public interface Writable {
 

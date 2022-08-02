@@ -18,6 +18,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  read in a copy of what was written out.
  */
 
+
+/**
+ Represents the tests for Json Writer class
+ Source: JsonSerializationDemo Project
+ */
+
 public class JsonWriterTest extends JsonTest{
 
 

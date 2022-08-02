@@ -14,8 +14,9 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 /**
- This class represents a JsonReader that that reads workroom from JSON
+ This class represents a JsonReader that that reads contactlist and callinglog from JSON
  data stored in file
+ Source: JsonSerializationDemo Project
  *
  */
 public class JsonReader {
@@ -57,6 +58,7 @@ public class JsonReader {
 
 
     //-----------------------------------parsing contactlist-------------------------------------
+
     // EFFECTS: parses contact list from JSON object and returns it
     private ContactList parseContactList(JSONObject jsonObject) {
         ContactList contactList = new ContactList();

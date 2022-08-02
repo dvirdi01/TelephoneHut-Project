@@ -81,7 +81,8 @@ public class Phonebook {
         System.out.println("8. Load PhoneBook from file");
     }
 
-    //EFFECTS: chooses which method to call based on user's menu choice
+    //EFFECTS: chooses which method to call based on user's menu choice. Displays menu again if user input
+    // invalid menu choice
     public void choosePhonebookOperation() {
         if (menuChoice == 1) {
             addContactOptionPressed();
@@ -126,23 +127,15 @@ public class Phonebook {
         checkType(type);
 
         Contact contact = new Contact(name, phoneNumber, email, type);
-        Boolean isAdded = contactList.addContact(contact);
-
-        //TODO: ask whats wrong
-        if (isAdded) {
-            System.out.println("This contact has been saved in your Contacts List!");
-            System.out.println();
-        } else {
-            System.out.println("This contact already exists!");
-            System.out.println();
-        }
+        contactList.addContact(contact);
 
         continueOrExit();
 
     }
 
 
-    //EFFECTS: allows user to either view one contact or all contacts.
+    //EFFECTS: allows user to either view one contact or all contacts. If user inputs incorrect option,
+    // display viewing options again
     public void viewContactOptionPressed() {
         System.out.println();
         System.out.println("Press 1 to view one contact, 2 to view all contacts: ");
@@ -211,9 +204,8 @@ public class Phonebook {
         } else {
             contactList.deleteContact(contactList.getContactByName(name));
             System.out.println("Contact has been deleted");
+            continueOrExit();
         }
-        continueOrExit();
-
     }
 
     //EFFECTS: allows user to make a call
@@ -383,6 +375,8 @@ public class Phonebook {
     }
 
 
+    //EFFECTS: checks if name entered only contains alphabets. Otherwise prompts
+    // user to enter contact's information again
     private void checkInvalidName(String name) {
         if (!name.matches("([A-z]|[a-z])+")) {
             System.out.println("Name can only contain alphabets!");
@@ -390,6 +384,8 @@ public class Phonebook {
         }
     }
 
+    //EFFECTS: checks if phone number entered is 10 digits long and doesn't start with a 0.
+    //Otherwise prompts user to enter contact's information again
     //source: https://stackoverflow.com/questions/24592808/regular-expression-in-java-validating-user-input
     private void checkPhoneNumber(String phoneNumber) {
         if (!phoneNumber.matches("[1-9][0-9]{9}")) {
@@ -399,7 +395,8 @@ public class Phonebook {
         }
     }
 
-
+    //EFFECTS: checks if email entered matches the given email pattern
+    //Otherwise prompts user to enter contact's information again
     private void checkEmail(String email) {
         if (!email.matches("[A-z]+([0-9]*[A-z]*)*\\@[a-z]+\\.com")) {
             System.out.println("Invalid email entered .");
@@ -407,6 +404,8 @@ public class Phonebook {
         }
     }
 
+    //EFFECTS: checks if type entered is one of FAMILY, WORK, or FRIEND.
+    //Otherwise prompts user to enter contact's information again
     private void checkType(String type) {
         if (!type.matches("FAMILY|FRIEND|WORK")) {
             System.out.println("Incorrect Type entered \n Please enter one of FAMILY/FRIEND/WORK.");
@@ -415,11 +414,14 @@ public class Phonebook {
     }
 
 
+    //EFFECTS: returns true if a given contact's name is not found (i.e name is null) in the
+    //contact list otherwise returns false if name is found.
     public boolean nameNotFound(String name) {
         if (contactList.getContactByName(name) == null) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
 
@@ -428,12 +430,14 @@ public class Phonebook {
 
     //SAVING METHODS
 
-    //EFFECTS: saves everything into file
+    //EFFECTS: saves both contact list and calling log into separate file.
     public void saveProgress() {
         saveContactList();
         saveCallingLog();
     }
 
+
+    //EFFECTS: saves contact list into file.
     public void saveContactList() {
         try {
             jsonWriterContactList.open();
@@ -446,6 +450,7 @@ public class Phonebook {
     }
 
 
+    //EFFECTS: saves calling log into file.
     public void saveCallingLog() {
         try {
             jsonWriterCallingLog.open();
@@ -461,6 +466,8 @@ public class Phonebook {
 
     //LOADING METHODS
 
+    //MODIFIES: this
+    //EFFECTS: loads both contact list and calling log from file and displays menu options again
     public void loadFromFile() {
         loadContactList();
         loadCallingLog();
@@ -479,7 +486,6 @@ public class Phonebook {
             System.out.println("Unable to read from file: " + CONTACTLIST_STORE);
         }
     }
-
 
     // MODIFIES: this
     // EFFECTS: loads Calling Log from file

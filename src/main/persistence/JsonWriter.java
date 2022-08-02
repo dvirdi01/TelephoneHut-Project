@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 
 /**
  This class represents a JsonWriter that that writes JSON representation of phonebook to file
+ Source: JsonSerializationDemo Project
  */
 
 public class JsonWriter {
