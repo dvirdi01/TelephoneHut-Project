@@ -158,6 +158,7 @@ public class Phonebook {
     }
 
 
+    //todo:How do i solve the problem of having multiple contacts with the same name??
     //EFFECTS: Asks user for which contact they want to modify and displays modifying operations
     public void modifyContactOptionPressed() {
         viewAllContacts();
@@ -183,6 +184,7 @@ public class Phonebook {
     }
 
 
+    //todo: same here
     //MODIFIES: this
     //EFFECTS: allows user to delete a contact
     public void deleteContactOptionPressed() {
@@ -208,6 +210,7 @@ public class Phonebook {
         }
     }
 
+    //todo: same here
     //EFFECTS: allows user to make a call
     public void makeCallOptionPressed() {
         System.out.println("Please enter the name of contact who you would like to call: ");
@@ -240,6 +243,14 @@ public class Phonebook {
             System.out.println("You called " + s);
         }
         System.out.println("Total Number of calls made so far: " + callingLog.getNumberOfCallsMade());
+        System.out.println("Modify details of call log (yes/no)");
+        String callingLogModifyingDecision = myScanner.next();
+
+        //todo:
+        if (callingLogModifyingDecision.equals("yes")) {
+            // provide option to view last call made or clear call log
+        }
+
         continueOrExit();
 
     }

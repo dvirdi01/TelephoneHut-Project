@@ -22,6 +22,8 @@ public class ContactList implements Writable {
         contactList  = new ArrayList<>();
     }
 
+
+    //TODO: make this restriction tighter
     //MODIFIES: this
     //EFFECTS: adds a new contact into contactList if not already present and returns true.
     //else returns false and doesn't add contact to the list.
@@ -49,6 +51,7 @@ public class ContactList implements Writable {
     }
 
 
+    //todo: refactor to take in name and phone number?
     //EFFECTS: If a Contact is found by its name, then returns that contact otherwise returns null
     public Contact getContactByName(String name) {
         for (Contact c: contactList) {

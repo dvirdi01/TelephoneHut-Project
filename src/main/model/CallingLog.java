@@ -24,6 +24,8 @@ public class CallingLog implements Writable {
         numberOfCallsMade = 0;
     }
 
+
+    //TODO: refactor to make makecall take in a name and a phone number? (Helper function?))
     //MODIFIES: this
     //EFFECTS: adds Contact name in the calling log and increments the
     //number of calls made by 1
@@ -44,6 +46,8 @@ public class CallingLog implements Writable {
         return callingLog;
     }
 
+
+    //TODO: never used this function, use it while call to display call log happens
     //MODIFIES: this
     //EFFECTS: clears the call log by removing all calls made.
     //source: https://www.java67.com/2016/07/how-to-remove-all-elements-of-arraylist.html
