@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 
 /**
@@ -10,10 +11,21 @@ import java.io.FileNotFoundException;
 public class Main {
     public static void main(String[] args) {
 
-        try {
-            new Phonebook();
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to run application: file not found");
-        }
+//        try {
+//            new Phonebook();
+//        } catch (FileNotFoundException e) {
+//            System.out.println("Unable to run application: file not found");
+//        }
+
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    Phonebook window = new Phonebook();
+                    window.mainFrame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
