@@ -13,19 +13,33 @@ public class Main {
 
 //        try {
 //            new Phonebook();
+//
 //        } catch (FileNotFoundException e) {
 //            System.out.println("Unable to run application: file not found");
+//        } catch (Exception e) {
+//            e.printStackTrace();
 //        }
 
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
                     Phonebook window = new Phonebook();
-                    window.mainFrame.setVisible(true);
+                    //window.mainFrame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+
+//        EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    Phonebook window = new Phonebook();
+//                    //window.mainFrame.setVisible(true);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
 }

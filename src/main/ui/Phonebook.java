@@ -55,22 +55,6 @@ public class Phonebook {
         jsonReaderCallingLog = new JsonReader(CALLING_STORE);
         jsonReaderContactList = new JsonReader(CONTACTLIST_STORE);
 
-
-//        //create the main JFRame
-//        mainFrame.setTitle("TelephoneHut");
-//        mainFrame.setSize(FRAME_WIDTH,FRAME_HEIGHT);
-//        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        mainFrame.getContentPane().setBackground(new Color(101, 166, 246));
-//        mainFrame.setVisible(true);
-//
-//        mainLabel.setText("Welcome to TelephoneHut");
-//        mainLabel.setFont();
-//        mainLabel.setForeground(Color.black);
-//        //mainLabel.setBounds(150, 150, 150, 150);
-//        mainLabel.setHorizontalAlignment(SwingConstants.CENTER);
-//        mainLabel.setVerticalAlignment(SwingConstants.TOP);
-//        mainFrame.add(mainLabel);
-
         setUpFrame();
         setUpPanel();
         setUpDesktopPane();
@@ -119,16 +103,20 @@ public class Phonebook {
     }
 
     private void setUpLabel() {
-        JLabel introductionLabel = new JLabel("Welcome to TelephoneHut, your personal Phonebook");
+        JLabel introductionLabel = new JLabel("TelephoneHut: The Modern Phonebook");
         introductionLabel.setFont(new Font("Verdana", Font.BOLD, 13));
         introductionLabel.setVerticalAlignment(SwingConstants.TOP);
         mainPanel.add(introductionLabel);
+        //added this
+        mainLabel.setVisible(true);
     }
 
     private void setUpDesktopPane() {
         JDesktopPane desktopPane = new JDesktopPane();
         mainPanel.add(desktopPane);
         desktopPane.setLayout(new BorderLayout(0, 0));
+        //added this
+        desktopPane.setVisible(true);
     }
 
     private void setUpPanel() {
@@ -137,14 +125,21 @@ public class Phonebook {
         panel.setLayout(new BorderLayout(0, 0));
 
         mainPanel.setForeground(Color.GRAY);
-        mainPanel.setBackground(new Color(90, 155, 236));
+        mainPanel.setBackground(new Color(176, 155, 236));
         panel.add(mainPanel, BorderLayout.CENTER);
+        //added this
+        mainPanel.setVisible(true);
     }
 
     private void setUpFrame() {
         mainFrame = new JFrame();
+        mainFrame.setTitle("Telephone Hut");
         mainFrame.setBounds(100, 100, FRAME_WIDTH, FRAME_HEIGHT);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //added this
+        mainFrame.getContentPane().setBackground(new Color(126, 4, 118, 253));
+        mainFrame.setVisible(true);
     }
 
 
