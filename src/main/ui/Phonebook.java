@@ -68,6 +68,7 @@ public class Phonebook {
 
     private void displayMakeCallButton() {
         JButton makeCallButton = new JButton("Make Call");
+        makeCallButton.setBounds(5, 117, 105, 23);
         makeCallButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == makeCallButton) {
@@ -80,6 +81,8 @@ public class Phonebook {
 
     private void displayAddButton() {
         JButton addContactButton = new JButton("Add Contact");
+        //addContactButton.setBounds(50, 50, 105, 23);
+        addContactButton.setLocation(50, 50);
         addContactButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == addContactButton) {
