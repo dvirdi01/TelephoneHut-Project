@@ -91,9 +91,24 @@ public class Phonebook {
         topPanel.setBackground(new Color(74, 86, 119));
         topPanel.setPreferredSize(new Dimension(50, 30));
         topPanel.setVisible(true);
+
+        topPanelLabel.setText("Contacts Manager");
+        topPanelLabel.setForeground(Color.WHITE);
+        topPanelLabel.setFont(new Font("Verdana", Font. BOLD, 18));
+        topPanel.add(topPanelLabel, borderLayout.CENTER);
+
+        //todo: why button not showing at right position??
+        topPanel.add(returnButton, borderLayout.WEST);
+
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Return");
+                //todo: take back to main menu if necessary
+            }
+        });
         mainFrame.add(topPanel, borderLayout.NORTH);
-        // add labels
-        addTopPanelComponents();
+
         //todo: why the other panels not showing?
 
         rightPanel.setBackground(new Color(234, 205, 7));
