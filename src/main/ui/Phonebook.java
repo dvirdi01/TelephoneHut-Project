@@ -54,6 +54,10 @@ public class Phonebook {
     JLabel contactTypeLabel = new JLabel("Type");
 
     JButton returnButton = new JButton("Return");
+    JButton addButton;
+    JButton modifyButton;
+    JButton deleteButton;
+    JButton callButton;
 
     JTable contactListTable = new JTable();
 
@@ -99,7 +103,6 @@ public class Phonebook {
 //        contactListTable.setModel(null, DefaultTableModel(data = null; ));
 //        bottomPanel.add(contactListTable);
 
-
         bottomPanel.setVisible(true);
         mainFrame.add(bottomPanel, borderLayout.SOUTH);
 
@@ -123,16 +126,77 @@ public class Phonebook {
     }
 
     private void displayMainPanel() {
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBackground(new Color(128, 154, 222));
-        mainPanel.setVisible(true);
+//        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+//        mainPanel.setBackground(new Color(219, 128, 222));
+//        mainPanel.setVisible(true);
+//
+//        mainPanel.add(contactNameLabel);
+//        mainPanel.add(contactPhoneNumberLabel);
+//        mainPanel.add(contactEmailLabel);
+//        mainPanel.add(contactTypeLabel);
+//
+//        //add this to center of main frame
+//        mainFrame.add(mainPanel, borderLayout.CENTER);
 
-        mainPanel.add(contactNameLabel);
-        mainPanel.add(contactPhoneNumberLabel);
-        mainPanel.add(contactEmailLabel);
-        mainPanel.add(contactTypeLabel);
+
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBackground(new Color(219, 128, 222));
+
+        JPanel helperPanel = new JPanel();
+        helperPanel.setBackground(new Color(62, 203, 69));
+        helperPanel.setLayout(new BoxLayout(helperPanel, BoxLayout.Y_AXIS));
+
+        helperPanel.add(contactNameLabel);
+        //helperPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        helperPanel.add(contactPhoneNumberLabel);
+        //helperPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        helperPanel.add(contactEmailLabel);
+        //helperPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        helperPanel.add(contactTypeLabel);
+        helperPanel.setVisible(true);
+
+        mainPanel.add(helperPanel, BorderLayout.WEST);
+
+//
+        JPanel helperPanel2 = new JPanel();
+        helperPanel2.setBackground(new Color(232, 44, 65));
+        helperPanel2.setLayout(new BoxLayout(helperPanel2, BoxLayout.Y_AXIS));
+
+        addButton = new JButton("Add");
+        helperPanel2.add(addButton);
+
+        modifyButton = new JButton("Modify");
+        helperPanel2.add(modifyButton);
+
+        deleteButton = new JButton("Delete");
+        helperPanel2.add(deleteButton);
+
+        callButton = new JButton("Call");
+        helperPanel2.add(callButton);
+        helperPanel2.setVisible(true);
+
+        mainPanel.add(helperPanel2, BorderLayout.CENTER);
 
         mainFrame.add(mainPanel, borderLayout.CENTER);
+
+
+//        JPanel p1 = new JPanel();
+//        p1.setLayout(new BoxLayout(p1, BoxLayout.Y_AXIS));
+//        p1.add(contactNameLabel);
+//        p1.add(contactPhoneNumberLabel);
+//        p1.add(contactEmailLabel);
+//        p1.add(contactTypeLabel);
+//        mainPanel.add(p1);
+//
+//        JPanel p2 = new JPanel();
+//        p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
+//        p2.add(contactNameLabel);
+//        p2.add(contactPhoneNumberLabel);
+//        p2.add(contactEmailLabel);
+//        p2.add(contactTypeLabel);
+//        mainPanel.add(p2);
+
+        //mainFrame.add(mainPanel, borderLayout.CENTER);
 
 
     }
