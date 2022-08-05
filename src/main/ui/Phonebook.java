@@ -1,7 +1,6 @@
 package ui;
 
 import model.CallingLog;
-import model.Contact;
 import model.ContactList;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -11,8 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Scanner;
 
 
 /**
@@ -27,11 +24,11 @@ public class Phonebook {
 
     private static final String CONTACTLIST_STORE = "./data/phonebook.json";
     private static final String CALLING_STORE = "./data/callingLog.json";
-    static final int FRAME_WIDTH = 500;
-    static final int FRAME_HEIGHT = 550;
+    static final int FRAME_WIDTH = 600;
+    static final int FRAME_HEIGHT = 500;
 
-    Scanner myScanner = new Scanner(System.in);
-    int menuChoice;
+//    Scanner myScanner = new Scanner(System.in);
+//    int menuChoice;
 
     ContactList contactList = new ContactList();
     CallingLog callingLog = new CallingLog();
@@ -42,8 +39,19 @@ public class Phonebook {
     private JsonReader jsonReaderContactList;
 
     JFrame mainFrame = new JFrame();
+
     JPanel mainPanel = new JPanel();
-    JLabel mainLabel = new JLabel();
+    JPanel topPanel = new JPanel();
+    JPanel rightPanel = new JPanel();
+    JPanel leftPanel = new JPanel();
+    JPanel bottomPanel = new JPanel();
+
+    JLabel topPanelLabel = new JLabel();
+
+    JButton returnButton = new JButton("Return");
+
+    BorderLayout borderLayout = new BorderLayout();
+
 
 
 
@@ -57,92 +65,86 @@ public class Phonebook {
 
         setUpFrame();
         setUpPanel();
-        setUpDesktopPane();
-        setUpLabel();
 
-        displayAddButton();
-        displayModifyContactButton();
-        displayMakeCallButton();
 
     }
 
-    private void displayMakeCallButton() {
-        JButton makeCallButton = new JButton("Make Call");
-        makeCallButton.setBounds(5, 117, 105, 23);
-        makeCallButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == makeCallButton) {
-                    System.out.println("call");
-                }
-            }
-        });
-        mainPanel.add(makeCallButton);
-    }
 
-    private void displayAddButton() {
-        JButton addContactButton = new JButton("Add Contact");
-        //addContactButton.setBounds(50, 50, 105, 23);
-        addContactButton.setLocation(50, 50);
-        addContactButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == addContactButton) {
-                    System.out.println("hello");
-                }
-            }
-        });
-        mainPanel.add(addContactButton);
-    }
 
-    private void displayModifyContactButton() {
-        JButton modifyContactButton = new JButton("Modify Contact");
-        modifyContactButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == modifyContactButton) {
-                    System.out.println("modify");
-                }
-            }
-        });
-        mainPanel.add(modifyContactButton);
-    }
+//    private void setUpLabel() {
+//        JLabel introductionLabel = new JLabel("TelephoneHut: The Modern Phonebook");
+//        introductionLabel.setFont(new Font("Verdana", Font.BOLD, 13));
+//        introductionLabel.setVerticalAlignment(SwingConstants.TOP);
+//        mainPanel.add(introductionLabel);
+//        //added this
+//        mainLabel.setVisible(true);
+//    }
 
-    private void setUpLabel() {
-        JLabel introductionLabel = new JLabel("TelephoneHut: The Modern Phonebook");
-        introductionLabel.setFont(new Font("Verdana", Font.BOLD, 13));
-        introductionLabel.setVerticalAlignment(SwingConstants.TOP);
-        mainPanel.add(introductionLabel);
-        //added this
-        mainLabel.setVisible(true);
-    }
-
-    private void setUpDesktopPane() {
-        JDesktopPane desktopPane = new JDesktopPane();
-        mainPanel.add(desktopPane);
-        desktopPane.setLayout(new BorderLayout(0, 0));
-        //added this
-        desktopPane.setVisible(true);
-    }
 
     private void setUpPanel() {
-        JPanel panel = new JPanel();
-        mainFrame.getContentPane().add(panel, BorderLayout.CENTER);
-        panel.setLayout(new BorderLayout(0, 0));
 
-        mainPanel.setForeground(Color.GRAY);
-        mainPanel.setBackground(new Color(176, 155, 236));
-        panel.add(mainPanel, BorderLayout.CENTER);
-        //added this
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+        mainPanel.setBackground(new Color(128, 154, 222));
         mainPanel.setVisible(true);
+        mainFrame.add(mainPanel, borderLayout.CENTER);
+
+        topPanel.setBackground(new Color(74, 86, 119));
+        topPanel.setPreferredSize(new Dimension(50, 30));
+        topPanel.setVisible(true);
+        mainFrame.add(topPanel, borderLayout.NORTH);
+        // add labels
+        addTopPanelComponents();
+        //todo: why the other panels not showing?
+
+        rightPanel.setBackground(new Color(234, 205, 7));
+        rightPanel.setPreferredSize(new Dimension(50, 50));
+        rightPanel.setVisible(true);
+        mainFrame.add(rightPanel, borderLayout.EAST);
+        // add labels
+
+        leftPanel.setBackground(new Color(245, 203, 203));
+        leftPanel.setPreferredSize(new Dimension(50, 50));
+        leftPanel.setVisible(true);
+        mainFrame.add(leftPanel, borderLayout.WEST);
+        // add labels
+
+        bottomPanel.setBackground(new Color(66, 56, 56));
+        bottomPanel.setPreferredSize(new Dimension(50, 50));
+        bottomPanel.setVisible(true);
+        mainFrame.add(bottomPanel, borderLayout.SOUTH);
+        //add labels
+
+    }
+
+    private void addTopPanelComponents() {
+        topPanelLabel.setText("Contacts Manager");
+        topPanelLabel.setForeground(Color.WHITE);
+        topPanelLabel.setFont(new Font("Verdana", Font. BOLD, 18));
+        topPanel.add(topPanelLabel, borderLayout.CENTER);
+
+        //todo: why button not showing at right position??
+        topPanel.add(returnButton, borderLayout.WEST);
+
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Return");
+                //todo: take back to main menu if necessary
+            }
+        });
+
     }
 
     private void setUpFrame() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Telephone Hut");
-        mainFrame.setBounds(100, 100, FRAME_WIDTH, FRAME_HEIGHT);
+        mainFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //added this
-        mainFrame.getContentPane().setBackground(new Color(126, 4, 118, 253));
+        mainFrame.setLayout(borderLayout);
+        mainFrame.getContentPane().setBackground(new Color(24, 45, 86, 255));
+        mainFrame.setResizable(false);
         mainFrame.setVisible(true);
+
     }
 
 
@@ -161,56 +163,6 @@ public class Phonebook {
 
 
 
-
-
-//    //EFFECTS: takes user to phonebook menu and asks them for their choice of operation
-//    public void goToMenu() {
-//        displayMenuOptions();
-//        System.out.println();
-//        System.out.println("Please pick a number: ");
-//        this.menuChoice = myScanner.nextInt();
-//        choosePhonebookOperation();
-//
-//    }
-
-//    //EFFECTS: displays the operations offered in the phonebook
-//    public void displayMenuOptions() {
-//
-//        System.out.println();
-//        System.out.println("1. Add a Contact");
-//        System.out.println("2. View Existing Contacts");
-//        System.out.println("3. Modify a Contact");
-//        System.out.println("4. Delete a Contact");
-//        System.out.println("5. Make a Call");
-//        System.out.println("6. View your Call Log");
-//        System.out.println("7. Save PhoneBook Progress to file");
-//        System.out.println("8. Load PhoneBook from file");
-//    }
-//
-//    //EFFECTS: chooses which method to call based on user's menu choice. Displays menu again if user input
-//    // invalid menu choice
-//    public void choosePhonebookOperation() {
-//        if (menuChoice == 1) {
-//            addContactOptionPressed();
-//        } else if (menuChoice == 2) {
-//            viewContactOptionPressed();
-//        } else if (menuChoice == 3) {
-//            modifyContactOptionPressed();
-//        } else if (menuChoice == 4) {
-//            deleteContactOptionPressed();
-//        } else if (menuChoice == 5) {
-//            makeCallOptionPressed();
-//        } else if (menuChoice == 6) {
-//            viewCallLogOptionPressed();
-//        } else if (menuChoice == 7) {
-//            saveProgress();
-//        } else if (menuChoice == 8) {
-//            loadFromFile();
-//        } else {                           //out of bounds menu option chosen
-//            System.out.println("You entered an invalid number \n Please pick a menu option from 1-6");
-//            goToMenu();
-//        }
-//    }
 //
 //    //MODIFIES: this
 //    //EFFECTS: allows user to create a new contact
