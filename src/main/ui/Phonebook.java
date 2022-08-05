@@ -6,6 +6,7 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,8 +48,14 @@ public class Phonebook {
     JPanel bottomPanel = new JPanel();
 
     JLabel topPanelLabel = new JLabel();
+    JLabel contactNameLabel = new JLabel("Name");
+    JLabel contactPhoneNumberLabel = new JLabel("Phone Number");
+    JLabel contactEmailLabel = new JLabel("Email");
+    JLabel contactTypeLabel = new JLabel("Type");
 
     JButton returnButton = new JButton("Return");
+
+    JTable contactListTable = new JTable();
 
     BorderLayout borderLayout = new BorderLayout();
 
@@ -70,24 +77,67 @@ public class Phonebook {
     }
 
 
-
-//    private void setUpLabel() {
-//        JLabel introductionLabel = new JLabel("TelephoneHut: The Modern Phonebook");
-//        introductionLabel.setFont(new Font("Verdana", Font.BOLD, 13));
-//        introductionLabel.setVerticalAlignment(SwingConstants.TOP);
-//        mainPanel.add(introductionLabel);
-//        //added this
-//        mainLabel.setVisible(true);
-//    }
-
-
     private void setUpPanel() {
+        displayMainPanel();
+        displayTopPanel();
+        //displayRightPanel();
+        //displayLeftPanel();
+        displayBottomPanel();
+    }
 
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+    private void displayBottomPanel() {
+        bottomPanel.setBackground(new Color(109, 123, 162));
+        bottomPanel.setPreferredSize(new Dimension(50, 250));
+
+        JLabel contactListLabel = new JLabel("Contact List");
+        contactListLabel.setForeground(Color.WHITE);
+        contactListLabel.setFont(new Font("Verdana", Font. BOLD, 15));
+        bottomPanel.add(contactListLabel, borderLayout.NORTH);
+
+
+        // todo: add jtable
+//        contactListTable.setModel(null, DefaultTableModel(data = null; ));
+//        bottomPanel.add(contactListTable);
+
+
+        bottomPanel.setVisible(true);
+        mainFrame.add(bottomPanel, borderLayout.SOUTH);
+
+    }
+
+    private void displayLeftPanel() {
+        leftPanel.setBackground(new Color(245, 203, 203));
+        leftPanel.setPreferredSize(new Dimension(50, 50));
+        leftPanel.setVisible(true);
+        mainFrame.add(leftPanel, borderLayout.WEST);
+        // add labels
+    }
+
+    private void displayRightPanel() {
+        rightPanel.setBackground(new Color(234, 205, 7));
+        rightPanel.setPreferredSize(new Dimension(50, 50));
+        rightPanel.setVisible(true);
+        mainFrame.add(rightPanel, borderLayout.EAST);
+
+        // add labels
+    }
+
+    private void displayMainPanel() {
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(128, 154, 222));
         mainPanel.setVisible(true);
+
+        mainPanel.add(contactNameLabel);
+        mainPanel.add(contactPhoneNumberLabel);
+        mainPanel.add(contactEmailLabel);
+        mainPanel.add(contactTypeLabel);
+
         mainFrame.add(mainPanel, borderLayout.CENTER);
 
+
+    }
+
+    private void displayTopPanel() {
         topPanel.setBackground(new Color(74, 86, 119));
         topPanel.setPreferredSize(new Dimension(50, 30));
         topPanel.setVisible(true);
@@ -110,43 +160,6 @@ public class Phonebook {
         mainFrame.add(topPanel, borderLayout.NORTH);
 
         //todo: why the other panels not showing?
-
-        rightPanel.setBackground(new Color(234, 205, 7));
-        rightPanel.setPreferredSize(new Dimension(50, 50));
-        rightPanel.setVisible(true);
-        mainFrame.add(rightPanel, borderLayout.EAST);
-        // add labels
-
-        leftPanel.setBackground(new Color(245, 203, 203));
-        leftPanel.setPreferredSize(new Dimension(50, 50));
-        leftPanel.setVisible(true);
-        mainFrame.add(leftPanel, borderLayout.WEST);
-        // add labels
-
-        bottomPanel.setBackground(new Color(66, 56, 56));
-        bottomPanel.setPreferredSize(new Dimension(50, 50));
-        bottomPanel.setVisible(true);
-        mainFrame.add(bottomPanel, borderLayout.SOUTH);
-        //add labels
-
-    }
-
-    private void addTopPanelComponents() {
-        topPanelLabel.setText("Contacts Manager");
-        topPanelLabel.setForeground(Color.WHITE);
-        topPanelLabel.setFont(new Font("Verdana", Font. BOLD, 18));
-        topPanel.add(topPanelLabel, borderLayout.CENTER);
-
-        //todo: why button not showing at right position??
-        topPanel.add(returnButton, borderLayout.WEST);
-
-        returnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Return");
-                //todo: take back to main menu if necessary
-            }
-        });
 
     }
 
