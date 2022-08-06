@@ -6,6 +6,7 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,7 +27,7 @@ public class Phonebook {
     private static final String CONTACTLIST_STORE = "./data/phonebook.json";
     private static final String CALLING_STORE = "./data/callingLog.json";
     static final int FRAME_WIDTH = 600;
-    static final int FRAME_HEIGHT = 500;
+    static final int FRAME_HEIGHT = 400;
 
 //    Scanner myScanner = new Scanner(System.in);
 //    int menuChoice;
@@ -47,17 +48,18 @@ public class Phonebook {
     JPanel leftPanel = new JPanel();
     JPanel bottomPanel = new JPanel();
 
-    JLabel topPanelLabel = new JLabel();
-    JLabel contactNameLabel = new JLabel("Name");
-    JLabel contactPhoneNumberLabel = new JLabel("Phone Number");
-    JLabel contactEmailLabel = new JLabel("Email");
-    JLabel contactTypeLabel = new JLabel("Type");
 
     JButton returnButton = new JButton("Return");
     JButton addButton;
     JButton modifyButton;
     JButton deleteButton;
     JButton callButton;
+
+    JTextField nameField;
+    JTextField phoneField;
+    JTextField emailField;
+    JTextField typeField;
+
 
     JTable contactListTable = new JTable();
 
@@ -80,153 +82,6 @@ public class Phonebook {
 
     }
 
-
-    private void setUpPanel() {
-        displayMainPanel();
-        displayTopPanel();
-        //displayRightPanel();
-        //displayLeftPanel();
-        displayBottomPanel();
-    }
-
-    private void displayBottomPanel() {
-        bottomPanel.setBackground(new Color(109, 123, 162));
-        bottomPanel.setPreferredSize(new Dimension(50, 250));
-
-        JLabel contactListLabel = new JLabel("Contact List");
-        contactListLabel.setForeground(Color.WHITE);
-        contactListLabel.setFont(new Font("Verdana", Font. BOLD, 15));
-        bottomPanel.add(contactListLabel, borderLayout.NORTH);
-
-
-        // todo: add jtable
-//        contactListTable.setModel(null, DefaultTableModel(data = null; ));
-//        bottomPanel.add(contactListTable);
-
-        bottomPanel.setVisible(true);
-        mainFrame.add(bottomPanel, borderLayout.SOUTH);
-
-    }
-
-    private void displayLeftPanel() {
-        leftPanel.setBackground(new Color(245, 203, 203));
-        leftPanel.setPreferredSize(new Dimension(50, 50));
-        leftPanel.setVisible(true);
-        mainFrame.add(leftPanel, borderLayout.WEST);
-        // add labels
-    }
-
-    private void displayRightPanel() {
-        rightPanel.setBackground(new Color(234, 205, 7));
-        rightPanel.setPreferredSize(new Dimension(50, 50));
-        rightPanel.setVisible(true);
-        mainFrame.add(rightPanel, borderLayout.EAST);
-
-        // add labels
-    }
-
-    private void displayMainPanel() {
-//        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-//        mainPanel.setBackground(new Color(219, 128, 222));
-//        mainPanel.setVisible(true);
-//
-//        mainPanel.add(contactNameLabel);
-//        mainPanel.add(contactPhoneNumberLabel);
-//        mainPanel.add(contactEmailLabel);
-//        mainPanel.add(contactTypeLabel);
-//
-//        //add this to center of main frame
-//        mainFrame.add(mainPanel, borderLayout.CENTER);
-
-
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(new Color(219, 128, 222));
-
-        JPanel helperPanel = new JPanel();
-        helperPanel.setBackground(new Color(62, 203, 69));
-        helperPanel.setLayout(new BoxLayout(helperPanel, BoxLayout.Y_AXIS));
-
-        helperPanel.add(contactNameLabel);
-        //helperPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        helperPanel.add(contactPhoneNumberLabel);
-        //helperPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        helperPanel.add(contactEmailLabel);
-        //helperPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        helperPanel.add(contactTypeLabel);
-        helperPanel.setVisible(true);
-
-        mainPanel.add(helperPanel, BorderLayout.WEST);
-
-//
-        JPanel helperPanel2 = new JPanel();
-        helperPanel2.setBackground(new Color(232, 44, 65));
-        helperPanel2.setLayout(new BoxLayout(helperPanel2, BoxLayout.Y_AXIS));
-
-        addButton = new JButton("Add");
-        helperPanel2.add(addButton);
-
-        modifyButton = new JButton("Modify");
-        helperPanel2.add(modifyButton);
-
-        deleteButton = new JButton("Delete");
-        helperPanel2.add(deleteButton);
-
-        callButton = new JButton("Call");
-        helperPanel2.add(callButton);
-        helperPanel2.setVisible(true);
-
-        mainPanel.add(helperPanel2, BorderLayout.CENTER);
-
-        mainFrame.add(mainPanel, borderLayout.CENTER);
-
-
-//        JPanel p1 = new JPanel();
-//        p1.setLayout(new BoxLayout(p1, BoxLayout.Y_AXIS));
-//        p1.add(contactNameLabel);
-//        p1.add(contactPhoneNumberLabel);
-//        p1.add(contactEmailLabel);
-//        p1.add(contactTypeLabel);
-//        mainPanel.add(p1);
-//
-//        JPanel p2 = new JPanel();
-//        p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
-//        p2.add(contactNameLabel);
-//        p2.add(contactPhoneNumberLabel);
-//        p2.add(contactEmailLabel);
-//        p2.add(contactTypeLabel);
-//        mainPanel.add(p2);
-
-        //mainFrame.add(mainPanel, borderLayout.CENTER);
-
-
-    }
-
-    private void displayTopPanel() {
-        topPanel.setBackground(new Color(74, 86, 119));
-        topPanel.setPreferredSize(new Dimension(50, 30));
-        topPanel.setVisible(true);
-
-        topPanelLabel.setText("Contacts Manager");
-        topPanelLabel.setForeground(Color.WHITE);
-        topPanelLabel.setFont(new Font("Verdana", Font. BOLD, 18));
-        topPanel.add(topPanelLabel, borderLayout.CENTER);
-
-        //todo: why button not showing at right position??
-        topPanel.add(returnButton, borderLayout.WEST);
-
-        returnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Return");
-                //todo: take back to main menu if necessary
-            }
-        });
-        mainFrame.add(topPanel, borderLayout.NORTH);
-
-        //todo: why the other panels not showing?
-
-    }
-
     private void setUpFrame() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Telephone Hut");
@@ -235,8 +90,217 @@ public class Phonebook {
         mainFrame.setLayout(borderLayout);
         mainFrame.getContentPane().setBackground(new Color(24, 45, 86, 255));
         mainFrame.setResizable(false);
-        mainFrame.setVisible(true);
 
+        //mainFrame.setVisible(true);
+    }
+
+
+    private void setUpPanel() {
+        displayTopPanel();
+        displayMainPanel();
+        displayBottomPanel();
+        displayLeftPanel();
+       //displayRightPanel();
+    }
+
+    private void displayTopPanel() {
+        BorderLayout topPanelLayout = new BorderLayout();
+        topPanel.setLayout(topPanelLayout);
+        topPanel.setBackground(new Color(74, 86, 119));
+        topPanel.setPreferredSize(new Dimension(50, 30));
+        topPanel.setVisible(true);
+
+        // create label
+        JLabel topPanelLabel = new JLabel();
+        topPanelLabel.setText("Contacts Manager");
+        topPanelLabel.setForeground(Color.WHITE);
+        topPanelLabel.setFont(new Font("Verdana", Font. BOLD, 18));
+        topPanel.add(topPanelLabel, topPanelLayout.CENTER);
+
+        // display on main frame
+        topPanel.setVisible(true);
+        mainFrame.add(topPanel, borderLayout.NORTH);
+    }
+
+    private void displayMainPanel() {
+
+        BorderLayout centerPanelLayout = new BorderLayout();
+        mainPanel.setLayout(centerPanelLayout);
+        mainPanel.setBackground(new Color(219, 128, 222));
+
+        displayTextFields(centerPanelLayout);
+        displayButtons(centerPanelLayout);
+
+        //-----------------------------------------------------------------
+        mainPanel.setVisible(true);
+        mainFrame.add(mainPanel, borderLayout.CENTER);
+
+    }
+
+    private void displayButtons(BorderLayout centerPanelLayout) {
+        JPanel helperPanel2 = new JPanel();
+
+        //source: https://www.youtube.com/watch?v=pDqjHozkMBs
+        FlowLayout helperLayout = new FlowLayout(FlowLayout.LEADING);
+        helperPanel2.setBackground(new Color(88, 115, 98));
+        helperPanel2.setLayout(helperLayout);
+        helperPanel2.setPreferredSize(new Dimension(100, 35));
+
+        addButton = new JButton("Add");
+        modifyButton = new JButton("Modify");
+        deleteButton = new JButton("Delete");
+        callButton = new JButton("Call");
+
+        helperPanel2.add(addButton);
+        helperPanel2.add(modifyButton);
+        helperPanel2.add(deleteButton);
+        helperPanel2.add(callButton);
+
+        performButtonAction();
+
+        helperPanel2.setVisible(true);
+        mainPanel.add(helperPanel2, centerPanelLayout.SOUTH);
+    }
+
+    private void performButtonAction() {
+
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == addButton) {
+                    //System.out.println("Add");
+                }
+            }
+        });
+
+        modifyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == modifyButton) {
+                    //System.out.println("Modify");
+                }
+            }
+        });
+
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == deleteButton) {
+                    //System.out.println("Delete");
+                }
+            }
+        });
+
+        callButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == callButton) {
+                    //System.out.println("Call");
+                }
+            }
+        });
+
+
+    }
+
+    private void displayTextFields(BorderLayout centerPanelLayout) {
+        //-------------------------helper----------------------------
+        JPanel helperPanel1 = new JPanel();
+
+        BoxLayout helperLayout = new BoxLayout(helperPanel1, BoxLayout.Y_AXIS);
+        helperPanel1.setBackground(new Color(142, 222, 154));
+        helperPanel1.setLayout(helperLayout);
+        helperPanel1.setPreferredSize(new Dimension(100, 50));
+
+        nameField = new JTextField();
+        phoneField = new JTextField();
+        emailField = new JTextField();
+        typeField = new JTextField();
+
+        helperPanel1.add(Box.createRigidArea(new Dimension(0, 8)));
+        helperPanel1.add(nameField);
+        helperPanel1.add(Box.createRigidArea(new Dimension(0, 8)));
+        helperPanel1.add(phoneField);
+        helperPanel1.add(Box.createRigidArea(new Dimension(0, 8)));
+        helperPanel1.add(emailField);
+        helperPanel1.add(Box.createRigidArea(new Dimension(0, 8)));
+        helperPanel1.add(typeField);
+        helperPanel1.add(Box.createRigidArea(new Dimension(0, 120)));
+
+        helperPanel1.setVisible(true);
+        mainPanel.add(helperPanel1, centerPanelLayout.WEST);
+    }
+
+    private void displayBottomPanel() {
+        BorderLayout bottomPanelLayout = new BorderLayout();
+
+        bottomPanel.setLayout(bottomPanelLayout);
+        bottomPanel.setBackground(new Color(109, 123, 162));
+        bottomPanel.setPreferredSize(new Dimension(50, 175));
+
+        JLabel contactListLabel = new JLabel("Contact List");
+        contactListLabel.setForeground(Color.WHITE);
+        contactListLabel.setFont(new Font("Verdana", Font. BOLD, 15));
+
+        bottomPanel.add(contactListLabel, bottomPanelLayout.NORTH);
+
+        //todo
+        displayContactListTable();
+
+
+        //add to main frame
+        bottomPanel.setVisible(true);
+        mainFrame.add(bottomPanel, borderLayout.SOUTH);
+
+    }
+
+    private void displayLeftPanel() {
+
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setBackground(new Color(245, 203, 203));
+        leftPanel.setPreferredSize(new Dimension(100, 50));
+
+        // create labels
+        JLabel contactNameLabel = new JLabel("Name");
+        JLabel contactPhoneNumberLabel = new JLabel("Phone Number");
+        JLabel contactEmailLabel = new JLabel("Email");
+        JLabel contactTypeLabel = new JLabel("Type");
+
+        // add labels
+        leftPanel.add(Box.createRigidArea(new Dimension(15, 10)));
+        leftPanel.add(contactNameLabel);
+        leftPanel.add(Box.createRigidArea(new Dimension(15, 10)));
+        leftPanel.add(contactPhoneNumberLabel);
+        leftPanel.add(Box.createRigidArea(new Dimension(15, 10)));
+        leftPanel.add(contactEmailLabel);
+        leftPanel.add(Box.createRigidArea(new Dimension(15, 10)));
+        leftPanel.add(contactTypeLabel);
+
+        //add to main frame
+        leftPanel.setVisible(true);
+        mainFrame.add(leftPanel, borderLayout.WEST);
+
+    }
+
+
+    private void displayContactListTable() {
+
+        String[] columns = {"Name", "Phone Number", "Email", "Type"};
+        Object[][] data = {{"Jasleen", "1231231234", "jasleen@gmail.com", "FRIEND"},
+                {"Jaskeerat", "1234567890", "jaskeerat@gmail.com", "FRIEND"}};
+        contactListTable = new JTable(data, columns);
+
+
+
+        // Source: https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#simple
+        //adding scrollpane to table
+        JScrollPane scrollPane = new JScrollPane(contactListTable);
+        contactListTable.setBackground(new Color(201, 215, 253, 255));
+        contactListTable.setFillsViewportHeight(true);
+        scrollPane.setVisible(true);
+        bottomPanel.add(scrollPane);
+
+        // allow row selection: rowSelectionAllowed
     }
 
 
@@ -244,6 +308,13 @@ public class Phonebook {
 
 
 
+//    private void displayRightPanel() {
+//        rightPanel.setBackground(new Color(234, 205, 7));
+//        rightPanel.setPreferredSize(new Dimension(50, 50));
+//        rightPanel.setVisible(true);
+//        mainFrame.add(rightPanel, borderLayout.EAST);
+//
+//    }
 
 
 
@@ -255,286 +326,72 @@ public class Phonebook {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //--------------------------------------------------------------
+//        JPanel helperPanel = new JPanel();
+//        helperPanel.setBackground(new Color(62, 203, 69));
+//        helperPanel.setLayout(new BoxLayout(helperPanel, BoxLayout.Y_AXIS));
 //
-//    //MODIFIES: this
-//    //EFFECTS: allows user to create a new contact
-//    public void addContactOptionPressed() {
+//        helperPanel.add(contactNameLabel);
+//        //helperPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+//        helperPanel.add(contactPhoneNumberLabel);
+//        //helperPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+//        helperPanel.add(contactEmailLabel);
+//        //helperPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+//        helperPanel.add(contactTypeLabel);
+//        helperPanel.setVisible(true);
+//        //--------------------------------------------------------------
+//        mainPanel.add(helperPanel, centerPanelLayout.WEST);
+
+
+    //--------------------------------------------------------------
+//        JPanel helperPanel2 = new JPanel();
+//        helperPanel2.setBackground(new Color(232, 44, 65));
+//        helperPanel2.setLayout(new BoxLayout(helperPanel2, BoxLayout.Y_AXIS));
 //
-//        System.out.println();
-//        System.out.println("Enter Contact Name: ");
-//        String name = myScanner.next();
+//        addButton = new JButton("Add");
+//        helperPanel2.add(addButton);
 //
-//        System.out.println("Enter Contact's phone number: ");
-//        String phoneNumber = myScanner.next();
-//        checkPhoneNumber(phoneNumber);
+//        modifyButton = new JButton("Modify");
+//        helperPanel2.add(modifyButton);
 //
-//        System.out.println("Enter Contact's email: ");
-//        String email = myScanner.next();
-//        checkEmail(email);
+//        deleteButton = new JButton("Delete");
+//        helperPanel2.add(deleteButton);
 //
-//        System.out.println("Enter Contact type (FAMILY/FRIEND/WORK): ");
-//        String type = myScanner.next();
-//        checkType(type);
+//        callButton = new JButton("Call");
+//        helperPanel2.add(callButton);
 //
-//        Contact contact = new Contact(name, phoneNumber, email, type);
-//        contactList.addContact(contact);
-//
-//        continueOrExit();
-//
-//    }
-//
-//
-//    //EFFECTS: allows user to either view one contact or all contacts. If user inputs incorrect option,
-//    // display viewing options again
-//    public void viewContactOptionPressed() {
-//        System.out.println();
-//        System.out.println("Press 1 to view one contact, 2 to view all contacts: ");
-//        int viewingChoice = myScanner.nextInt();
-//
-//        if (viewingChoice == 1) {
-//            System.out.println();
-//            System.out.println("Enter the name of contact you would like to view: ");
-//            String nameToFind = myScanner.next();
-//            viewOnlyOneContact(nameToFind);
-//
-//        } else if (viewingChoice == 2) {
-//            viewAllContacts();
-//            goToMenu();
-//        } else {
-//            System.out.println("Please choose from one of the options above.");
-//            viewContactOptionPressed();
-//        }
-//
-//    }
-//
-//
-//    //todo:How do i solve the problem of having multiple contacts with the same name??
-//    //EFFECTS: Asks user for which contact they want to modify and displays modifying operations
-//    public void modifyContactOptionPressed() {
-//        viewAllContacts();
-//        System.out.println("Enter name of contact you want to modify: ");
-//        String nameToModify = myScanner.next();
-//
-//        if (nameNotFound(nameToModify)) {
-//            System.out.println("This contact does not exist in your Contact List");
-//            System.out.println("Would you like to modify another contact instead? (yes/no) ");
-//            String modifyAnother = myScanner.next();
-//
-//            if (modifyAnother.equals("yes")) {
-//                modifyContactOptionPressed();
-//            } else {
-//                continueOrExit();
-//            }
-//
-//        } else {
-//            Contact contactToModify = contactList.getContactByName(nameToModify);
-//            modifyingOperations(contactToModify);
-//        }
-//        continueOrExit();
-//    }
-//
-//
-//    //todo: same here
-//    //MODIFIES: this
-//    //EFFECTS: allows user to delete a contact
-//    public void deleteContactOptionPressed() {
-//        viewAllContacts();
-//        System.out.println("Enter name of contact you want to delete: ");
-//        String name = myScanner.next();
-//
-//        if (nameNotFound(name)) {
-//            System.out.println("This contact does not exist in your Contact List");
-//            System.out.println("Would you like to delete another contact instead? (yes/no) ");
-//            String deleteAnother = myScanner.next();
-//
-//            if (deleteAnother.equals("yes")) {
-//                deleteContactOptionPressed();
-//            } else {
-//                continueOrExit();
-//            }
-//
-//        } else {
-//            contactList.deleteContact(contactList.getContactByName(name));
-//            System.out.println("Contact has been deleted");
-//            continueOrExit();
-//        }
-//    }
-//
-//    //todo: same here
-//    //EFFECTS: allows user to make a call
-//    public void makeCallOptionPressed() {
-//        System.out.println("Please enter the name of contact who you would like to call: ");
-//        String nameToCall = myScanner.next();
-//
-//        if (nameNotFound(nameToCall)) {
-//            System.out.println("This contact does not exist in your Contact List");
-//            System.out.println("Would you like to call another contact? (yes/no): ");
-//            String callAnother = myScanner.next();
-//
-//            if (callAnother.equals("yes")) {
-//                makeCallOptionPressed();
-//            } else {
-//                continueOrExit();
-//            }
-//
-//        } else {
-//            callingLog.makeCall(contactList.getContactByName(nameToCall));
-//            System.out.println("Making a call to..." + contactList.getContactByName(nameToCall).getName());
-//            continueOrExit();
-//        }
-//
-//    }
-//
-//    //EFFECTS: allows user to view their calling log and the current number of calls made
-//    public void viewCallLogOptionPressed() {
-//        System.out.println("Loading your call log...");
-//
-//        for (String s: callingLog.getCallingLog()) {
-//            System.out.println("You called " + s);
-//        }
-//        System.out.println("Total Number of calls made so far: " + callingLog.getNumberOfCallsMade());
-//        System.out.println("Modify details of call log (yes/no)");
-//        String callingLogModifyingDecision = myScanner.next();
-//
-//        //todo:
-//        if (callingLogModifyingDecision.equals("yes")) {
-//            // provide option to view last call made or clear call log
-//        }
-//
-//        continueOrExit();
-//
-//    }
-//
-//
-//    //------Helper Functions------
-//
-//
-//    //EFFECTS: displays the contact information for the chosen contact in menu option 2
-//    public void viewOnlyOneContact(String nameToFind) {
-//
-//        for (Contact c: contactList.getAllContacts()) {
-//            if (c.getName().equals(nameToFind)) {
-//                displayContactInformation(c);
-//            }
-//        }
-//        continueOrExit();
-//
-//    }
-//
-//    //EFFECTS: displays all contacts in the calling log
-//    public void viewAllContacts() {
-//        System.out.println("Displaying all Contacts below");
-//        System.out.println();
-//
-//        for (Contact c: contactList.getAllContacts()) {
-//            displayContactInformation(c);
-//        }
-//
-//    }
-//
-//
-//    //EFFECTS: displays the contact information for a contact
-//    public void displayContactInformation(Contact c) {
-//        System.out.println("Name: " + c.getName());
-//        System.out.println("PhoneNumber: " + c.getPhoneNumber());
-//        System.out.println("Email: " + c.getEmail());
-//        System.out.println("Type: " + c.getType());
-//        System.out.println();
-//    }
-//
-//
-//    //EFFECTS: allows the user to choose which information of a contact they want to modify
-//    public void modifyingOperations(Contact c) {
-//        changeNameRequest(c);
-//        changePhoneNumberRequest(c);
-//        changeEmailRequest(c);
-//        changeTypeRequest(c);
-//
-//        System.out.println();
-//        continueOrExit();
-//    }
-//
-//    //MODIFIES: this
-//    //EFFECTS: allows user to change contact's name
-//    public void changeNameRequest(Contact c) {
-//        System.out.println("Would you like to change this contact's name (yes/no): ");
-//        String answer = myScanner.next();
-//
-//        if (answer.equals("yes")) {
-//            System.out.println("Enter new name of Contact: ");
-//            String newName = myScanner.next();
-//            c.setName(newName);
-//            System.out.println("Contact's name has been changed!");
-//        }
-//    }
-//
-//    //MODIFIES: this
-//    //EFFECTS: allows user to change contact's phone number
-//    public void changePhoneNumberRequest(Contact c) {
-//        System.out.println();
-//        System.out.println("Would you like to change this contact's phone number (yes/no): ");
-//        String answer = myScanner.next();
-//
-//        if (answer.equals("yes")) {
-//            System.out.println("Enter new phone number of Contact: ");
-//            String newPhoneNumber = myScanner.next();
-//            c.setPhoneNumber(newPhoneNumber);
-//            System.out.println("Contact's phone number has been changed!");
-//        }
-//
-//    }
-//
-//    //MODIFIES: this
-//    //EFFECTS: allows user to change contact's email
-//    public void changeEmailRequest(Contact c) {
-//        System.out.println("Would you like to change this contact's email (yes/no): ");
-//        String answer = myScanner.next();
-//
-//        if (answer.equals("yes")) {
-//            System.out.println("Enter new email of Contact: ");
-//            String newEmail = myScanner.next();
-//            c.setEmail(newEmail);
-//            System.out.println("Contact's email has been changed!");
-//        }
-//    }
-//
-//    //MODIFIES: this
-//    //EFFECTS: allows user to change contact's type
-//    public void changeTypeRequest(Contact c) {
-//        System.out.println("Would you like to change this contact's type (yes/no): ");
-//        String answer = myScanner.next();
-//
-//        if (answer.equals("yes")) {
-//            System.out.println("Enter the new type of this Contact: ");
-//            String newType = myScanner.next();
-//            c.setEmail(newType);
-//            System.out.println("Contact's type has been changed!");
-//        }
-//    }
-//
-//    //EFFECTS: if user wants to continue doing more operations, takes them to menu again,
-//    //otherwise exits the phonebook.
-//    public void continueOrExit() {
-//        System.out.println("Would you like to continue or exit the phonebook (continue/exit): ");
-//        String decision = myScanner.next();
-//
-//        if (decision.equals("continue")) {
-//            goToMenu();
-//        } else if (decision.equals("exit")) {
-//            System.out.println("If you exit now your progress won't be saved. "
-//                    + "\n Would you like to save your progress? (yes/no): ");
-//            String savingDecision = myScanner.next();
-//
-//            if (savingDecision.equals("yes")) {
-//                saveProgress();
-//            } else {
-//                return;
-//            }
-//        } else {
-//            return;
-//        }
-//    }
-//
+//        helperPanel2.setVisible(true);
+//        mainPanel.add(helperPanel2, centerPanelLayout.CENTER);
+    //--------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
 //
 //    //EFFECTS: checks if name entered only contains alphabets. Otherwise prompts
 //    // user to enter contact's information again
@@ -573,18 +430,7 @@ public class Phonebook {
 //            addContactOptionPressed();
 //        }
 //    }
-//
-//
-//    //EFFECTS: returns true if a given contact's name is not found (i.e name is null) in the
-//    //contact list otherwise returns false if name is found.
-//    public boolean nameNotFound(String name) {
-//        if (contactList.getContactByName(name) == null) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-//
+
 //
 //
 //    //----------------------------------------PHASE 2 METHODS----------------------------------------------------
@@ -659,45 +505,5 @@ public class Phonebook {
 //        }
 //    }
 //
-//
-//
-//
-//
-////    private String askForName() {
-////
-////        System.out.println("Enter Contact Name: ");
-////        String name = myScanner.next();
-////        checkInvalidName(name);
-////        this.userName = name;
-////        return userName;
-//    }
-//
-//    private String askForPhoneNumber() {
-//        System.out.println("Enter Contact's phone number: ");
-//        String phoneNumber = myScanner.next();
-//        checkPhoneNumber(phoneNumber);
-//        this.userPhoneNumber = phoneNumber;
-//        return userPhoneNumber;
-//
-//    }
-//
-//    private String askForEmail() {
-//        System.out.println("Enter Contact's email: ");
-//        String email = myScanner.next();
-//        checkEmail(email);
-//        this.userEmail = email;
-//        return userEmail;
-//
-//    }
-//
-//    private String askForType() {
-//        System.out.println("Enter Contact's type: ");
-//        String type = myScanner.next();
-//        checkType(type);
-//        this.userType = type;
-//        return userType;
-//
-//    }
-
 
 }
