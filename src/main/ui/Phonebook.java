@@ -1,12 +1,9 @@
 package ui;
 
-import model.CallingLog;
-import model.ContactList;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -61,7 +58,10 @@ public class Phonebook {
     JTable contactListTable;
     DefaultTableModel contactListTableModel;
     String[] rowComponents;
-    TableCellEditor tableCellEditor;
+
+    JPanel cardHolderPanel;
+    JPanel p1;
+    JPanel p2;
 
 
 
@@ -87,6 +87,7 @@ public class Phonebook {
         mainFrame.getContentPane().setBackground(new Color(24, 45, 86, 255));
         mainFrame.setResizable(false);
     }
+
 
 
     private void setUpPanel() {
@@ -121,6 +122,9 @@ public class Phonebook {
         mainPanel.setLayout(centerPanelLayout);
         mainPanel.setBackground(new Color(219, 128, 222));
 
+
+        displayCardLayoutPanel(centerPanelLayout);
+
         displayTextFields(centerPanelLayout);
         displayButtons(centerPanelLayout);
 
@@ -129,6 +133,51 @@ public class Phonebook {
         mainFrame.add(mainPanel, borderLayout.CENTER);
 
     }
+
+    public void displayCardLayoutPanel(BorderLayout centerPanelLayout) {
+        CardLayout cardLayout = new CardLayout();
+        cardHolderPanel = new JPanel();
+        cardHolderPanel.setLayout(cardLayout);
+        cardHolderPanel.setBackground(new Color(255, 159, 19));
+
+        //put more panels on top
+        p1 = new JPanel();
+        p1.setBackground(new Color(122, 123, 123));
+        JButton pressMeButton = new JButton("Press me");
+        p1.add(pressMeButton);
+
+        p2 = new JPanel();
+        p2.setBackground(new Color(252, 7, 130));
+        JButton returnButton = new JButton("Press me again");
+        p2.add(returnButton);
+
+        cardHolderPanel.add(p1, "1");
+        cardHolderPanel.add(p2, "2");
+        cardLayout.show(cardHolderPanel, "1");
+
+        pressMeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == pressMeButton) {
+                    cardLayout.show(cardHolderPanel, "2++++");
+                }
+
+            }
+        });
+
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == returnButton) {
+                    cardLayout.show(cardHolderPanel, "1");
+                }
+            }
+        });
+
+        mainPanel.add(cardHolderPanel, centerPanelLayout.CENTER);
+
+    }
+
 
     private void displayButtons(BorderLayout centerPanelLayout) {
         JPanel helperPanel2 = new JPanel();
@@ -139,6 +188,8 @@ public class Phonebook {
         helperPanel2.setLayout(helperLayout);
         helperPanel2.setPreferredSize(new Dimension(100, 35));
 
+        addButton.setBackground(new Color(156, 147, 243));
+        addButton.setForeground(Color.WHITE);
         helperPanel2.add(addButton);
         helperPanel2.add(modifyButton);
         helperPanel2.add(deleteButton);
@@ -157,7 +208,7 @@ public class Phonebook {
         JPanel helperPanel1 = new JPanel();
 
         BoxLayout helperLayout = new BoxLayout(helperPanel1, BoxLayout.Y_AXIS);
-        helperPanel1.setBackground(new Color(142, 222, 154));
+        helperPanel1.setBackground(new Color(142, 222, 14));
         helperPanel1.setLayout(helperLayout);
         helperPanel1.setPreferredSize(new Dimension(100, 50));
 
@@ -200,7 +251,7 @@ public class Phonebook {
     private void displayLeftPanel() {
 
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.setBackground(new Color(245, 203, 203));
+        leftPanel.setBackground(new Color(171, 184, 227));
         leftPanel.setPreferredSize(new Dimension(100, 50));
 
         // create labels
@@ -273,6 +324,7 @@ public class Phonebook {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == addButton) {
+
                     String name = nameField.getText();
                     checkInvalidName(name);
 
@@ -298,9 +350,7 @@ public class Phonebook {
         callButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == callButton) {
-                    //todo
-                }
+                //
             }
         });
     }
@@ -309,7 +359,7 @@ public class Phonebook {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!isRowSelected()) {
+                if (!isRowNotSelected()) {
                     if (e.getSource() == deleteButton) {
                         int confirmation = JOptionPane.showConfirmDialog(mainPanel,
                                 "Are you sure you want to delete this contact?",
@@ -319,12 +369,16 @@ public class Phonebook {
                         }
                     }
                 } else {
-                    JOptionPane.showMessageDialog(mainPanel,
-                            "Please select a row to delete",
-                            "Invalid Row Selection", JOptionPane.DEFAULT_OPTION);
+                    displayInvalidRowSelectionMessage();
                 }
             }
         });
+    }
+
+    private void displayInvalidRowSelectionMessage() {
+        JOptionPane.showMessageDialog(mainPanel,
+                "You must select a row to perform this operation",
+                "Invalid Row Selection", JOptionPane.DEFAULT_OPTION);
     }
 
     private void performModifyButtonTask() {
@@ -333,49 +387,43 @@ public class Phonebook {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == modifyButton) {
 
-//                    Object nameSelected = contactListTableModel.getValueAt(contactListTable.getSelectedRow(), 0);
-//                    Object phoneNumberSelected = contactListTableModel.getValueAt(contactListTable.getSelectedRow(),1);
-//                    Object emailSelected = contactListTableModel.getValueAt(contactListTable.getSelectedRow(), 2);
-//                    Object typeSelected = contactListTableModel.getValueAt(contactListTable.getSelectedRow(), 3);
-//
-//                    nameField.setText(String.valueOf(nameSelected));
-//                    phoneField.setText(String.valueOf(phoneNumberSelected));
-//                    emailField.setText(String.valueOf(emailSelected));
-//                    typeField.setText(String.valueOf(typeSelected));
-//
-//                    contactListTableModel.removeRow(contactListTable.getSelectedRow());
-
                     int selectedRowIndex = contactListTable.getSelectedRow();
-                    if (!isRowSelected()) {
+                    if (!isRowNotSelected()) {
 
-                        String newName = JOptionPane.showInputDialog(mainPanel, "Enter new name of Contact");
+                        String newName = JOptionPane.showInputDialog(mainPanel,
+                                "Enter new name of Contact");
                         if (checkInvalidName(newName)) {
                             contactListTable.setValueAt(newName, selectedRowIndex, 0);
                         } else {
-                            JOptionPane.showMessageDialog(mainPanel, "Invalid name Entered");
+                            displayInvalidNameMessage();
                         }
 
-                        String newPhone = JOptionPane.showInputDialog(mainPanel, "Enter new phone number of Contact");
+                        String newPhone = JOptionPane.showInputDialog(mainPanel,
+                                "Enter new phone number of Contact");
                         if (checkPhoneNumber(newPhone)) {
                             contactListTable.setValueAt(newPhone, selectedRowIndex, 1);
                         } else {
-                            JOptionPane.showMessageDialog(mainPanel, "Invalid phone Number Entered");
+                            displayInvalidPhoneMessage();
                         }
 
-                        String newEmail = JOptionPane.showInputDialog(mainPanel, "Enter new email of Contact");
+                        String newEmail = JOptionPane.showInputDialog(mainPanel,
+                                "Enter new email of Contact");
                         if (checkEmail(newEmail)) {
                             contactListTable.setValueAt(newEmail, selectedRowIndex, 2);
                         } else {
-                            JOptionPane.showMessageDialog(mainPanel, "Invalid Email Entered");
+                            displayInvalidEmailMessage();
                         }
 
-                        String newType = JOptionPane.showInputDialog(mainPanel, "Enter new type of Contact");
+                        String newType = JOptionPane.showInputDialog(mainPanel,
+                                "Enter new type of Contact");
                         if (checkType(newType)) {
                             contactListTable.setValueAt(newType, selectedRowIndex, 3);
                         } else {
-                            JOptionPane.showMessageDialog(mainPanel, "Invalid Type Entered");
+                            displayInvalidTypeMessage();
                         }
 
+                    } else {
+                        displayInvalidRowSelectionMessage();
                     }
 
                 }
@@ -390,7 +438,7 @@ public class Phonebook {
         typeField.setText("");
     }
 
-    private boolean isRowSelected() {
+    private boolean isRowNotSelected() {
         return contactListTable.getSelectionModel().isSelectionEmpty();
     }
 
@@ -401,12 +449,16 @@ public class Phonebook {
     // Source: https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
     private boolean checkInvalidName(String name) {
         if (!name.matches("([A-z]|[a-z])+")) {
-            JOptionPane.showMessageDialog(mainPanel, "Name can only contain alphabets!");
+            displayInvalidNameMessage();
             nameField.setText("");
             return false;
         } else {
             return true;
         }
+    }
+
+    private void displayInvalidNameMessage() {
+        JOptionPane.showMessageDialog(mainPanel, "Name can only contain alphabets!");
     }
 
 
@@ -415,8 +467,7 @@ public class Phonebook {
     //source: https://stackoverflow.com/questions/24592808/regular-expression-in-java-validating-user-input
     private boolean checkPhoneNumber(String phoneNumber) {
         if (!phoneNumber.matches("[1-9][0-9]{9}")) {
-            JOptionPane.showMessageDialog(mainPanel, "Invalid Phone number entered. \n "
-                    + "Phone number must be 10 digits long and it must not start with a 0 ");
+            displayInvalidPhoneMessage();
             phoneField.setText("");
             return false;
         } else {
@@ -424,11 +475,16 @@ public class Phonebook {
         }
     }
 
+    private void displayInvalidPhoneMessage() {
+        JOptionPane.showMessageDialog(mainPanel, "Invalid Phone number entered. \n "
+                + "Phone number must be 10 digits long and it must not start with a 0 ");
+    }
+
     //EFFECTS: checks if email entered matches the given email pattern
     //Otherwise prompts user to enter contact's information again
     private boolean checkEmail(String email) {
         if (!email.matches("[A-z]+([0-9]*[A-z]*)*\\@[a-z]+\\.com")) {
-            JOptionPane.showMessageDialog(mainPanel, "Invalid email entered.");
+            displayInvalidEmailMessage();
             emailField.setText("");
             return false;
         } else {
@@ -436,12 +492,15 @@ public class Phonebook {
         }
     }
 
+    private void displayInvalidEmailMessage() {
+        JOptionPane.showMessageDialog(mainPanel, "Invalid email entered.");
+    }
+
     //EFFECTS: checks if type entered is one of FAMILY, WORK, or FRIEND.
     //Otherwise prompts user to enter contact's information again
     private boolean checkType(String type) {
         if (!type.matches("FAMILY|FRIEND|WORK")) {
-            JOptionPane.showMessageDialog(mainPanel, "Incorrect Type entered \n "
-                    + "Please enter one of FAMILY/FRIEND/WORK.");
+            displayInvalidTypeMessage();
             typeField.setText("");
             return false;
         } else {
@@ -449,6 +508,10 @@ public class Phonebook {
         }
     }
 
+    private void displayInvalidTypeMessage() {
+        JOptionPane.showMessageDialog(mainPanel, "Incorrect Type entered \n "
+                + "Please enter one of FAMILY/FRIEND/WORK.");
+    }
 
 
     //    private void displayRightPanel() {
