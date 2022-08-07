@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.util.Vector;
 
 
 /**
@@ -59,10 +60,15 @@ public class Phonebook {
     DefaultTableModel contactListTableModel;
     String[] rowComponents;
 
+    JTable callingLogTable;
+    DefaultTableModel callingLogTableModel;
+    String[] namesToAdd;
+
     JPanel cardHolderPanel;
     JPanel p1;
     JPanel p2;
 
+    CardLayout cardLayout = new CardLayout();
 
 
     //EFFECTS: Instantiates a Phonebook with no contacts added
@@ -101,6 +107,7 @@ public class Phonebook {
     private void displayTopPanel() {
         BorderLayout topPanelLayout = new BorderLayout();
         topPanel.setLayout(topPanelLayout);
+        topPanel.setBorder(BorderFactory.createRaisedBevelBorder());
         topPanel.setBackground(new Color(74, 86, 119));
         topPanel.setPreferredSize(new Dimension(50, 30));
         topPanel.setVisible(true);
@@ -120,8 +127,8 @@ public class Phonebook {
     private void displayMainPanel() {
         BorderLayout centerPanelLayout = new BorderLayout();
         mainPanel.setLayout(centerPanelLayout);
+        //mainPanel.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         mainPanel.setBackground(new Color(219, 128, 222));
-
 
         displayCardLayoutPanel(centerPanelLayout);
 
@@ -135,7 +142,7 @@ public class Phonebook {
     }
 
     public void displayCardLayoutPanel(BorderLayout centerPanelLayout) {
-        CardLayout cardLayout = new CardLayout();
+
         cardHolderPanel = new JPanel();
         cardHolderPanel.setLayout(cardLayout);
         cardHolderPanel.setBackground(new Color(255, 159, 19));
@@ -143,38 +150,49 @@ public class Phonebook {
         //put more panels on top
         p1 = new JPanel();
         p1.setBackground(new Color(122, 123, 123));
-        JButton pressMeButton = new JButton("Press me");
-        p1.add(pressMeButton);
 
         p2 = new JPanel();
         p2.setBackground(new Color(252, 7, 130));
-        JButton returnButton = new JButton("Press me again");
-        p2.add(returnButton);
+        JButton returnButton = new JButton("Return");
+        p2.add(returnButton, BorderLayout.NORTH);
 
-        cardHolderPanel.add(p1, "1");
-        cardHolderPanel.add(p2, "2");
-        cardLayout.show(cardHolderPanel, "1");
+        JButton clearAllButton = new JButton("Clear All");
+        p2.add(clearAllButton);
+        displayCallLogTable();
 
-        pressMeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == pressMeButton) {
-                    cardLayout.show(cardHolderPanel, "2++++");
-                }
+        cardHolderPanel.add(p1);
+        cardHolderPanel.add(p2);
+        cardLayout.first(cardHolderPanel);
 
-            }
-        });
 
         returnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == returnButton) {
-                    cardLayout.show(cardHolderPanel, "1");
+                    cardLayout.previous(cardHolderPanel);
                 }
             }
         });
 
         mainPanel.add(cardHolderPanel, centerPanelLayout.CENTER);
+
+    }
+
+    //todo
+    private void displayCallLogTable() {
+        callingLogTable = new JTable();
+        callingLogTableModel = new DefaultTableModel();
+        callingLogTable.setModel(callingLogTableModel);
+
+        callingLogTableModel.addColumn("Call History");
+        callingLogTable.setRowSelectionAllowed(true);
+        callingLogTable.setCellSelectionEnabled(true);
+
+        JScrollPane scrollPane = new JScrollPane(callingLogTable);
+        callingLogTable.setBackground(new Color(213, 199, 199, 255));
+        callingLogTable.setFillsViewportHeight(true);
+        scrollPane.setVisible(true);
+        p2.add(scrollPane);
 
     }
 
@@ -187,9 +205,9 @@ public class Phonebook {
         helperPanel2.setBackground(new Color(88, 115, 98));
         helperPanel2.setLayout(helperLayout);
         helperPanel2.setPreferredSize(new Dimension(100, 35));
+        helperPanel2.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 
-        addButton.setBackground(new Color(156, 147, 243));
-        addButton.setForeground(Color.WHITE);
+        //helperPanel2.add(Box.createRigidArea(new Dimension(100, 0)));
         helperPanel2.add(addButton);
         helperPanel2.add(modifyButton);
         helperPanel2.add(deleteButton);
@@ -210,7 +228,12 @@ public class Phonebook {
         BoxLayout helperLayout = new BoxLayout(helperPanel1, BoxLayout.Y_AXIS);
         helperPanel1.setBackground(new Color(142, 222, 14));
         helperPanel1.setLayout(helperLayout);
-        helperPanel1.setPreferredSize(new Dimension(100, 50));
+        helperPanel1.setPreferredSize(new Dimension(125, 50));
+
+        nameField.setBorder(BorderFactory.createLoweredBevelBorder());
+        phoneField.setBorder(BorderFactory.createLoweredBevelBorder());
+        emailField.setBorder(BorderFactory.createLoweredBevelBorder());
+        typeField.setBorder(BorderFactory.createLoweredBevelBorder());
 
         helperPanel1.add(Box.createRigidArea(new Dimension(0, 8)));
         helperPanel1.add(nameField);
@@ -238,6 +261,7 @@ public class Phonebook {
         JLabel contactListLabel = new JLabel("Contact List");
         contactListLabel.setForeground(Color.WHITE);
         contactListLabel.setFont(new Font("Verdana", Font. BOLD, 15));
+        //contactListLabel.setBorder(BorderFactory.createEtchedBorder());
 
         bottomPanel.add(contactListLabel, bottomPanelLayout.NORTH);
         displayContactListTable();
@@ -289,12 +313,8 @@ public class Phonebook {
         contactListTableModel.addColumn("Email");
         contactListTableModel.addColumn("Type");
 
-        //setUpTypeColumn(contactListTable, contactListTable.getColumnModel().getColumn(3));
-
         contactListTable.setRowSelectionAllowed(true);
         contactListTable.setCellSelectionEnabled(true);
-        //tableCellEditor.isCellEditable(true);
-
 
         // Source: https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#simple
         //adding scroll pane to table
@@ -350,7 +370,23 @@ public class Phonebook {
         callButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //
+                if (!isRowNotSelected()) {
+                    if (e.getSource() == callButton) {
+
+                        int selectedRow = contactListTable.getSelectedRow();
+
+                        //todo: obtain name from selected field
+                        // and put it in an object list and then add it to callingLogTableModel
+//                        Object namesToAdd = contactListTable.getValueAt(selectedRow, 0);
+//                        callingLogTableModel.addRow((Object[]) namesToAdd);
+
+
+
+                        cardLayout.next(cardHolderPanel);
+                    }
+                } else {
+                    displayInvalidRowSelectionMessage();
+                }
             }
         });
     }
@@ -386,8 +422,8 @@ public class Phonebook {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == modifyButton) {
-
                     int selectedRowIndex = contactListTable.getSelectedRow();
+
                     if (!isRowNotSelected()) {
 
                         String newName = JOptionPane.showInputDialog(mainPanel,
