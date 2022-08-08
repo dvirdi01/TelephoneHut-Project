@@ -3,7 +3,6 @@ package ui;
 import model.CallingLog;
 import model.Contact;
 import model.ContactList;
-import org.json.JSONObject;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -54,11 +53,12 @@ public class Phonebook {
     JPanel p2;
 
     //Buttons
-    JButton returnButton = new JButton("Return");
+    //JButton returnButton = new JButton("Return");
     JButton addButton = new JButton("Add");
     JButton modifyButton = new JButton("Modify");
     JButton deleteButton = new JButton("Delete");
     JButton callButton = new JButton("Call");
+    JButton viewCallLogButton = new JButton("View");
     JButton saveButton = new JButton("Save");
     JButton loadButton = new JButton("Load");
 
@@ -77,6 +77,7 @@ public class Phonebook {
     JTable callingLogTable;
     DefaultTableModel callingLogTableModel;
     DefaultTableCellRenderer callingLogCellRenderer;
+    String[] callLogRowComponents;
 
 
 
@@ -91,31 +92,19 @@ public class Phonebook {
 
         setUpFrame();
         setUpPanel();
+
     }
 
     private void setUpFrame() {
+        ImageIcon frameIcon = new ImageIcon("./data/phonebookImageOption2.jpg");
         mainFrame = new JFrame();
         mainFrame.setTitle("Telephone Hut");
         mainFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(borderLayout);
         mainFrame.getContentPane().setBackground(new Color(24, 45, 86, 255));
+        mainFrame.setIconImage(frameIcon.getImage());
         mainFrame.setResizable(false);
-
-//        introPanel.setBackground(new Color(255, 179, 0));
-//        JButton welcomeButton = new JButton("Welcome");
-//        introPanel.add(welcomeButton, BorderLayout.SOUTH);
-//
-//        welcomeButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if (e.getSource() == welcomeButton) {
-//                    setUpPanel();
-//                }
-//            }
-//        });
-//
-//        introPanel.setVisible(true);
         mainFrame.add(introPanel);
     }
 
@@ -126,7 +115,6 @@ public class Phonebook {
         displayMainPanel();
         displayBottomPanel();
         displayLeftPanel();
-       //displayRightPanel();
     }
 
     private void displayTopPanel() {
@@ -158,11 +146,10 @@ public class Phonebook {
     private void displayMainPanel() {
         BorderLayout centerPanelLayout = new BorderLayout();
         mainPanel.setLayout(centerPanelLayout);
-        //mainPanel.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         mainPanel.setBackground(new Color(219, 128, 222));
+        //mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         displayCardLayoutPanel(centerPanelLayout);
-
         displayTextFields(centerPanelLayout);
         displayButtons(centerPanelLayout);
 
@@ -173,7 +160,7 @@ public class Phonebook {
     }
 
 
-    //Source: CardLayout Demo Project
+    // Source: CardLayout Demo Project
     // Link: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/
     // javase/tutorial/uiswing/examples/layout/CardLayoutDemoProject/src/layout/CardLayoutDemo.java
 
@@ -183,9 +170,43 @@ public class Phonebook {
         cardHolderPanel.setLayout(cardLayout);
         cardHolderPanel.setBackground(new Color(255, 159, 19));
 
-        //put more panels on top
+
+        Color color = new Color(174, 199, 227);
         p1 = new JPanel();
-        p1.setBackground(new Color(122, 123, 123));
+        p1.setLayout(new FlowLayout(FlowLayout.LEADING));
+        p1.setBackground(color);
+        ImageIcon userIcon = new ImageIcon("./data/userIcon2.png");
+
+
+        JPanel lastPanel = new JPanel();
+        lastPanel.setPreferredSize(new Dimension(150, 170));
+        lastPanel.setBackground(color);
+        JLabel userLabel = new JLabel(userIcon);
+        lastPanel.add(userLabel);
+
+        JPanel oneLastPanel = new JPanel();
+        oneLastPanel.setPreferredSize(new Dimension(170, 175));
+        oneLastPanel.setLayout(new BoxLayout(oneLastPanel, BoxLayout.Y_AXIS));
+        oneLastPanel.setBackground(color);
+
+        JLabel userInfo = new JLabel("User Information");
+        userInfo.setFont(new Font("Verdana", Font. BOLD, 12));
+        JLabel userName = new JLabel("Name: Divjot Virdi");
+        JLabel numberOfContacts = new JLabel("Phone Number: XXXXXXXXXX");
+        JLabel school = new JLabel("School: UBC");
+        JLabel year = new JLabel("Year Level: 2");
+
+        oneLastPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        oneLastPanel.add(userInfo);
+        oneLastPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        oneLastPanel.add(userName);
+        oneLastPanel.add(numberOfContacts);
+        oneLastPanel.add(school);
+        oneLastPanel.add(year);
+
+        p1.add(lastPanel);
+        p1.add(oneLastPanel);
+
 
         p2 = new JPanel();
         p2.setBackground(new Color(252, 7, 130));
@@ -234,7 +255,6 @@ public class Phonebook {
         callingLogTable = new JTable();
         callingLogTableModel = new DefaultTableModel();
         callingLogTable.setModel(callingLogTableModel);
-        //callingLogTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         callingLogTableModel.addColumn("Call History");
         callingLogCellRenderer = new DefaultTableCellRenderer();
@@ -274,9 +294,6 @@ public class Phonebook {
             String type = String.valueOf(contactListTable.getValueAt(i, 3));
 
             Contact contact = new Contact(name, phoneNumber, email, type);
-
-            //adds them to row components to be added in the table when load is pressed.
-            //loadedRowComponents = new String[][] {{name, phoneNumber, email, type}};
 
             if (!contactList.getAllContacts().contains(contact)) {
                 contactList.addContact(contact);
@@ -318,6 +335,7 @@ public class Phonebook {
         helperPanel2.add(modifyButton);
         helperPanel2.add(deleteButton);
         helperPanel2.add(callButton);
+        helperPanel2.add(viewCallLogButton);
         performButtonAction();
 
         //-----------------------------------------------------------------
@@ -332,7 +350,7 @@ public class Phonebook {
         JPanel helperPanel1 = new JPanel();
 
         BoxLayout helperLayout = new BoxLayout(helperPanel1, BoxLayout.Y_AXIS);
-        helperPanel1.setBackground(new Color(142, 222, 14));
+        helperPanel1.setBackground(new Color(167, 190, 232));
         helperPanel1.setLayout(helperLayout);
         helperPanel1.setPreferredSize(new Dimension(125, 50));
 
@@ -367,7 +385,6 @@ public class Phonebook {
         JLabel contactListLabel = new JLabel("Contact List");
         contactListLabel.setForeground(Color.WHITE);
         contactListLabel.setFont(new Font("Verdana", Font. BOLD, 15));
-        //contactListLabel.setBorder(BorderFactory.createEtchedBorder());
 
         bottomPanel.add(contactListLabel, bottomPanelLayout.NORTH);
         displayContactListTable();
@@ -381,7 +398,7 @@ public class Phonebook {
     private void displayLeftPanel() {
 
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.setBackground(new Color(171, 184, 227));
+        leftPanel.setBackground(new Color(167, 190, 232));
         leftPanel.setPreferredSize(new Dimension(100, 50));
 
         // create labels
@@ -439,9 +456,21 @@ public class Phonebook {
         performModifyButtonTask();
         performDeleteButtonTask();
         performCallButtonTask();
+        performViewButtonTask();
         performSaveButtonTask();
         performLoadButtonTask();
 
+    }
+
+    private void performViewButtonTask() {
+        viewCallLogButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == viewCallLogButton) {
+                    cardLayout.show(cardHolderPanel, "Panel with call log");
+                }
+            }
+        });
     }
 
     private void performLoadButtonTask() {
@@ -450,7 +479,7 @@ public class Phonebook {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == loadButton) {
                     loadFromFile();
-                    convertContactListToObject();
+                    loadBackContactList();
                 }
             }
         });
@@ -469,6 +498,8 @@ public class Phonebook {
         });
     }
 
+    @SuppressWarnings("")
+    //source: https://www.youtube.com/watch?v=hfwO0Jmdq7c
     private void performAddButtonTask() {
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -504,11 +535,6 @@ public class Phonebook {
                         nameField.setText("");
                     }
 
-
-                    //source: https://www.youtube.com/watch?v=hfwO0Jmdq7c
-//                    rowComponents = new String[]{name, phoneNumber, email, type};
-//                    contactListTableModel.addRow(rowComponents);
-//                    clearFields();
                 }
             }
         });
@@ -560,7 +586,7 @@ public class Phonebook {
 
     //todo
     private void displayInvalidRowSelectionMessage() {
-        ImageIcon oopsIcon = new ImageIcon("./data/oopsIcon.jpg");
+        ImageIcon oopsIcon = new ImageIcon("./data/oopsImage.png");
         JOptionPane.showMessageDialog(mainPanel,
                 "You must select a row to perform this operation",
                 "Invalid Row Selection", JOptionPane.DEFAULT_OPTION, oopsIcon);
@@ -750,7 +776,6 @@ public class Phonebook {
     public void loadFromFile() {
         loadContactList();
         loadCallingLog();
-        System.out.println("Loading complete");
     }
 
 
@@ -759,13 +784,14 @@ public class Phonebook {
     private void loadContactList() {
         try {
             contactList = jsonReaderContactList.readContactList();
-            System.out.println("Loaded Contact List from " + CONTACTLIST_STORE);
+            //System.out.println("Loaded Contact List from " + CONTACTLIST_STORE);
         } catch (IOException e) {
-            System.out.println("Unable to read from file: " + CONTACTLIST_STORE);
+            JOptionPane.showMessageDialog(mainPanel, "Unable to read file from" + CONTACTLIST_STORE);
+            //System.out.println("Unable to read from file: " + CONTACTLIST_STORE);
         }
     }
 
-    public void convertContactListToObject() {
+    public void loadBackContactList() {
         for (Contact c: contactList.getAllContacts()) {
             String loadedName = c.getName();
             String loadedPhoneNumber = c.getPhoneNumber();
@@ -778,14 +804,25 @@ public class Phonebook {
 
     }
 
+
+    public void loadBackCallingLog() {
+        for (String s: callingLog.getCallingLog()) {
+
+            callLogRowComponents = new String[] {s};
+            callingLogTableModel.addRow(callLogRowComponents);
+        }
+
+    }
+
     // MODIFIES: this
     // EFFECTS: loads Calling Log from file
     private void loadCallingLog() {
         try {
             callingLog = jsonReaderCallingLog.readCallingLog();
-            System.out.println("Loaded Calling Log from " + CALLING_STORE);
+            //System.out.println("Loaded Calling Log from " + CALLING_STORE);
         } catch (IOException e) {
-            System.out.println("Unable to read from file: " + CALLING_STORE);
+            JOptionPane.showMessageDialog(mainPanel, "Unable to read file from" + CONTACTLIST_STORE);
+            //System.out.println("Unable to read from file: " + CALLING_STORE);
         }
     }
 
