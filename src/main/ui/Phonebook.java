@@ -1,5 +1,9 @@
 package ui;
 
+import model.CallingLog;
+import model.Contact;
+import model.ContactList;
+import org.json.JSONObject;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -9,7 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.util.Vector;
+import java.io.IOException;
 
 
 /**
@@ -27,6 +31,9 @@ public class Phonebook {
     static final int FRAME_WIDTH = 600;
     static final int FRAME_HEIGHT = 400;
 
+    ContactList contactList = new ContactList();
+    CallingLog callingLog = new CallingLog();
+
     private JsonWriter jsonWriterCallingLog;
     private JsonWriter jsonWriterContactList;
     private JsonReader jsonReaderCallingLog;
@@ -34,13 +41,17 @@ public class Phonebook {
 
     JFrame mainFrame = new JFrame();
     BorderLayout borderLayout = new BorderLayout();
+    CardLayout cardLayout = new CardLayout();
 
     //Panels
+    JPanel introPanel = new JPanel();
     JPanel mainPanel = new JPanel();
     JPanel topPanel = new JPanel();
-    JPanel rightPanel = new JPanel();
     JPanel leftPanel = new JPanel();
     JPanel bottomPanel = new JPanel();
+    JPanel cardHolderPanel;
+    JPanel p1;
+    JPanel p2;
 
     //Buttons
     JButton returnButton = new JButton("Return");
@@ -48,6 +59,8 @@ public class Phonebook {
     JButton modifyButton = new JButton("Modify");
     JButton deleteButton = new JButton("Delete");
     JButton callButton = new JButton("Call");
+    JButton saveButton = new JButton("Save");
+    JButton loadButton = new JButton("Load");
 
     //TextFields
     JTextField nameField = new JTextField();
@@ -59,16 +72,12 @@ public class Phonebook {
     JTable contactListTable;
     DefaultTableModel contactListTableModel;
     String[] rowComponents;
+    String[] loadedRowComponents;
 
     JTable callingLogTable;
     DefaultTableModel callingLogTableModel;
-    String[] namesToAdd;
+    DefaultTableCellRenderer callingLogCellRenderer;
 
-    JPanel cardHolderPanel;
-    JPanel p1;
-    JPanel p2;
-
-    CardLayout cardLayout = new CardLayout();
 
 
     //EFFECTS: Instantiates a Phonebook with no contacts added
@@ -92,6 +101,22 @@ public class Phonebook {
         mainFrame.setLayout(borderLayout);
         mainFrame.getContentPane().setBackground(new Color(24, 45, 86, 255));
         mainFrame.setResizable(false);
+
+//        introPanel.setBackground(new Color(255, 179, 0));
+//        JButton welcomeButton = new JButton("Welcome");
+//        introPanel.add(welcomeButton, BorderLayout.SOUTH);
+//
+//        welcomeButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                if (e.getSource() == welcomeButton) {
+//                    setUpPanel();
+//                }
+//            }
+//        });
+//
+//        introPanel.setVisible(true);
+        mainFrame.add(introPanel);
     }
 
 
@@ -105,7 +130,10 @@ public class Phonebook {
     }
 
     private void displayTopPanel() {
-        BorderLayout topPanelLayout = new BorderLayout();
+        //BorderLayout topPanelLayout = new BorderLayout();
+        //FlowLayout topPanelLayout = new FlowLayout(FlowLayout.LEADING);
+
+        BoxLayout topPanelLayout = new BoxLayout(topPanel, BoxLayout.X_AXIS);
         topPanel.setLayout(topPanelLayout);
         topPanel.setBorder(BorderFactory.createRaisedBevelBorder());
         topPanel.setBackground(new Color(74, 86, 119));
@@ -117,7 +145,12 @@ public class Phonebook {
         topPanelLabel.setText("Contacts Manager");
         topPanelLabel.setForeground(Color.WHITE);
         topPanelLabel.setFont(new Font("Verdana", Font. BOLD, 18));
-        topPanel.add(topPanelLabel, topPanelLayout.CENTER);
+
+        //create Buttons
+        topPanel.add(saveButton);
+        topPanel.add(loadButton);
+        topPanel.add(Box.createRigidArea(new Dimension(70, 30)));
+        topPanel.add(topPanelLabel);
 
         //-----------------------------------------------------------------
         topPanel.setVisible(true);
@@ -141,6 +174,11 @@ public class Phonebook {
 
     }
 
+
+    //Source: CardLayout Demo Project
+    // Link: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/
+    // javase/tutorial/uiswing/examples/layout/CardLayoutDemoProject/src/layout/CardLayoutDemo.java
+
     public void displayCardLayoutPanel(BorderLayout centerPanelLayout) {
 
         cardHolderPanel = new JPanel();
@@ -158,10 +196,25 @@ public class Phonebook {
 
         JButton clearAllButton = new JButton("Clear All");
         p2.add(clearAllButton);
+
         displayCallLogTable();
 
-        cardHolderPanel.add(p1);
-        cardHolderPanel.add(p2);
+        clearAllButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!isCallingLogRowNotSelected()) {
+                    if (e.getSource() == clearAllButton) {
+                        callingLogTableModel.removeRow(callingLogTable.getSelectedRow());
+                    }
+                } else {
+                    displayInvalidRowSelectionMessage();
+                }
+
+            }
+        });
+
+        cardHolderPanel.add(p1, "Panel with user info");
+        cardHolderPanel.add(p2, "Panel with call log");
         cardLayout.first(cardHolderPanel);
 
 
@@ -169,7 +222,7 @@ public class Phonebook {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == returnButton) {
-                    cardLayout.previous(cardHolderPanel);
+                    cardLayout.show(cardHolderPanel, "Panel with user info");
                 }
             }
         });
@@ -183,18 +236,73 @@ public class Phonebook {
         callingLogTable = new JTable();
         callingLogTableModel = new DefaultTableModel();
         callingLogTable.setModel(callingLogTableModel);
+        //callingLogTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         callingLogTableModel.addColumn("Call History");
-        callingLogTable.setRowSelectionAllowed(true);
-        callingLogTable.setCellSelectionEnabled(true);
+        callingLogCellRenderer = new DefaultTableCellRenderer();
+
+        //set cell text placing to center
+        callingLogCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // apply center placing to column
+        // Source: https://www.tabnine.com/code/java/methods/javax.swing.table.DefaultTableCellRenderer/
+        // setHorizontalAlignment
+        // Source: https://docs.oracle.com/javase/7/docs/api/javax/swing/table/TableColumn.html
+        TableColumn callHistoryColumn;
+        callHistoryColumn = callingLogTable.getColumnModel().getColumn(0);
+        callHistoryColumn.setCellRenderer(callingLogCellRenderer);
+
+        callingLogTable.setRowSelectionAllowed(false);
+        callingLogTable.setCellSelectionEnabled(false);
 
         JScrollPane scrollPane = new JScrollPane(callingLogTable);
         callingLogTable.setBackground(new Color(213, 199, 199, 255));
         callingLogTable.setFillsViewportHeight(true);
+        callingLogTable.setVisible(true);
         scrollPane.setVisible(true);
-        p2.add(scrollPane);
+
+        p2.add(scrollPane, BorderLayout.CENTER);
 
     }
+
+
+    //todo: get contents of table
+    private void storeContactListTableData() {
+
+        for (int i = 0; i < contactListTable.getRowCount(); i++) {
+            String name = String.valueOf(contactListTable.getValueAt(i, 0));
+            String phoneNumber = String.valueOf(contactListTable.getValueAt(i, 1));
+            String email = String.valueOf(contactListTable.getValueAt(i, 2));
+            String type = String.valueOf(contactListTable.getValueAt(i, 3));
+
+            Contact contact = new Contact(name, phoneNumber, email, type);
+
+            //adds them to row components to be added in the table when load is pressed.
+            //loadedRowComponents = new String[][] {{name, phoneNumber, email, type}};
+
+            if (!contactList.getAllContacts().contains(contact)) {
+                contactList.addContact(contact);
+            }
+
+        }
+
+    }
+
+    //todo: get contents of table
+    private void storeCallingLogTableData() {
+
+        for (int i = 0; i < callingLogTable.getRowCount(); i++) {
+            String name = String.valueOf(contactListTable.getValueAt(i, 0));
+            String phoneNumber = "1111111111";
+            String email = "defaultemail@email.com";
+            String type = "FRIEND";
+
+            Contact contactWithDefaultFields = new Contact(name, phoneNumber, email, type);
+            callingLog.makeCall(contactWithDefaultFields);
+        }
+
+    }
+
 
 
     private void displayButtons(BorderLayout centerPanelLayout) {
@@ -328,15 +436,39 @@ public class Phonebook {
 
 
 
-
-
-
     private void performButtonAction() {
         performAddButtonTask();
         performModifyButtonTask();
         performDeleteButtonTask();
         performCallButtonTask();
+        performSaveButtonTask();
+        performLoadButtonTask();
 
+    }
+
+    private void performLoadButtonTask() {
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == loadButton) {
+                    loadFromFile();
+                    convertContactListToObject();
+                }
+            }
+        });
+    }
+
+    private void performSaveButtonTask() {
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == saveButton) {
+                    storeContactListTableData();
+                    storeCallingLogTableData();
+                    saveProgress();
+                }
+            }
+        });
     }
 
     private void performAddButtonTask() {
@@ -370,19 +502,17 @@ public class Phonebook {
         callButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!isRowNotSelected()) {
+                if (!isContactListRowNotSelected()) {
                     if (e.getSource() == callButton) {
 
                         int selectedRow = contactListTable.getSelectedRow();
 
-                        //todo: obtain name from selected field
-                        // and put it in an object list and then add it to callingLogTableModel
-//                        Object namesToAdd = contactListTable.getValueAt(selectedRow, 0);
-//                        callingLogTableModel.addRow((Object[]) namesToAdd);
+                        Object namesToAdd = contactListTable.getValueAt(selectedRow, 0);
+                        String name = namesToAdd.toString();
+                        callingLogTableModel.addRow(new String[]{name});
+                        callingLogTable.getSelectionModel().clearSelection();
 
-
-
-                        cardLayout.next(cardHolderPanel);
+                        cardLayout.show(cardHolderPanel, "Panel with call log");
                     }
                 } else {
                     displayInvalidRowSelectionMessage();
@@ -395,7 +525,7 @@ public class Phonebook {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!isRowNotSelected()) {
+                if (!isContactListRowNotSelected()) {
                     if (e.getSource() == deleteButton) {
                         int confirmation = JOptionPane.showConfirmDialog(mainPanel,
                                 "Are you sure you want to delete this contact?",
@@ -424,7 +554,7 @@ public class Phonebook {
                 if (e.getSource() == modifyButton) {
                     int selectedRowIndex = contactListTable.getSelectedRow();
 
-                    if (!isRowNotSelected()) {
+                    if (!isContactListRowNotSelected()) {
 
                         String newName = JOptionPane.showInputDialog(mainPanel,
                                 "Enter new name of Contact");
@@ -474,8 +604,12 @@ public class Phonebook {
         typeField.setText("");
     }
 
-    private boolean isRowNotSelected() {
+    private boolean isContactListRowNotSelected() {
         return contactListTable.getSelectionModel().isSelectionEmpty();
+    }
+
+    private boolean isCallingLogRowNotSelected() {
+        return callingLogTable.getSelectionModel().isSelectionEmpty();
     }
 
 
@@ -550,86 +684,91 @@ public class Phonebook {
     }
 
 
-    //    private void displayRightPanel() {
-//        rightPanel.setBackground(new Color(234, 205, 7));
-//        rightPanel.setPreferredSize(new Dimension(50, 50));
-//        rightPanel.setVisible(true);
-//        mainFrame.add(rightPanel, borderLayout.EAST);
-//
-//
-//
-//
+
+
 //    //----------------------------------------PHASE 2 METHODS----------------------------------------------------
 //
-//    //SAVING METHODS
-//
-//    //EFFECTS: saves both contact list and calling log into separate file.
-//    public void saveProgress() {
-//        saveContactList();
-//        saveCallingLog();
-//    }
-//
-//
-//    //EFFECTS: saves contact list into file.
-//    public void saveContactList() {
-//        try {
-//            jsonWriterContactList.open();
-//            jsonWriterContactList.writeContactList(contactList);
-//            jsonWriterContactList.closeWriter();
-//            System.out.println("Saved your Contact List to " + CONTACTLIST_STORE);
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Unable to write to file: " + CONTACTLIST_STORE);
-//        }
-//    }
-//
-//
-//    //EFFECTS: saves calling log into file.
-//    public void saveCallingLog() {
-//        try {
-//            jsonWriterCallingLog.open();
-//            jsonWriterCallingLog.writeCallingLog(callingLog);
-//            jsonWriterCallingLog.closeWriter();
-//            System.out.println("Saved your Calling Log to " + CALLING_STORE);
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Unable to write to file: " + CALLING_STORE);
-//        }
-//    }
-//
-//
-//
-//    //LOADING METHODS
-//
-//    //MODIFIES: this
-//    //EFFECTS: loads both contact list and calling log from file and displays menu options again
-//    public void loadFromFile() {
-//        loadContactList();
-//        loadCallingLog();
-//        System.out.println("Loading complete");
-//        goToMenu();
-//    }
-//
-//
-//    // MODIFIES: this
-//    // EFFECTS: loads ContactList from file
-//    private void loadContactList() {
-//        try {
-//            contactList = jsonReaderContactList.readContactList();
-//            System.out.println("Loaded Contact List from " + CONTACTLIST_STORE);
-//        } catch (IOException e) {
-//            System.out.println("Unable to read from file: " + CONTACTLIST_STORE);
-//        }
-//    }
-//
-//    // MODIFIES: this
-//    // EFFECTS: loads Calling Log from file
-//    private void loadCallingLog() {
-//        try {
-//            callingLog = jsonReaderCallingLog.readCallingLog();
-//            System.out.println("Loaded Calling Log from " + CALLING_STORE);
-//        } catch (IOException e) {
-//            System.out.println("Unable to read from file: " + CALLING_STORE);
-//        }
-//    }
-//
+    //SAVING METHODS
+
+    //EFFECTS: saves both contact list and calling log into separate file.
+    public void saveProgress() {
+        saveContactList();
+        saveCallingLog();
+    }
+
+
+    //EFFECTS: saves contact list into file.
+    public void saveContactList() {
+        try {
+            jsonWriterContactList.open();
+            jsonWriterContactList.writeContactList(contactList);
+            jsonWriterContactList.closeWriter();
+            System.out.println("Saved your Contact List to " + CONTACTLIST_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + CONTACTLIST_STORE);
+        }
+    }
+
+
+    //EFFECTS: saves calling log into file.
+    public void saveCallingLog() {
+        try {
+            jsonWriterCallingLog.open();
+            jsonWriterCallingLog.writeCallingLog(callingLog);
+            jsonWriterCallingLog.closeWriter();
+            System.out.println("Saved your Calling Log to " + CALLING_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + CALLING_STORE);
+        }
+    }
+
+
+
+    //LOADING METHODS
+
+    //MODIFIES: this
+    //EFFECTS: loads both contact list and calling log from file and displays menu options again
+    public void loadFromFile() {
+        loadContactList();
+        loadCallingLog();
+        System.out.println("Loading complete");
+    }
+
+
+    // MODIFIES: this
+    // EFFECTS: loads ContactList from file
+    private void loadContactList() {
+        try {
+            contactList = jsonReaderContactList.readContactList();
+            System.out.println("Loaded Contact List from " + CONTACTLIST_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + CONTACTLIST_STORE);
+        }
+    }
+
+    public void convertContactListToObject() {
+        for (Contact c: contactList.getAllContacts()) {
+            String loadedName = c.getName();
+            String loadedPhoneNumber = c.getPhoneNumber();
+            String loadedEmail = c.getEmail();
+            String loadedType = c.getType();
+            loadedRowComponents = new String[]{loadedName, loadedPhoneNumber, loadedEmail, loadedType};
+            contactListTableModel.addRow(loadedRowComponents);
+
+        }
+
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads Calling Log from file
+    private void loadCallingLog() {
+        try {
+            callingLog = jsonReaderCallingLog.readCallingLog();
+            System.out.println("Loaded Calling Log from " + CALLING_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + CALLING_STORE);
+        }
+    }
+
 
 }
