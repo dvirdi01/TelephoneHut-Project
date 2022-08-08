@@ -20,6 +20,7 @@ import java.io.IOException;
  about the contacts stored in the book. It allows user to add contacts,
  view contacts, make calls, and view their calling history
  Source and inspiration taken from: https://github.students.cs.ubc.ca/CPSC210/TellerApp
+ //NOTE: Sources are cited at the end of this class
  */
 
 public class Phonebook {
@@ -126,7 +127,7 @@ public class Phonebook {
         BoxLayout topPanelLayout = new BoxLayout(topPanel, BoxLayout.X_AXIS);
         topPanel.setLayout(topPanelLayout);
         topPanel.setBorder(BorderFactory.createRaisedBevelBorder());
-        topPanel.setBackground(new Color(74, 86, 119));
+        topPanel.setBackground(new Color(2, 22, 82));
         topPanel.setPreferredSize(new Dimension(50, 30));
         topPanel.setVisible(true);
 
@@ -137,6 +138,7 @@ public class Phonebook {
         topPanelLabel.setFont(new Font("Verdana", Font. BOLD, 18));
 
         //create Buttons
+        //saveButton.setBackground(new Color(13, 58, 197));
         topPanel.add(saveButton);
         topPanel.add(loadButton);
         topPanel.add(Box.createRigidArea(new Dimension(70, 30)));
@@ -154,7 +156,6 @@ public class Phonebook {
     private void displayMainPanel() {
         BorderLayout centerPanelLayout = new BorderLayout();
         mainPanel.setLayout(centerPanelLayout);
-        //mainPanel.setBackground(new Color(219, 128, 222));
 
         displayCardLayoutPanel(centerPanelLayout);
         displayTextFields(centerPanelLayout);
@@ -180,7 +181,7 @@ public class Phonebook {
         cardHolderPanel = new JPanel();
         cardHolderPanel.setLayout(cardLayout);
 
-        Color color = new Color(174, 199, 227);
+        Color color = new Color(225, 225, 231);
         p1 = new JPanel();
         p1.setLayout(new FlowLayout(FlowLayout.LEADING));
         p1.setBackground(color);
@@ -266,26 +267,6 @@ public class Phonebook {
 
     }
 
-    //MODIFIES: contactList
-    //EFFECTS: obtains the data from contactListTable and categorizes it into contacts
-    //that are added in a contact list.
-    private void storeContactListTableData() {
-
-        for (int i = 0; i < contactListTable.getRowCount(); i++) {
-            String name = String.valueOf(contactListTable.getValueAt(i, 0));
-            String phoneNumber = String.valueOf(contactListTable.getValueAt(i, 1));
-            String email = String.valueOf(contactListTable.getValueAt(i, 2));
-            String type = String.valueOf(contactListTable.getValueAt(i, 3));
-
-            Contact contact = new Contact(name, phoneNumber, email, type);
-
-            if (!contactList.getAllContacts().contains(contact)) {
-                contactList.addContact(contact);
-            }
-
-        }
-
-    }
 
 
     //MODIFIES: callLog
@@ -314,12 +295,11 @@ public class Phonebook {
 
         //source: https://www.youtube.com/watch?v=pDqjHozkMBs
         FlowLayout helperLayout = new FlowLayout(FlowLayout.LEADING);
-        helperPanel2.setBackground(new Color(88, 115, 98));
+        helperPanel2.setBackground(new Color(54, 54, 115));
         helperPanel2.setLayout(helperLayout);
         helperPanel2.setPreferredSize(new Dimension(100, 35));
         helperPanel2.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 
-        //helperPanel2.add(Box.createRigidArea(new Dimension(100, 0)));
         helperPanel2.add(addButton);
         helperPanel2.add(modifyButton);
         helperPanel2.add(deleteButton);
@@ -341,7 +321,7 @@ public class Phonebook {
         JPanel helperPanel1 = new JPanel();
 
         BoxLayout helperLayout = new BoxLayout(helperPanel1, BoxLayout.Y_AXIS);
-        helperPanel1.setBackground(new Color(167, 190, 232));
+        helperPanel1.setBackground(new Color(180, 192, 211));
         helperPanel1.setLayout(helperLayout);
         helperPanel1.setPreferredSize(new Dimension(125, 50));
 
@@ -395,7 +375,7 @@ public class Phonebook {
     private void displayLeftPanel() {
 
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.setBackground(new Color(167, 190, 232));
+        leftPanel.setBackground(new Color(180, 192, 211));
         leftPanel.setPreferredSize(new Dimension(100, 50));
 
         // create labels
@@ -444,14 +424,37 @@ public class Phonebook {
         // Source: https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#simple
         //adding scroll pane to table
         JScrollPane scrollPane = new JScrollPane(contactListTable);
-        contactListTable.setBackground(new Color(201, 215, 253, 255));
+        contactListTable.setBackground(new Color(202, 210, 234, 255));
         contactListTable.setFillsViewportHeight(true);
         scrollPane.setVisible(true);
         bottomPanel.add(scrollPane);
 
     }
 
+    //MODIFIES: contactList
+    //EFFECTS: obtains the data from contactListTable and categorizes it into contacts
+    //that are added in a contact list.
+    private void storeContactListTableData() {
 
+        for (int i = 0; i < contactListTable.getRowCount(); i++) {
+            String name = String.valueOf(contactListTable.getValueAt(i, 0));
+            String phoneNumber = String.valueOf(contactListTable.getValueAt(i, 1));
+            String email = String.valueOf(contactListTable.getValueAt(i, 2));
+            String type = String.valueOf(contactListTable.getValueAt(i, 3));
+
+            Contact contact = new Contact(name, phoneNumber, email, type);
+
+            if (!contactList.getAllContacts().contains(contact)) {
+                contactList.addContact(contact);
+            }
+
+        }
+
+    }
+
+
+
+    //--------------------------------------------BUTTON EVENTS----------------------------------------------
 
     //MODIFIES: this
     //EFFECTS: For every button on JFrame, allows their corresponding actions to happen
@@ -465,86 +468,6 @@ public class Phonebook {
         performReturnButtonTask();
         performSaveButtonTask();
         performLoadButtonTask();
-
-    }
-
-
-    //MODIFIES: this
-    //EFFECTS: if returnButton is clicked, takes user back to the panel
-    // that displays user's information
-    private void performReturnButtonTask() {
-        returnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == returnButton) {
-                    cardLayout.show(cardHolderPanel, "Panel with user info");
-                }
-            }
-        });
-    }
-
-
-    //MODIFIES: callingLogTable, mainPanel?
-    //EFFECTS: deletes the selected row in callLogTable upon button click.
-    private void performClearButtonTask() {
-
-        clearAllButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!isCallingLogRowNotSelected()) {
-                    if (e.getSource() == clearAllButton) {
-                        callingLogTableModel.removeRow(callingLogTable.getSelectedRow());
-                    }
-                } else {
-                    displayInvalidRowSelectionMessage();
-                }
-
-            }
-        });
-
-    }
-
-    //MODIFIES: mainPanel?
-    //EFFECTS: Takes user to the panel that stores the callLogTable
-    private void performViewButtonTask() {
-        viewCallLogButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == viewCallLogButton) {
-                    cardLayout.show(cardHolderPanel, "Panel with call log");
-                }
-            }
-        });
-    }
-
-    //MODIFIES: contactListTable, bottomPanel, this
-    //EFFECTS: Loads contactList and callLog from JSON file.
-    // and loads the contents of contactList back in contactListTable
-    private void performLoadButtonTask() {
-        loadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == loadButton) {
-                    loadFromFile();
-                    loadBackContactList();
-                }
-            }
-        });
-    }
-
-
-    //EFFECTS: saves the data from contactListTable into JSON file
-    private void performSaveButtonTask() {
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == saveButton) {
-                    storeContactListTableData();
-                    storeCallingLogTableData();
-                    saveProgress();
-                }
-            }
-        });
     }
 
 
@@ -594,64 +517,6 @@ public class Phonebook {
         });
     }
 
-
-    //MODIFIES: callLogTable
-    //EFFECTS: adds contact's name in callLogTable upon button click. Displays error message
-    //if a contact is not selected before button click.
-    private void performCallButtonTask() {
-        callButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!isContactListRowNotSelected()) {
-                    if (e.getSource() == callButton) {
-
-                        int selectedRow = contactListTable.getSelectedRow();
-
-                        Object namesToAdd = contactListTable.getValueAt(selectedRow, 0);
-                        String name = namesToAdd.toString();
-                        callingLogTableModel.addRow(new String[]{name});
-                        callingLogTable.getSelectionModel().clearSelection();
-
-                        cardLayout.show(cardHolderPanel, "Panel with call log");
-                    }
-                } else {
-                    displayInvalidRowSelectionMessage();
-                }
-            }
-        });
-    }
-
-    //MODIFIES: contactListTable
-    //EFFECTS: deletes the selected contact. Displays an error message if
-    //a contact is not selected before button click.
-    private void performDeleteButtonTask() {
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!isContactListRowNotSelected()) {
-                    if (e.getSource() == deleteButton) {
-                        int confirmation = JOptionPane.showConfirmDialog(mainPanel,
-                                "Are you sure you want to delete this contact?",
-                                "Delete Selected", JOptionPane.YES_NO_OPTION);
-                        if (confirmation == JOptionPane.YES_OPTION) {
-                            contactListTableModel.removeRow(contactListTable.getSelectedRow());
-                        }
-                    }
-                } else {
-                    displayInvalidRowSelectionMessage();
-                }
-            }
-        });
-    }
-
-    //EFFECTS: displays an error message that prompts user to select a row
-    //before doing any operation
-    private void displayInvalidRowSelectionMessage() {
-        ImageIcon oopsIcon = new ImageIcon("./data/oopsImage.png");
-        JOptionPane.showMessageDialog(mainPanel,
-                "You must select a row to perform this operation",
-                "Invalid Row Selection", JOptionPane.DEFAULT_OPTION, oopsIcon);
-    }
 
     @SuppressWarnings("methodlength")
     //MODIFIES: contactListTable
@@ -706,6 +571,132 @@ public class Phonebook {
         });
     }
 
+    //MODIFIES: contactListTable
+    //EFFECTS: deletes the selected contact. Displays an error message if
+    //a contact is not selected before button click.
+    private void performDeleteButtonTask() {
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!isContactListRowNotSelected()) {
+                    if (e.getSource() == deleteButton) {
+                        int confirmation = JOptionPane.showConfirmDialog(mainPanel,
+                                "Are you sure you want to delete this contact?",
+                                "Delete Selected", JOptionPane.YES_NO_OPTION);
+                        if (confirmation == JOptionPane.YES_OPTION) {
+                            contactListTableModel.removeRow(contactListTable.getSelectedRow());
+                        }
+                    }
+                } else {
+                    displayInvalidRowSelectionMessage();
+                }
+            }
+        });
+    }
+
+    //MODIFIES: callLogTable
+    //EFFECTS: adds contact's name in callLogTable upon button click. Displays error message
+    //if a contact is not selected before button click.
+    private void performCallButtonTask() {
+        callButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!isContactListRowNotSelected()) {
+                    if (e.getSource() == callButton) {
+
+                        int selectedRow = contactListTable.getSelectedRow();
+
+                        Object namesToAdd = contactListTable.getValueAt(selectedRow, 0);
+                        String name = namesToAdd.toString();
+                        callingLogTableModel.addRow(new String[]{name});
+                        callingLogTable.getSelectionModel().clearSelection();
+
+                        cardLayout.show(cardHolderPanel, "Panel with call log");
+                    }
+                } else {
+                    displayInvalidRowSelectionMessage();
+                }
+            }
+        });
+    }
+
+    //MODIFIES: mainPanel?
+    //EFFECTS: Takes user to the panel that stores the callLogTable
+    private void performViewButtonTask() {
+        viewCallLogButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == viewCallLogButton) {
+                    cardLayout.show(cardHolderPanel, "Panel with call log");
+                }
+            }
+        });
+    }
+
+    //MODIFIES: this
+    //EFFECTS: if returnButton is clicked, takes user back to the panel
+    // that displays user's information
+    private void performReturnButtonTask() {
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == returnButton) {
+                    cardLayout.show(cardHolderPanel, "Panel with user info");
+                }
+            }
+        });
+    }
+
+    //MODIFIES: callingLogTable, mainPanel?
+    //EFFECTS: deletes the selected row in callLogTable upon button click.
+    private void performClearButtonTask() {
+
+        clearAllButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!isCallingLogRowNotSelected()) {
+                    if (e.getSource() == clearAllButton) {
+                        callingLogTableModel.removeRow(callingLogTable.getSelectedRow());
+                    }
+                } else {
+                    displayInvalidRowSelectionMessage();
+                }
+
+            }
+        });
+
+    }
+
+    //MODIFIES: contactListTable, bottomPanel, this
+    //EFFECTS: Loads contactList and callLog from JSON file.
+    // and loads the contents of contactList back in contactListTable
+    private void performLoadButtonTask() {
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == loadButton) {
+                    loadFromFile();
+                    loadBackContactList();
+                }
+            }
+        });
+    }
+
+
+    //EFFECTS: saves the data from contactListTable into JSON file
+    private void performSaveButtonTask() {
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == saveButton) {
+                    storeContactListTableData();
+                    storeCallingLogTableData();
+                    saveProgress();
+                }
+            }
+        });
+    }
+
     //MODIFIES: leftPanel
     //EFFECTS: clears the text fields
     public void clearFields() {
@@ -728,6 +719,18 @@ public class Phonebook {
     }
 
 
+    //----------------------------------------REGEX METHODS----------------------------------------------------
+
+
+    //EFFECTS: displays an error message that prompts user to select a row
+    //before doing any operation
+    private void displayInvalidRowSelectionMessage() {
+        ImageIcon oopsIcon = new ImageIcon("./data/oopsImage.png");
+        JOptionPane.showMessageDialog(mainPanel,
+                "You must select a row to perform this operation",
+                "Invalid Row Selection", JOptionPane.DEFAULT_OPTION, oopsIcon);
+    }
+
 
     //MODIFIES: nametextField
     //EFFECTS: returns true if name entered only contains alphabets. If it doesn't,
@@ -743,12 +746,6 @@ public class Phonebook {
         }
     }
 
-
-    //EFFECTS: displays a message that lets user know why the name they entered
-    //while adding a contact is invalid.
-    private void displayInvalidNameMessage() {
-        JOptionPane.showMessageDialog(mainPanel, "Name can only contain alphabets!");
-    }
 
 
     //MODIFIES: phoneTextField
@@ -766,12 +763,6 @@ public class Phonebook {
     }
 
 
-    //EFFECTS: displays a message that lets user know why the phone Number they entered
-    //while adding a contact is invalid.
-    private void displayInvalidPhoneMessage() {
-        JOptionPane.showMessageDialog(mainPanel, "Invalid Phone number entered. \n "
-                + "Phone number must be 10 digits long and it must not start with a 0 ");
-    }
 
     //EFFECTS: returns true if email entered matches the given email pattern
     //Otherwise displays error message, clears email textfield and retirns false;
@@ -786,12 +777,6 @@ public class Phonebook {
     }
 
 
-    //EFFECTS: displays a message that lets user know why the email they entered
-    //while adding a contact is invalid.
-    private void displayInvalidEmailMessage() {
-        JOptionPane.showMessageDialog(mainPanel, "Invalid email entered.");
-    }
-
     //EFFECTS: returns true if type entered is one of FAMILY, WORK, or FRIEND.
     //Otherwise displays error message, clears type field, and returns false;
     private boolean checkType(String type) {
@@ -804,6 +789,29 @@ public class Phonebook {
         }
     }
 
+    //----------------------------------------ERROR MESSAGES----------------------------------------------------
+
+
+    //EFFECTS: displays a message that lets user know why the name they entered
+    //while adding a contact is invalid.
+    private void displayInvalidNameMessage() {
+        JOptionPane.showMessageDialog(mainPanel, "Name can only contain alphabets!");
+    }
+
+
+    //EFFECTS: displays a message that lets user know why the phone Number they entered
+    //while adding a contact is invalid.
+    private void displayInvalidPhoneMessage() {
+        JOptionPane.showMessageDialog(mainPanel, "Invalid Phone number entered. \n "
+                + "Phone number must be 10 digits long and it must not start with a 0 ");
+    }
+
+    //EFFECTS: displays a message that lets user know why the email they entered
+    //while adding a contact is invalid.
+    private void displayInvalidEmailMessage() {
+        JOptionPane.showMessageDialog(mainPanel, "Invalid email entered.");
+    }
+
 
     //EFFECTS: displays a message that lets user know why the type they entered
     //while adding a contact is invalid.
@@ -814,10 +822,7 @@ public class Phonebook {
 
 
 
-
-   //----------------------------------------PHASE 2 METHODS----------------------------------------------------
-
-    //SAVING METHODS
+    //----------------------------------------SAVING METHODS----------------------------------------------------
 
     //EFFECTS: saves both contact list and calling log into separate file.
     public void saveProgress() {
@@ -853,7 +858,7 @@ public class Phonebook {
 
 
 
-    //LOADING METHODS
+    //----------------------------------------LOADING METHODS----------------------------------------------------
 
     //MODIFIES: this
     //EFFECTS: loads both contact list and calling log from file
@@ -868,7 +873,6 @@ public class Phonebook {
     private void loadContactList() {
         try {
             contactList = jsonReaderContactList.readContactList();
-            //System.out.println("Loaded Contact List from " + CONTACTLIST_STORE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(mainPanel, "Unable to read file from" + CONTACTLIST_STORE);
         }
@@ -906,12 +910,43 @@ public class Phonebook {
     private void loadCallingLog() {
         try {
             callingLog = jsonReaderCallingLog.readCallingLog();
-            //System.out.println("Loaded Calling Log from " + CALLING_STORE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(mainPanel,
                     "Unable to read file from" + CONTACTLIST_STORE);
         }
     }
+
+
+    /**
+     * Sources---------------------------------------------------------------------------------------------
+     *
+     * MAIN SOURCE: https://docs.oracle.com/javase/tutorial/uiswing/components/index.html
+     *
+     * 1. Regex: https:
+     * //stackoverflow.com/questions/24592808/regular-expression-in-java-validating-user-input
+     *
+     * 2. JOptionPanes:
+     * https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
+     *
+     * 3. ScrollPanes and Tables:
+     * https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#simple
+     * https://www.youtube.com/watch?v=hfwO0Jmdq7c
+     * https://docs.oracle.com/javase/7/docs/api/javax/swing/table/DefaultTableModel.html#DefaultTableModel()
+     * https://www.tabnine.com/code/java/methods/javax.swing.table.DefaultTableCellRenderer/
+     * https://docs.oracle.com/javase/7/docs/api/javax/swing/table/TableColumn.html
+     * https://www.youtube.com/watch?v=hfwO0Jmdq7c
+     * https://www.youtube.com/watch?v=Tfov0ERfdFk
+     * https://www.youtube.com/watch?v=CQMpXGwHeYQ&t=520s
+     * https://www.youtube.com/watch?v=F0Zq2fAUpXg&t=240s
+     *
+     * 4. Layouts:
+     * https://www.youtube.com/watch?v=pDqjHozkMBs
+     * Card Layout Demo Project: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https:
+     * //docs.oracle.com/javase/tutorial/uiswing/examples/layout/CardLayoutDemoProject/src/layout/
+     * CardLayoutDemo.java
+     * https://www.youtube.com/watch?v=sAReaaTxNGU
+     *
+     */
 
 
 }
