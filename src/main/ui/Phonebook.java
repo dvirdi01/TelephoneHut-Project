@@ -34,10 +34,10 @@ public class Phonebook {
     ContactList contactList = new ContactList();
     CallingLog callingLog = new CallingLog();
 
-    private JsonWriter jsonWriterCallingLog;
-    private JsonWriter jsonWriterContactList;
-    private JsonReader jsonReaderCallingLog;
-    private JsonReader jsonReaderContactList;
+    private final JsonWriter jsonWriterCallingLog;
+    private final JsonWriter jsonWriterContactList;
+    private final JsonReader jsonReaderCallingLog;
+    private final JsonReader jsonReaderContactList;
 
     JFrame mainFrame = new JFrame();
     BorderLayout borderLayout = new BorderLayout();
@@ -130,8 +130,6 @@ public class Phonebook {
     }
 
     private void displayTopPanel() {
-        //BorderLayout topPanelLayout = new BorderLayout();
-        //FlowLayout topPanelLayout = new FlowLayout(FlowLayout.LEADING);
 
         BoxLayout topPanelLayout = new BoxLayout(topPanel, BoxLayout.X_AXIS);
         topPanel.setLayout(topPanelLayout);
@@ -477,26 +475,45 @@ public class Phonebook {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == addButton) {
 
-                    String name = nameField.getText();
-                    checkInvalidName(name);
+                    String name;
+                    String phoneNumber;
+                    String email;
+                    String type;
 
-                    String phoneNumber = phoneField.getText();
-                    checkPhoneNumber(phoneNumber);
+                    name = nameField.getText();
+                    if (checkInvalidName(name)) {
+                        phoneNumber = phoneField.getText();
+                        if (checkPhoneNumber(phoneNumber)) {
+                            email = emailField.getText();
+                            if (checkEmail(email)) {
+                                type = typeField.getText();
+                                if (checkType(type)) {
+                                    rowComponents = new String[]{name, phoneNumber, email, type};
+                                    contactListTableModel.addRow(rowComponents);
+                                    clearFields();
+                                } else {
+                                    typeField.setText("");
+                                }
+                            } else {
+                                emailField.setText("");
+                            }
+                        } else {
+                            phoneField.setText("");
+                        }
+                    } else {
+                        nameField.setText("");
+                    }
 
-                    String email = emailField.getText();
-                    checkEmail(email);
-
-                    String type = typeField.getText();
-                    checkType(type);
 
                     //source: https://www.youtube.com/watch?v=hfwO0Jmdq7c
-                    rowComponents = new String[]{name, phoneNumber, email, type};
-                    contactListTableModel.addRow(rowComponents);
-                    clearFields();
+//                    rowComponents = new String[]{name, phoneNumber, email, type};
+//                    contactListTableModel.addRow(rowComponents);
+//                    clearFields();
                 }
             }
         });
     }
+
 
     private void performCallButtonTask() {
         callButton.addActionListener(new ActionListener() {
@@ -541,10 +558,12 @@ public class Phonebook {
         });
     }
 
+    //todo
     private void displayInvalidRowSelectionMessage() {
+        ImageIcon oopsIcon = new ImageIcon("./data/oopsIcon.jpg");
         JOptionPane.showMessageDialog(mainPanel,
                 "You must select a row to perform this operation",
-                "Invalid Row Selection", JOptionPane.DEFAULT_OPTION);
+                "Invalid Row Selection", JOptionPane.DEFAULT_OPTION, oopsIcon);
     }
 
     private void performModifyButtonTask() {
@@ -658,7 +677,7 @@ public class Phonebook {
             emailField.setText("");
             return false;
         } else {
-            return false;
+            return true;
         }
     }
 
