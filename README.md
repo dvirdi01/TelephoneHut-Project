@@ -37,3 +37,52 @@ and how I can build a sophisticated application, which will help me build more p
 it. 
 - As a user, when I start the application, I want to be given the option to load my saved phonebook from the file.
 
+# Instructions for Grader
+- My first required event allows you to enter a contact into your Contact List which is a table that displays 
+all your contacts. You can generate the first required event by entering the name, phone number, email, and 
+type of the contact that you want to add to your contact book in the text fields and then pressing the “Add” button. 
+If you have entered any of the four fields incorrectly, a dialog box will appear to let you know that you need to 
+enter that information again. If all information about the contact is entered correctly, the contact and his 
+information will be added in the Contact List at the bottom half of the screen. 
+
+- My second required event allows you to delete a previously added contact. You can generate the second 
+required event by first selecting the row that you want to delete from the Contact List and then clicking the 
+“Delete” button. You will then see a confirmation dialog box that will ask you if you are sure that you want 
+to delete that contact. If you click yes, the selected contact will be deleted from the Contact List, and if 
+you click no, the contact will not be deleted. If you do not select a row before clicking the “Delete” button, 
+an error message will be displayed that lets you know that you need to select a row first. 
+
+- Although optional, I have also implemented more user stories. These include the ability to modify a 
+contact’s information, call a contact, view the calling log, and delete contents of the calling log. 
+If the user selects a row from the Contact List and clicks the “Modify” button, dialog boxes will display 
+which will ask you to enter the contact’s new name, phone number, email, and type. The user’s information 
+will be updated accordingly. If the user selects a Contact and clicks on the “Call” button, the selected 
+contact’s name will be added in the calling log. To go back to the main panel, the user can click the “Return” 
+button. Similarly, if the user wants to delete a contact’s name from their calling log, they can select that 
+row and click the “Clear” button. If the user wants to simply view their calling log without making any calls 
+first, they can click on the “View” button. 
+
+- The visual component that I have added is displayed right away when you run my code. It is a picture of a 
+blue user icon which is displayed in the centre of my frame and consists of the author’s information written 
+beside it.  The second visual that I have added is a small phonebook Icon that is displayed on the top left 
+corner of my JFrame when you run my code. You can view it by simply running my code. The third visual component 
+is a picture of a bird that is displayed when you have not selected a row from the Contact List before clicking 
+on either “Modify”, “Delete”, or “Call” buttons. The user can view this visual by purposely entering wrong words 
+for name, phone number, email, and type (for example, entering a number instead of a name in the name text field, 
+entering a phone number that is more than 10 digits long etc) and then clicking the “Add” button. 
+
+- You can save the state of your application by exiting the JFrame. If you exit the application, a dialog 
+box will appear that will ask you if you want to save your data. If you click “Yes”, your data will be saved, 
+and otherwise, it will not be saved. 
+
+- If you want to reload the state of your application when you start a new session, you can do so by 
+clicking “yes” in the dialog box that asks you if you want to load your previous data from file. This dialog 
+box appears every time you run the application. The loaded Contacts can then be seen in the Contact List and 
+previous calls made will be added back to the Call History Table. 
+
+
+
+
+
+
+

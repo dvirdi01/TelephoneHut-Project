@@ -11,6 +11,8 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -96,6 +98,7 @@ public class Phonebook {
     }
 
 
+    @SuppressWarnings("methodlength")
     //MODIFIES: this
     //EFFECTS: sets up the JFrame
     private void setUpFrame() {
@@ -108,6 +111,67 @@ public class Phonebook {
         mainFrame.getContentPane().setBackground(new Color(24, 45, 86, 255));
         mainFrame.setIconImage(frameIcon.getImage());
         mainFrame.setResizable(false);
+        mainFrame.addWindowListener(new WindowListener() {
+
+
+            //MODIFIES: this
+            //EFFECTS: displays a dialog box which asks user if they want to reload their previous data
+            //if they say yes, load data back on contact list and calling history, otherwise do nothing
+            @Override
+            public void windowOpened(WindowEvent e) {
+                int pane = JOptionPane.showConfirmDialog(mainFrame,
+                        "Do you want to load your previous data?",
+                        "Load Progress", JOptionPane.YES_NO_OPTION);
+                if (pane == JOptionPane.YES_OPTION) {
+                    loadFromFile();
+                    loadBackContactList();
+                    loadBackCallingLog();
+                } else {
+                    //do nothing
+                }
+            }
+
+            //MODIFIES: this
+            //EFFECTS: displays a dialog box which asks user if they want to save their progress before exiting
+            //if they say yes, save contact list table and calling history table data to file, otherwise dont save
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+                int pane = JOptionPane.showConfirmDialog(mainFrame,
+                        "Do you want to save your progress before exiting?",
+                        "Save Progress", JOptionPane.YES_NO_OPTION);
+                if (pane == JOptionPane.YES_OPTION) {
+                    storeContactListTableData();
+                    storeCallingLogTableData();
+                    saveProgress();
+                } else {
+                    mainFrame.dispose();
+                }
+            }
+
+            //Not used:
+            @Override
+            public void windowClosed(WindowEvent e) {
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+            }
+
+        });
+
     }
 
 
@@ -137,10 +201,7 @@ public class Phonebook {
         topPanelLabel.setForeground(Color.WHITE);
         topPanelLabel.setFont(new Font("Verdana", Font. BOLD, 18));
 
-        //create Buttons
-        //saveButton.setBackground(new Color(13, 58, 197));
-        topPanel.add(saveButton);
-        topPanel.add(loadButton);
+
         topPanel.add(Box.createRigidArea(new Dimension(70, 30)));
         topPanel.add(topPanelLabel);
 
@@ -171,7 +232,8 @@ public class Phonebook {
 
     @SuppressWarnings("methodlength")
     //MODIFIES: this
-    //EFFECTS: displays user's information and calling history upon button click on mainpanel.
+    //EFFECTS: adds panels that displays author's info
+    // and calling history upon button click
 
     // Source: CardLayout Demo Project
     // Link: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/
@@ -234,8 +296,7 @@ public class Phonebook {
     }
 
     //MODIFIES: this
-    //EFFECTS: displays calling log table upon button click which is then
-    //displayed on p2 (and ultimately, it is displayed on mainpanel).
+    //EFFECTS: creates a call log which is displayed upon button click
     private void displayCallLogTable() {
         callingLogTable = new JTable();
         callingLogTableModel = new DefaultTableModel();
@@ -271,11 +332,10 @@ public class Phonebook {
 
     //MODIFIES: callLog
     //EFFECTS: retrieves data from callingLogTable and adds it to callLog.
-    //todo: HELP
     private void storeCallingLogTableData() {
 
         for (int i = 0; i < callingLogTable.getRowCount(); i++) {
-            String name = String.valueOf(contactListTable.getValueAt(i, 0));
+            String name = String.valueOf(callingLogTable.getValueAt(i, 0));
             String phoneNumber = "1111111111";
             String email = "defaultemail@email.com";
             String type = "FRIEND";
@@ -287,7 +347,7 @@ public class Phonebook {
     }
 
 
-    //MODIFIES: mainPanel
+    //MODIFIES: this
     //EFFECTS: displays buttons to add, delete, modify contacts, as well as to make a call
     // and view call history
     private void displayButtons(BorderLayout centerPanelLayout) {
@@ -314,8 +374,8 @@ public class Phonebook {
 
 
 
-    //MODIFIES: mainPanel.
-    //EFFECTS: creates textfields on mainpanel which allows user to enter contact's name
+    //MODIFIES: this
+    //EFFECTS: creates text fields on main panel which allows user to enter contact's name
     //phone number, email, and type.
     private void displayTextFields(BorderLayout centerPanelLayout) {
         JPanel helperPanel1 = new JPanel();
@@ -370,7 +430,7 @@ public class Phonebook {
     }
 
 
-    //MODIFIES: leftPanel
+    //MODIFIES: this
     //EFFECTS: displays labels corresponding to the text fields for user input.
     private void displayLeftPanel() {
 
@@ -401,7 +461,7 @@ public class Phonebook {
     }
 
 
-    //MODIFIES: bottomPanel
+    //MODIFIES: this
     //EFFECTS: creates a table which displays contact information of every contact added
     //and adds the table to bottomPanel.
     private void displayContactListTable() {
@@ -456,7 +516,7 @@ public class Phonebook {
 
     //--------------------------------------------BUTTON EVENTS----------------------------------------------
 
-    //MODIFIES: this
+
     //EFFECTS: For every button on JFrame, allows their corresponding actions to happen
     private void performButtonAction() {
         performAddButtonTask();
@@ -466,13 +526,12 @@ public class Phonebook {
         performViewButtonTask();
         performClearButtonTask();
         performReturnButtonTask();
-        performSaveButtonTask();
-        performLoadButtonTask();
+
     }
 
 
     @SuppressWarnings("methodlength")
-    //MODIFIES: contactListTable
+    //MODIFIES: this
     //EFFECTS: if all contact information is valid, adds contact to contactListTable
     //and clears out text fields.
     //otherwise, displays error message related to the fields that are invalid.
@@ -519,7 +578,7 @@ public class Phonebook {
 
 
     @SuppressWarnings("methodlength")
-    //MODIFIES: contactListTable
+    //MODIFIES: this
     //EFFECTS: allows user to modify a selected contact's information.
     //if a contact is not selected before button click, displays an error message
     private void performModifyButtonTask() {
@@ -571,7 +630,7 @@ public class Phonebook {
         });
     }
 
-    //MODIFIES: contactListTable
+    //MODIFIES: this
     //EFFECTS: deletes the selected contact. Displays an error message if
     //a contact is not selected before button click.
     private void performDeleteButtonTask() {
@@ -594,7 +653,7 @@ public class Phonebook {
         });
     }
 
-    //MODIFIES: callLogTable
+    //MODIFIES: this
     //EFFECTS: adds contact's name in callLogTable upon button click. Displays error message
     //if a contact is not selected before button click.
     private void performCallButtonTask() {
@@ -620,7 +679,7 @@ public class Phonebook {
         });
     }
 
-    //MODIFIES: mainPanel?
+
     //EFFECTS: Takes user to the panel that stores the callLogTable
     private void performViewButtonTask() {
         viewCallLogButton.addActionListener(new ActionListener() {
@@ -633,7 +692,7 @@ public class Phonebook {
         });
     }
 
-    //MODIFIES: this
+
     //EFFECTS: if returnButton is clicked, takes user back to the panel
     // that displays user's information
     private void performReturnButtonTask() {
@@ -647,8 +706,8 @@ public class Phonebook {
         });
     }
 
-    //MODIFIES: callingLogTable, mainPanel?
-    //EFFECTS: deletes the selected row in callLogTable upon button click.
+    //MODIFIES: this
+    //EFFECTS: removes the selected row in callLogTable upon button click.
     private void performClearButtonTask() {
 
         clearAllButton.addActionListener(new ActionListener() {
@@ -667,9 +726,9 @@ public class Phonebook {
 
     }
 
-    //MODIFIES: contactListTable, bottomPanel, this
-    //EFFECTS: Loads contactList and callLog from JSON file.
-    // and loads the contents of contactList back in contactListTable
+    //MODIFIES: this
+    //EFFECTS: Loads contents of contactList and callLog from JSON file.
+    // and adds them back to contactListTable and CallingLogTable
     private void performLoadButtonTask() {
         loadButton.addActionListener(new ActionListener() {
             @Override
@@ -677,13 +736,14 @@ public class Phonebook {
                 if (e.getSource() == loadButton) {
                     loadFromFile();
                     loadBackContactList();
+                    loadBackCallingLog();
                 }
             }
         });
     }
 
 
-    //EFFECTS: saves the data from contactListTable into JSON file
+    //EFFECTS: saves the data from contactListTable and CallingLogTable into JSON file
     private void performSaveButtonTask() {
         saveButton.addActionListener(new ActionListener() {
             @Override
@@ -697,7 +757,7 @@ public class Phonebook {
         });
     }
 
-    //MODIFIES: leftPanel
+    //MODIFIES: this
     //EFFECTS: clears the text fields
     public void clearFields() {
         nameField.setText("");
@@ -722,6 +782,7 @@ public class Phonebook {
     //----------------------------------------REGEX METHODS----------------------------------------------------
 
 
+
     //EFFECTS: displays an error message that prompts user to select a row
     //before doing any operation
     private void displayInvalidRowSelectionMessage() {
@@ -732,7 +793,7 @@ public class Phonebook {
     }
 
 
-    //MODIFIES: nametextField
+    //MODIFIES: this
     //EFFECTS: returns true if name entered only contains alphabets. If it doesn't,
     //displays an error message and clears name textfield and returns false
     //Source: https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
@@ -748,7 +809,7 @@ public class Phonebook {
 
 
 
-    //MODIFIES: phoneTextField
+    //MODIFIES: this
     //EFFECTS: returns true if phone number entered is 10 digits long and doesn't start with a 0.
     //If it doesn't, displays an error message and clears phonetextfield and returns false
     //source: https://stackoverflow.com/questions/24592808/regular-expression-in-java-validating-user-input
@@ -765,7 +826,7 @@ public class Phonebook {
 
 
     //EFFECTS: returns true if email entered matches the given email pattern
-    //Otherwise displays error message, clears email textfield and retirns false;
+    //Otherwise displays error message, clears email text field and returns false;
     private boolean checkEmail(String email) {
         if (!email.matches("[A-z]+([0-9]*[A-z]*)*\\@[a-z]+\\.com")) {
             displayInvalidEmailMessage();
@@ -778,7 +839,7 @@ public class Phonebook {
 
 
     //EFFECTS: returns true if type entered is one of FAMILY, WORK, or FRIEND.
-    //Otherwise displays error message, clears type field, and returns false;
+    //Other wise displays error message, clears type field, and returns false;
     private boolean checkType(String type) {
         if (!type.matches("FAMILY|FRIEND|WORK")) {
             displayInvalidTypeMessage();
@@ -865,6 +926,7 @@ public class Phonebook {
     public void loadFromFile() {
         loadContactList();
         loadCallingLog();
+
     }
 
 
@@ -878,7 +940,7 @@ public class Phonebook {
         }
     }
 
-    //MODIFIES: contactListTable
+    //MODIFIES: this
     //EFFECTS: loads the contactlist's contents back into contactListTable
     public void loadBackContactList() {
         for (Contact c: contactList.getAllContacts()) {
@@ -894,8 +956,7 @@ public class Phonebook {
     }
 
 
-    //todo:
-    //MODIFIES: callLogTable
+    //MODIFIES: this
     //EFFECTS: loads the contents of callLog back into callLogTable
     public void loadBackCallingLog() {
         for (String s: callingLog.getCallingLog()) {
