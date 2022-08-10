@@ -559,12 +559,12 @@ public class Phonebook {
                                 type = typeField.getText();
                                 if (checkType(type)) {
                                     //added this
-                                    //Contact contact = new Contact(name, phoneNumber, email, type);
+                                    Contact contact = new Contact(name, phoneNumber, email, type);
                                     //
                                     rowComponents = new String[]{name, phoneNumber, email, type};
                                     contactListTableModel.addRow(rowComponents);
                                     //added this
-                                    //contactList.addContact(contact);
+                                    contactList.addContact(contact);
                                     //
                                     clearFields();
                                 } else {
@@ -657,12 +657,12 @@ public class Phonebook {
                                 "Delete Selected", JOptionPane.YES_NO_OPTION);
                         if (confirmation == JOptionPane.YES_OPTION) {
 //                            //added this
-//                            String name =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 0));
-//                            String phoneNumber =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 1));
-//                            String email =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 2));
-//                            String type =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 3));
-//                            Contact contact = new Contact(name, phoneNumber, email, type);
-//                            contactList.deleteContact(contact);
+                            String name =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 0));
+                            String phoneNumber =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 1));
+                            String email =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 2));
+                            String type =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 3));
+                            Contact contact = new Contact(name, phoneNumber, email, type);
+                            contactList.deleteContact(contact);
                             //
                             contactListTableModel.removeRow(contactListTable.getSelectedRow());
 
@@ -689,17 +689,17 @@ public class Phonebook {
 
                         Object namesToAdd = contactListTable.getValueAt(selectedRow, 0);
                         //added this//
-//                        String phoneToAdd = contactListTable.getValueAt(selectedRow, 1).toString();
-//                        String emailToAdd = contactListTable.getValueAt(selectedRow, 2).toString();
-//                        String typeToAdd = contactListTable.getValueAt(selectedRow, 3).toString();
+                        String phoneToAdd = contactListTable.getValueAt(selectedRow, 1).toString();
+                        String emailToAdd = contactListTable.getValueAt(selectedRow, 2).toString();
+                        String typeToAdd = contactListTable.getValueAt(selectedRow, 3).toString();
                         //
 
                         String name = namesToAdd.toString();
                         callingLogTableModel.addRow(new String[]{name});
 
                         //added this
-//                        Contact contactToCall = new Contact(name, phoneToAdd, emailToAdd, typeToAdd);
-//                        callingLog.makeCall(contactToCall);
+                        Contact contactToCall = new Contact(name, phoneToAdd, emailToAdd, typeToAdd);
+                        callingLog.makeCall(contactToCall);
 //                        //
                         callingLogTable.getSelectionModel().clearSelection();
 
@@ -782,8 +782,8 @@ public class Phonebook {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == saveButton) {
-                    storeContactListTableData();
-                    storeCallingLogTableData();
+                    //storeContactListTableData();
+                    //storeCallingLogTableData();
                     saveProgress();
                 }
             }
