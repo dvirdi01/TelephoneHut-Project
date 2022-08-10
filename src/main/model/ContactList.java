@@ -23,13 +23,13 @@ public class ContactList implements Writable {
     }
 
 
-    //TODO: make this restriction tighter
     //MODIFIES: this
     //EFFECTS: adds a new contact into contactList if not already present and returns true.
     //else returns false and doesn't add contact to the list.
     public boolean addContact(Contact c) {
         if (!contactList.contains(c)) {
             contactList.add(c);
+            EventLog.getInstance().logEvent(new Event("Contact added to Contact List"));
             return true;
         } else {
             return false;
@@ -41,6 +41,7 @@ public class ContactList implements Writable {
     public void deleteContact(Contact c) {
         if (contactList.contains(c)) {
             contactList.remove(c);
+            EventLog.getInstance().logEvent(new Event("Contact deleted from Contact List"));
         }
     }
 
@@ -51,7 +52,6 @@ public class ContactList implements Writable {
     }
 
 
-    //todo: refactor to take in name and phone number?
     //EFFECTS: If a Contact is found by its name, then returns that contact otherwise returns null
     public Contact getContactByName(String name) {
         for (Contact c: contactList) {
@@ -64,7 +64,7 @@ public class ContactList implements Writable {
 
 
 
-    //---------------------------------PHASE-2 STUFF --------------------------------------- (looks correct)
+    //---------------------------------PHASE-2 STUFF ---------------------------------------
     @Override
 
     //EFFECTS: returns Contact List as a JSON object

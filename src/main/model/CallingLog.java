@@ -25,13 +25,13 @@ public class CallingLog implements Writable {
     }
 
 
-    //TODO: refactor to make makecall take in a name and a phone number? (Helper function?))
     //MODIFIES: this
     //EFFECTS: adds Contact name in the calling log and increments the
     //number of calls made by 1
     public void makeCall(Contact c) {
         callingLog.add(c.getName());
         this.numberOfCallsMade++;
+        EventLog.getInstance().logEvent(new Event("Made a call to" + c.getName()));
     }
 
 

@@ -3,6 +3,7 @@ package ui;
 import model.CallingLog;
 import model.Contact;
 import model.ContactList;
+import model.EventLog;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -126,8 +127,6 @@ public class Phonebook {
                     loadFromFile();
                     loadBackContactList();
                     loadBackCallingLog();
-                } else {
-                    //do nothing
                 }
             }
 
@@ -141,12 +140,16 @@ public class Phonebook {
                         "Do you want to save your progress before exiting?",
                         "Save Progress", JOptionPane.YES_NO_OPTION);
                 if (pane == JOptionPane.YES_OPTION) {
-                    storeContactListTableData();
-                    storeCallingLogTableData();
+                    //storeContactListTableData();
+                    //storeCallingLogTableData();
                     saveProgress();
+
                 } else {
                     mainFrame.dispose();
                 }
+
+                //added this ? //todo
+                EventLog.getInstance().iterator();
             }
 
             //Not used:
@@ -281,7 +284,7 @@ public class Phonebook {
         p1.add(oneLastPanel);
         //------------------------------------------------------------
         p2 = new JPanel();
-        p2.setBackground(new Color(252, 7, 130));
+        p2.setBackground(new Color(4, 88, 166));
         p2.add(returnButton, BorderLayout.NORTH);
 
         p2.add(clearAllButton);
@@ -555,8 +558,14 @@ public class Phonebook {
                             if (checkEmail(email)) {
                                 type = typeField.getText();
                                 if (checkType(type)) {
+                                    //added this
+                                    //Contact contact = new Contact(name, phoneNumber, email, type);
+                                    //
                                     rowComponents = new String[]{name, phoneNumber, email, type};
                                     contactListTableModel.addRow(rowComponents);
+                                    //added this
+                                    //contactList.addContact(contact);
+                                    //
                                     clearFields();
                                 } else {
                                     typeField.setText("");
@@ -630,6 +639,7 @@ public class Phonebook {
         });
     }
 
+    @SuppressWarnings("methodlength")
     //MODIFIES: this
     //EFFECTS: deletes the selected contact. Displays an error message if
     //a contact is not selected before button click.
@@ -639,11 +649,23 @@ public class Phonebook {
             public void actionPerformed(ActionEvent e) {
                 if (!isContactListRowNotSelected()) {
                     if (e.getSource() == deleteButton) {
+                        //added this
+                        int selectedRowIndex = contactListTable.getSelectedRow();
+                        //
                         int confirmation = JOptionPane.showConfirmDialog(mainPanel,
                                 "Are you sure you want to delete this contact?",
                                 "Delete Selected", JOptionPane.YES_NO_OPTION);
                         if (confirmation == JOptionPane.YES_OPTION) {
+//                            //added this
+//                            String name =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 0));
+//                            String phoneNumber =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 1));
+//                            String email =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 2));
+//                            String type =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 3));
+//                            Contact contact = new Contact(name, phoneNumber, email, type);
+//                            contactList.deleteContact(contact);
+                            //
                             contactListTableModel.removeRow(contactListTable.getSelectedRow());
+
                         }
                     }
                 } else {
@@ -666,8 +688,19 @@ public class Phonebook {
                         int selectedRow = contactListTable.getSelectedRow();
 
                         Object namesToAdd = contactListTable.getValueAt(selectedRow, 0);
+                        //added this//
+//                        String phoneToAdd = contactListTable.getValueAt(selectedRow, 1).toString();
+//                        String emailToAdd = contactListTable.getValueAt(selectedRow, 2).toString();
+//                        String typeToAdd = contactListTable.getValueAt(selectedRow, 3).toString();
+                        //
+
                         String name = namesToAdd.toString();
                         callingLogTableModel.addRow(new String[]{name});
+
+                        //added this
+//                        Contact contactToCall = new Contact(name, phoneToAdd, emailToAdd, typeToAdd);
+//                        callingLog.makeCall(contactToCall);
+//                        //
                         callingLogTable.getSelectionModel().clearSelection();
 
                         cardLayout.show(cardHolderPanel, "Panel with call log");
