@@ -107,6 +107,7 @@ Added Harry's contact information to Contact List
 Wed Aug 10 21:23:06 PDT 2022
 Deleted Sarah's contact information from Contact List
 
+
 ### Phase 4 Task 3
 
 I have three classes in my model package, and they all manage different aspects of my Phonebook. 
