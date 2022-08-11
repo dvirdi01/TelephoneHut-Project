@@ -4,6 +4,8 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.Objects;
+
 /**
  This class represents a contact in the phonebook which has a name, phone number,email, and type
  associated with it.
@@ -26,6 +28,24 @@ public class Contact implements Writable {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Contact contact = (Contact) o;
+        return Objects.equals(name, contact.name) && Objects.equals(phoneNumber, contact.phoneNumber)
+                && Objects.equals(email, contact.email) && Objects.equals(type, contact.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, phoneNumber, email, type);
     }
 
     //Setters

@@ -4,6 +4,7 @@ import model.CallingLog;
 import model.Contact;
 import model.ContactList;
 import model.EventLog;
+import model.Event;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -16,6 +17,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 
 
 /**
@@ -132,7 +134,8 @@ public class Phonebook {
 
             //MODIFIES: this
             //EFFECTS: displays a dialog box which asks user if they want to save their progress before exiting
-            //if they say yes, save contact list table and calling history table data to file, otherwise dont save
+            //if they say yes, save contact list table and calling history table data to file, otherwise doesn't save
+            //and prints out all events that have been logged during one session.
             @Override
             public void windowClosing(WindowEvent e) {
 
@@ -140,16 +143,12 @@ public class Phonebook {
                         "Do you want to save your progress before exiting?",
                         "Save Progress", JOptionPane.YES_NO_OPTION);
                 if (pane == JOptionPane.YES_OPTION) {
-                    //storeContactListTableData();
-                    //storeCallingLogTableData();
                     saveProgress();
 
                 } else {
                     mainFrame.dispose();
                 }
-
-                //added this ? //todo
-                EventLog.getInstance().iterator();
+                printLog();
             }
 
             //Not used:
@@ -177,6 +176,16 @@ public class Phonebook {
 
     }
 
+    //EFFECTS: prints out the logged events from the Eventlog
+    private void printLog() {
+
+        for (Iterator<Event> it = EventLog.getInstance().iterator(); it.hasNext(); ) {
+            Event e = it.next();
+            System.out.println(e.toString());
+            System.out.println();
+        }
+
+    }
 
 
     //MODIFIES: this
@@ -307,11 +316,8 @@ public class Phonebook {
 
         callingLogTableModel.addColumn("Call History");
         callingLogCellRenderer = new DefaultTableCellRenderer();
-
-        //set cell text placing to center
         callingLogCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // apply center placing to column
         // Source: https://www.tabnine.com/code/java/methods/javax.swing.table.DefaultTableCellRenderer/
         // Source: https://docs.oracle.com/javase/7/docs/api/javax/swing/table/TableColumn.html
         TableColumn callHistoryColumn;
@@ -328,24 +334,6 @@ public class Phonebook {
         scrollPane.setVisible(true);
 
         p2.add(scrollPane, BorderLayout.CENTER);
-
-    }
-
-
-
-    //MODIFIES: callLog
-    //EFFECTS: retrieves data from callingLogTable and adds it to callLog.
-    private void storeCallingLogTableData() {
-
-        for (int i = 0; i < callingLogTable.getRowCount(); i++) {
-            String name = String.valueOf(callingLogTable.getValueAt(i, 0));
-            String phoneNumber = "1111111111";
-            String email = "defaultemail@email.com";
-            String type = "FRIEND";
-
-            Contact contactWithDefaultFields = new Contact(name, phoneNumber, email, type);
-            callingLog.makeCall(contactWithDefaultFields);
-        }
 
     }
 
@@ -494,28 +482,6 @@ public class Phonebook {
 
     }
 
-    //MODIFIES: contactList
-    //EFFECTS: obtains the data from contactListTable and categorizes it into contacts
-    //that are added in a contact list.
-    private void storeContactListTableData() {
-
-        for (int i = 0; i < contactListTable.getRowCount(); i++) {
-            String name = String.valueOf(contactListTable.getValueAt(i, 0));
-            String phoneNumber = String.valueOf(contactListTable.getValueAt(i, 1));
-            String email = String.valueOf(contactListTable.getValueAt(i, 2));
-            String type = String.valueOf(contactListTable.getValueAt(i, 3));
-
-            Contact contact = new Contact(name, phoneNumber, email, type);
-
-            if (!contactList.getAllContacts().contains(contact)) {
-                contactList.addContact(contact);
-            }
-
-        }
-
-    }
-
-
 
     //--------------------------------------------BUTTON EVENTS----------------------------------------------
 
@@ -662,8 +628,11 @@ public class Phonebook {
                             String email =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 2));
                             String type =  String.valueOf(contactListTable.getValueAt(selectedRowIndex, 3));
                             Contact contact = new Contact(name, phoneNumber, email, type);
-                            contactList.deleteContact(contact);
-                            //
+
+                            Contact nameToFind = contactList.getContactByName(name);
+                            if (contact.equals(nameToFind)) {
+                                contactList.deleteContact(contact);
+                            }
                             contactListTableModel.removeRow(contactListTable.getSelectedRow());
 
                         }
@@ -700,7 +669,7 @@ public class Phonebook {
                         //added this
                         Contact contactToCall = new Contact(name, phoneToAdd, emailToAdd, typeToAdd);
                         callingLog.makeCall(contactToCall);
-//                        //
+                        //
                         callingLogTable.getSelectionModel().clearSelection();
 
                         cardLayout.show(cardHolderPanel, "Panel with call log");
@@ -746,14 +715,12 @@ public class Phonebook {
         clearAllButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!isCallingLogRowNotSelected()) {
-                    if (e.getSource() == clearAllButton) {
-                        callingLogTableModel.removeRow(callingLogTable.getSelectedRow());
+                if (e.getSource() == clearAllButton) {
+                    for (int i = 0; i < callingLogTable.getRowCount(); i++) {
+                        callingLog.clearCallLog();
+                        callingLogTableModel.setRowCount(0);
                     }
-                } else {
-                    displayInvalidRowSelectionMessage();
                 }
-
             }
         });
 
@@ -782,8 +749,6 @@ public class Phonebook {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == saveButton) {
-                    //storeContactListTableData();
-                    //storeCallingLogTableData();
                     saveProgress();
                 }
             }

@@ -29,7 +29,8 @@ public class ContactList implements Writable {
     public boolean addContact(Contact c) {
         if (!contactList.contains(c)) {
             contactList.add(c);
-            EventLog.getInstance().logEvent(new Event("Contact added to Contact List"));
+            EventLog.getInstance().logEvent(new Event("Added " + c.getName() + "'s contact "
+                    + "information to Contact List"));
             return true;
         } else {
             return false;
@@ -41,9 +42,12 @@ public class ContactList implements Writable {
     public void deleteContact(Contact c) {
         if (contactList.contains(c)) {
             contactList.remove(c);
-            EventLog.getInstance().logEvent(new Event("Contact deleted from Contact List"));
+            EventLog.getInstance().logEvent(new Event("Deleted " + c.getName() + "'s contact "
+                    + "information from Contact List"));
         }
     }
+
+
 
 
     //EFFECTS: returns all contacts in the book

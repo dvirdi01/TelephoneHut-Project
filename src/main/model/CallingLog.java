@@ -31,7 +31,6 @@ public class CallingLog implements Writable {
     public void makeCall(Contact c) {
         callingLog.add(c.getName());
         this.numberOfCallsMade++;
-        EventLog.getInstance().logEvent(new Event("Made a call to" + c.getName()));
     }
 
 
@@ -41,13 +40,13 @@ public class CallingLog implements Writable {
         return callingLog.get(size);
     }
 
+
     //EFFECTS: returns the callingLog
     public List<String> getCallingLog() {
         return callingLog;
     }
 
 
-    //TODO: never used this function, use it while call to display call log happens
     //MODIFIES: this
     //EFFECTS: clears the call log by removing all calls made.
     //source: https://www.java67.com/2016/07/how-to-remove-all-elements-of-arraylist.html
