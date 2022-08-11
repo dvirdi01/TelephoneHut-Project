@@ -135,16 +135,19 @@ improved the readability of my code a lot. Nevertheless, there are still instanc
 ton of code duplication which I want to reduce through refactoring. 
 
 
+
 - Another change that I can make to my UI package is to make more classes that create components of my GUI 
 application. Right now, I only have one class (Phonebook) that contains all my GUI code and as a result, 
 this class is really long, and it’s hard to work your way through the different methods. Therefore, I would 
 split the initial loading and saving while exiting mechanisms and refactor them into their own GUI frame to 
 improve the readability of my code. 
 
+
 - In my Contact class, I defined a contact to have a name, phone number, email, and type. Specifically, the type 
 parameter can be one of three options: WORK, FAMILY, or FRIEND. Since the user can only input one of these three types
 for a contact, I can make an enumeration called Type which lists WORK, FAMILY, and FRIEND as the three options the user 
 can pick from. 
+
 
 - Lastly, I saw that both my ContactList class and my CallLog class have similar methods, such as adding a contact/call 
 to a list of contacts/calls, and removing them from their respective lists. Instead of having methods with similar 
